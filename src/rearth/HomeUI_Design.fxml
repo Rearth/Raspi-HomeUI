@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rearth.HomeUI_DesignController">
+<AnchorPane id="AnchorPane" fx:id="BackgroundPanel" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rearth.HomeUI_DesignController">
     <children>
       <Button fx:id="buttonQuit" cancelButton="true" focusTraversable="false" layoutX="960.0" layoutY="551.0" onAction="#QuitUI" text="Quit" />
       <Button fx:id="DebugButton" focusTraversable="false" layoutX="178.0" layoutY="163.0" mnemonicParsing="false" onAction="#DoDebug" text="TestThis" />
@@ -23,5 +23,6 @@
             <Font name="Calibri" size="22.0" />
          </font>
       </Label>
+      <Button fx:id="NightModeButton" focusTraversable="false" layoutX="72.0" layoutY="533.0" mnemonicParsing="false" onAction="#toggleNightMode" text="DarkMode" />
     </children>
 </AnchorPane>

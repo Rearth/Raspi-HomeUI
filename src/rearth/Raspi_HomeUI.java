@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import rearth.Helpers.TimeService;
-
 /**
  *
  * @author Darkp
@@ -79,8 +78,18 @@ public class Raspi_HomeUI extends Application {
         curZeit.update();
         curDatum.update();
         
+        boolean playAnim = false;
+        
+        if (!HomeUI_DesignController.getInstance().timeLabel.getText().equals(curZeit.toString(true))) {
+            playAnim = true;
+        }
+        
         HomeUI_DesignController.getInstance().timeLabel.setText(curZeit.toString(true));
         HomeUI_DesignController.getInstance().dateLabel.setText(curDatum.toString(TimeService.DateFormat.KalenderInfo));
+        
+        if (playAnim) {
+            HomeUI_DesignController.getInstance().playScaleAnim(HomeUI_DesignController.getInstance().timeLabel);
+        }
     }
     
 }

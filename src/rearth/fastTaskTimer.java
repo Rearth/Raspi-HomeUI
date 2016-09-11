@@ -19,11 +19,7 @@ public class fastTaskTimer extends TimerTask{
         
         Raspi_HomeUI GUI = Raspi_HomeUI.getInstance();
         
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
-                GUI.updateTime();
-            }
-        });
+        Platform.runLater(GUI::updateTime);
         
     }  
     
