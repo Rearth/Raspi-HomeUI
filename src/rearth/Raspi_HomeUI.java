@@ -5,15 +5,20 @@
  */
 package rearth;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import rearth.Helpers.TimeService;
+import rearth.Helpers.Weather;
 /**
  *
  * @author Darkp
@@ -22,7 +27,7 @@ public class Raspi_HomeUI extends Application {
     
     TimeService.Datum curDatum;
     TimeService.Zeit curZeit;
-    
+        
     private static Raspi_HomeUI instance = null;   
     
     public static Raspi_HomeUI getInstance() {
@@ -62,6 +67,22 @@ public class Raspi_HomeUI extends Application {
         curZeit = new TimeService.Zeit();
         updateTime();
         
+        try {
+            Weather.getinstance().init();
+        } catch (IOException ex) {
+           System.out.println("Error getting Weather Data, trying again");
+            try {
+                Weather.getinstance().init();
+            } catch (IOException ex1) {
+                Logger.getLogger(Raspi_HomeUI.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        
+        Weather wetter = Weather.getinstance();
+        HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
+        Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
+        wetter.updateWidget(Labels);
+        
         fastTasks();
     }
     
@@ -75,8 +96,15 @@ public class Raspi_HomeUI extends Application {
     
     void updateTime() {
         
+        int oldHours = curZeit.getHours();
+        
         curZeit.update();
         curDatum.update();
+        
+        if (oldHours != curZeit.getHours()) {
+            System.out.println("Hour done");
+            hourlyTasks();
+        }
         
         boolean playAnim = false;
         
@@ -90,6 +118,24 @@ public class Raspi_HomeUI extends Application {
         if (playAnim) {
             HomeUI_DesignController.getInstance().playScaleAnim(HomeUI_DesignController.getInstance().timeLabel);
         }
+    }
+    
+    void hourlyTasks() {
+        
+        Weather wetter = Weather.getinstance();
+        try {
+            wetter.init();
+        } catch (IOException ex) {
+            System.out.println("Error getting Weather Data, trying again");
+            try {
+                wetter.init();
+            } catch (IOException ex1) {
+                Logger.getLogger(Raspi_HomeUI.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
+        Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
+        wetter.updateWidget(Labels);
     }
     
 }

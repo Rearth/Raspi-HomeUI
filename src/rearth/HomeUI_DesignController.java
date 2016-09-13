@@ -7,17 +7,17 @@ package rearth;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Helpers.TimeService.*;
 
@@ -47,23 +47,31 @@ public class HomeUI_DesignController implements Initializable {
     public Button DebugButton;
     @FXML
     public AnchorPane BackgroundPanel;
+    @FXML
+    public Label TempToday;
+    @FXML
+    public Label TempMorgen;
+    @FXML
+    public Label TempUbermorgen;
+    @FXML
+    public Label WeatherState;
     
     @FXML
-    private void QuitUI(ActionEvent event) {
+    private void QuitUI(Event event) {
         System.out.println("Ending");
         System.exit(0);
     }
     
     @FXML
-    private void toggleNightMode(ActionEvent event) {
+    private void toggleNightMode(Event event) {
         
         System.out.println("changing night mode");
         
         if (!nightmode) {
             BackgroundPanel.setStyle("-fx-background-color: #0a001a;");
-            DebugButton.setStyle("-fx-background-color: #0a001a;");
-            NightModeButton.setStyle("-fx-background-color: #0a001a;");
-            buttonQuit.setStyle("-fx-background-color: #0a001a;");
+            DebugButton.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
+            NightModeButton.setStyle("-fx-border-color:  rgba(179, 143, 0, 0.15); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
+            buttonQuit.setStyle("-fx-border-color:  rgba(179, 143, 0, 0.15);; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             nightmode = true;
         } else {
             BackgroundPanel.setStyle("");
@@ -76,7 +84,7 @@ public class HomeUI_DesignController implements Initializable {
     }
     
     @FXML
-    private void DoDebug(ActionEvent event) {
+    private void DoDebug(Event event) {
         int[] Date = {8, 9, 2016};
         Datum datum = new Datum(Date);
         Zeit zeit = new Zeit();
@@ -89,6 +97,15 @@ public class HomeUI_DesignController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         instance = this;
+        
+        timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
+        dateLabel.setFont(Font.font("Calibri", 18));
+        TempToday.setFont(Font.font("Calibri", 65));
+        
+        Font font = Font.font("Verdana", 15);
+        TempMorgen.setFont(font);
+        TempUbermorgen.setFont(font);
+        WeatherState.setFont(font);
     }
     
     void playScaleAnim(Label label) {

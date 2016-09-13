@@ -22,6 +22,10 @@ public class TimeService {
         Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag
     }
     
+    public enum relativeDays {
+        Heute, Morgen, Übermorgen
+    }
+    
     public enum Monate {
         Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember
     }
