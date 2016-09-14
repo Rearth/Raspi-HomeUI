@@ -131,6 +131,10 @@ public class TimeService {
            date = new Date(); 
         }
         
+        public Wochentage getDayID() {
+            return Wochentage.values()[getDayOfWeek(date) - 1];
+        }
+        
         public Datum(int[] Date) {
             
             

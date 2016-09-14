@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import rearth.Helpers.Stundenplan;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.Weather;
 /**
@@ -82,6 +83,9 @@ public class Raspi_HomeUI extends Application {
         HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
         Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
         wetter.updateWidget(Labels);
+        
+        Stundenplan stundenplan = Stundenplan.getInstance();
+        System.out.println(stundenplan);
         
         fastTasks();
     }

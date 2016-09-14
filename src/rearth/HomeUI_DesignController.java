@@ -6,15 +6,17 @@
 package rearth;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
-import javafx.event.ActionEvent;
+
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -106,6 +108,7 @@ public class HomeUI_DesignController implements Initializable {
         TempMorgen.setFont(font);
         TempUbermorgen.setFont(font);
         WeatherState.setFont(font);
+        
     }
     
     void playScaleAnim(Label label) {
@@ -118,6 +121,104 @@ public class HomeUI_DesignController implements Initializable {
         scaleanim.setCycleCount(1);
         scaleanim.setAutoReverse(true);
         scaleanim.play();
+    }
+    
+    private ArrayList<Label> StundenplanItems = new ArrayList<>();
+    
+    private final int ListGap = 32;
+    
+    public void createStundenplan(String[] Texts) {
+        
+        ArrayList<String> TextUsed = new ArrayList<>();
+        
+        clearStundenplan();
+        
+        int numofItems = Texts.length;
+        int pauseTime = 0;
+        int curItem = 0;
+        int i = 0;
+        
+        for (String Text: Texts) {
+            
+            
+            if (i < Texts.length - 1) {
+                i++;
+            }
+            //System.out.println(Text);
+            
+            if (Text.equals("nichts")) {
+                
+                numofItems--;
+                pauseTime++;
+                curItem++;
+                
+            } else if (!TextUsed.contains(Text)) {
+                
+                if (pauseTime > 0) {
+                    drawPause(pauseTime, curItem - pauseTime);
+                    pauseTime = 0;
+                }
+                
+                TextUsed.add(Text);
+                
+                Label labelA = new Label(Text);
+                labelA.setFont(Font.font("Calibri", 22));
+                labelA.setLayoutX(200);
+                labelA.setLayoutY(200 + ListGap * curItem);
+                
+                //System.out.println(Texts[6]);
+                System.out.println("Text=" + Text + " curItem=" + curItem + " i=" + i + " textlength=" + Texts.length + " Texti-1=" + Texts[(i - 1)]);
+                
+                if (Texts[i - 1].equals(Text)) {
+                    curItem++;
+                    labelA.setPrefSize(150, ListGap * 2 + 1);
+                    labelA.setAlignment(Pos.CENTER);
+                    System.out.println("doppelstunde!");
+                } else {
+                    labelA.setPrefSize(150, ListGap + 1);
+                    labelA.setAlignment(Pos.CENTER);
+                    System.out.println("einzelstunde!");
+                }
+                
+                labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+                
+                labelA.setVisible(true);
+                
+                BackgroundPanel.getChildren().add(labelA);
+                
+                StundenplanItems.add(labelA);
+                curItem++;
+                
+            } else if (TextUsed.contains(Text)) {
+                numofItems--;
+            }
+        }
+        
+        System.out.println("Info: " + numofItems + " I " + pauseTime);
+        
+    }
+    
+    void drawPause(int value, int curItem) {
+        
+        System.out.println("Drawing Pause: " + value + " I " + curItem);
+        
+        Label labelA = new Label("");
+        labelA.setFont(Font.font("Calibri", 22));
+        labelA.setLayoutX(200);
+        labelA.setLayoutY(200 + ListGap * curItem); 
+        labelA.setPrefSize(150, ListGap * value + 1);
+        labelA.setAlignment(Pos.CENTER);
+        labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+                
+        labelA.setVisible(true);
+                
+        BackgroundPanel.getChildren().add(labelA);
+                
+        StundenplanItems.add(labelA);
+    }
+    
+    public void clearStundenplan() {
+        
     }
     
 }
