@@ -74,6 +74,11 @@ public class HomeUI_DesignController implements Initializable {
             DebugButton.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             NightModeButton.setStyle("-fx-border-color:  rgba(179, 143, 0, 0.15); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(179, 143, 0, 0.15);; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
+            
+            for (Label label: StundenplanItems) {
+                label.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #0a001a;");
+            }
+            
             nightmode = true;
         } else {
             BackgroundPanel.setStyle("");
@@ -81,6 +86,10 @@ public class HomeUI_DesignController implements Initializable {
             NightModeButton.setStyle("");
             buttonQuit.setStyle("");
             nightmode = false;
+            
+            for (Label label: StundenplanItems) {
+                label.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+            }
         }
         
     }
@@ -92,7 +101,7 @@ public class HomeUI_DesignController implements Initializable {
         Zeit zeit = new Zeit();
         //timeLabel.setText("test");
         playScaleAnim(timeLabel);
-        clearStundenplan();
+       // clearStundenplan();
         System.out.println(datum.toString(DateFormat.KalenderInfo) + " I " + datum.toString(DateFormat.ActivityInfo) +" I " +  datum.toString(DateFormat.Normal) + " I " + zeit.toString(true));
         
     }
@@ -126,10 +135,10 @@ public class HomeUI_DesignController implements Initializable {
     
     private final ArrayList<Label> StundenplanItems = new ArrayList<>();
     
-    private final int ListGap = 32;
+    private final int ListGap = 38;
     private final int ListWidth = 150;
-    private final int PosX = 40;
-    private final int PosY = 150;
+    private final int PosX = 60;
+    private final int PosY = 120;
     
     public void createStundenplan(String[] Texts) {
         
@@ -166,7 +175,7 @@ public class HomeUI_DesignController implements Initializable {
                 TextUsed.add(Text);
                 
                 Label labelA = new Label(Text);
-                labelA.setFont(Font.font("Calibri", 22));
+                labelA.setFont(Font.font("Calibri Light", 22));
                 labelA.setLayoutX(PosX);
                 labelA.setLayoutY(PosY + ListGap * curItem);
                 
@@ -178,6 +187,7 @@ public class HomeUI_DesignController implements Initializable {
                     labelA.setPrefSize(ListWidth, ListGap * 2 + 1);
                     labelA.setAlignment(Pos.CENTER);
                     System.out.println("doppelstunde!");
+                    labelA.setFont(Font.font("Calibri Light", 26));
                 } else {
                     labelA.setPrefSize(ListWidth, ListGap + 1);
                     labelA.setAlignment(Pos.CENTER);
