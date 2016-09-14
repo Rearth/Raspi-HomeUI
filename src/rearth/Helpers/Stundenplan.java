@@ -14,7 +14,7 @@ import rearth.HomeUI_DesignController;
  *
  * @author Darkp
  */
-public class Stundenplan {
+public final class Stundenplan {
     
     private static final Stundenplan instance = new Stundenplan();
     
@@ -62,7 +62,7 @@ public class Stundenplan {
         
         Zeit zeit = new Zeit();
         if ((zeit.getHours() - 12) >= Fächer[activeDay].length / 2) {
-            //activeDay++;
+            activeDay++;
         }
         if (activeDay >= 6) {
             activeDay = 1;

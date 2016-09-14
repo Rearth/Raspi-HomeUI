@@ -92,6 +92,7 @@ public class HomeUI_DesignController implements Initializable {
         Zeit zeit = new Zeit();
         //timeLabel.setText("test");
         playScaleAnim(timeLabel);
+        clearStundenplan();
         System.out.println(datum.toString(DateFormat.KalenderInfo) + " I " + datum.toString(DateFormat.ActivityInfo) +" I " +  datum.toString(DateFormat.Normal) + " I " + zeit.toString(true));
         
     }
@@ -123,9 +124,12 @@ public class HomeUI_DesignController implements Initializable {
         scaleanim.play();
     }
     
-    private ArrayList<Label> StundenplanItems = new ArrayList<>();
+    private final ArrayList<Label> StundenplanItems = new ArrayList<>();
     
     private final int ListGap = 32;
+    private final int ListWidth = 150;
+    private final int PosX = 40;
+    private final int PosY = 150;
     
     public void createStundenplan(String[] Texts) {
         
@@ -163,19 +167,19 @@ public class HomeUI_DesignController implements Initializable {
                 
                 Label labelA = new Label(Text);
                 labelA.setFont(Font.font("Calibri", 22));
-                labelA.setLayoutX(200);
-                labelA.setLayoutY(200 + ListGap * curItem);
+                labelA.setLayoutX(PosX);
+                labelA.setLayoutY(PosY + ListGap * curItem);
                 
                 //System.out.println(Texts[6]);
                 System.out.println("Text=" + Text + " curItem=" + curItem + " i=" + i + " textlength=" + Texts.length + " Texti-1=" + Texts[(i - 1)]);
                 
                 if (Texts[i - 1].equals(Text)) {
                     curItem++;
-                    labelA.setPrefSize(150, ListGap * 2 + 1);
+                    labelA.setPrefSize(ListWidth, ListGap * 2 + 1);
                     labelA.setAlignment(Pos.CENTER);
                     System.out.println("doppelstunde!");
                 } else {
-                    labelA.setPrefSize(150, ListGap + 1);
+                    labelA.setPrefSize(ListWidth, ListGap + 1);
                     labelA.setAlignment(Pos.CENTER);
                     System.out.println("einzelstunde!");
                 }
@@ -203,10 +207,9 @@ public class HomeUI_DesignController implements Initializable {
         System.out.println("Drawing Pause: " + value + " I " + curItem);
         
         Label labelA = new Label("");
-        labelA.setFont(Font.font("Calibri", 22));
-        labelA.setLayoutX(200);
-        labelA.setLayoutY(200 + ListGap * curItem); 
-        labelA.setPrefSize(150, ListGap * value + 1);
+        labelA.setLayoutX(PosX);
+        labelA.setLayoutY(PosY + ListGap * curItem); 
+        labelA.setPrefSize(ListWidth, ListGap * value + 1);
         labelA.setAlignment(Pos.CENTER);
         labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
                 
@@ -218,6 +221,12 @@ public class HomeUI_DesignController implements Initializable {
     }
     
     public void clearStundenplan() {
+        
+        StundenplanItems.stream().forEach((label) -> {
+            BackgroundPanel.getChildren().remove(label);
+        });
+        
+        StundenplanItems.clear();
         
     }
     

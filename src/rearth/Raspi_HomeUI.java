@@ -140,6 +140,8 @@ public class Raspi_HomeUI extends Application {
         HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
         Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
         wetter.updateWidget(Labels);
+        
+        Stundenplan.getInstance().updateDay();
     }
     
 }
