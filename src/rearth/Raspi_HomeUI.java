@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import rearth.Fitness.FitnessData;
 import rearth.Helpers.Stundenplan;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.Weather;
@@ -88,6 +89,9 @@ public class Raspi_HomeUI extends Application {
         System.out.println(stundenplan);
         
         fastTasks();
+        
+        System.out.println(FitnessData.getInstance());
+        //FitnessData.getInstance().addActivity(FitnessData.Types.Workout, FitnessData.length.kurz, curDatum);
     }
     
     void fastTasks() {
