@@ -7,7 +7,6 @@ package rearth;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
 
@@ -135,7 +134,7 @@ public class HomeUI_DesignController implements Initializable {
     
     private final ArrayList<Label> StundenplanItems = new ArrayList<>();
     
-    private final int ListGap = 38;
+    private final int ListGap = 42;
     private final int ListWidth = 150;
     private final int PosX = 60;
     private final int PosY = 120;
@@ -180,21 +179,25 @@ public class HomeUI_DesignController implements Initializable {
                 labelA.setLayoutY(PosY + ListGap * curItem);
                 
                 //System.out.println(Texts[6]);
-                System.out.println("Text=" + Text + " curItem=" + curItem + " i=" + i + " textlength=" + Texts.length + " Texti-1=" + Texts[(i - 1)]);
+                //System.out.println("Text=" + Text + " curItem=" + curItem + " i=" + i + " textlength=" + Texts.length + " Texti-1=" + Texts[(i - 1)]);
                 
                 if (Texts[i - 1].equals(Text)) {
                     curItem++;
                     labelA.setPrefSize(ListWidth, ListGap * 2 + 1);
                     labelA.setAlignment(Pos.CENTER);
-                    System.out.println("doppelstunde!");
+                    //System.out.println("doppelstunde!");
                     labelA.setFont(Font.font("Calibri Light", 26));
                 } else {
                     labelA.setPrefSize(ListWidth, ListGap + 1);
                     labelA.setAlignment(Pos.CENTER);
-                    System.out.println("einzelstunde!");
+                    //System.out.println("einzelstunde!");
+                }
+                if (nightmode) {
+                   labelA.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #0a001a;");
+                } else {
+                    labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
                 }
                 
-                labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
                 
                 labelA.setVisible(true);
                 
@@ -208,20 +211,24 @@ public class HomeUI_DesignController implements Initializable {
             }
         }
         
-        System.out.println("Info: " + numofItems + " I " + pauseTime);
+        //System.out.println("Info: " + numofItems + " I " + pauseTime);
         
     }
     
     void drawPause(int value, int curItem) {
         
-        System.out.println("Drawing Pause: " + value + " I " + curItem);
+        //System.out.println("Drawing Pause: " + value + " I " + curItem);
         
         Label labelA = new Label("");
         labelA.setLayoutX(PosX);
         labelA.setLayoutY(PosY + ListGap * curItem); 
         labelA.setPrefSize(ListWidth, ListGap * value + 1);
         labelA.setAlignment(Pos.CENTER);
-        labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+        if (nightmode) {
+                   labelA.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #0a001a;");
+                } else {
+                    labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+                }
                 
         labelA.setVisible(true);
                 

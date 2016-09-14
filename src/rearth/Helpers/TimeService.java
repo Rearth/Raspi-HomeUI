@@ -123,6 +123,10 @@ public class TimeService {
         
         private Date date;
         
+        public Date getDate() {
+            return date;
+        }
+        
         public void update() {
             date = new Date();
         }
@@ -133,6 +137,10 @@ public class TimeService {
         
         public Wochentage getDayID() {
             return Wochentage.values()[getDayOfWeek(date) - 1];
+        }
+        
+        public Datum(int a, int b, int c) {
+            this(new int[]{a, b, c});
         }
         
         public Datum(int[] Date) {
@@ -218,7 +226,7 @@ public class TimeService {
                         return Integer.toString(getDayNumber()) + "." + getMonth();
                     }
                 case Normal:
-                    SimpleDateFormat simpleformat = new SimpleDateFormat( "dd.MM.yyyy" );
+                    SimpleDateFormat simpleformat = new SimpleDateFormat( "dd:MM:yyyy" );
                     return simpleformat.format(date);
                 default:
                     return this.toString();
