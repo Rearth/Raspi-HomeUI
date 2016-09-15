@@ -33,7 +33,7 @@ public final class Stundenplan {
     public void show() {
         
         HomeUI_DesignController GUI = HomeUI_DesignController.getInstance();
-        GUI.createStundenplan(Fächer[activeDay]);
+        GUI.createStundenplan(Fächer[activeDay], Wochentage.values()[activeDay].toString());
         
     }
     
@@ -61,7 +61,7 @@ public final class Stundenplan {
         }
         
         Zeit zeit = new Zeit();
-        if ((zeit.getHours() - 12) >= Fächer[activeDay].length / 2) {
+        if ((zeit.getHours() - 10) >= Fächer[activeDay].length / 2) {
             activeDay++;
         }
         if (activeDay >= 6) {

@@ -16,7 +16,10 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
@@ -75,7 +78,9 @@ public class HomeUI_DesignController implements Initializable {
             buttonQuit.setStyle("-fx-border-color:  rgba(179, 143, 0, 0.15);; -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             
             for (Label label: StundenplanItems) {
-                label.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #0a001a;");
+                if (label.getId() != "Titel") {
+                    label.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #0a001a;");
+                }
             }
             
             nightmode = true;
@@ -87,7 +92,9 @@ public class HomeUI_DesignController implements Initializable {
             nightmode = false;
             
             for (Label label: StundenplanItems) {
-                label.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+                if (label.getId() != "Titel") {
+                    label.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
+                }
             }
         }
         
@@ -118,6 +125,11 @@ public class HomeUI_DesignController implements Initializable {
         TempUbermorgen.setFont(font);
         WeatherState.setFont(font);
         
+        DropShadow shadow = new DropShadow();
+        shadow.setOffsetX(6);
+        shadow.setOffsetY(6);
+        //testPane.setStyle("-fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 10, 0, 4, 4);");
+        
     }
     
     void playScaleAnim(Label label) {
@@ -137,13 +149,23 @@ public class HomeUI_DesignController implements Initializable {
     private final int ListGap = 42;
     private final int ListWidth = 150;
     private final int PosX = 60;
-    private final int PosY = 120;
+    private final int PosY = 170;
     
-    public void createStundenplan(String[] Texts) {
+    public void createStundenplan(String[] Texts, String Day) {
+        
         
         ArrayList<String> TextUsed = new ArrayList<>();
-        
+                
         clearStundenplan();
+        
+        Label title = new Label(Day);
+        title.setFont(Font.font("Verdana", FontWeight.BOLD, 36));
+        title.setLayoutX(PosX);
+        title.setLayoutY(PosY - 45);
+        title.setId("Titel");
+        title.setVisible(true);
+        BackgroundPanel.getChildren().add(title);
+        StundenplanItems.add(title);
         
         int numofItems = Texts.length;
         int pauseTime = 0;
@@ -151,7 +173,6 @@ public class HomeUI_DesignController implements Initializable {
         int i = 0;
         
         for (String Text: Texts) {
-            
             
             if (i < Texts.length - 1) {
                 i++;
@@ -209,6 +230,8 @@ public class HomeUI_DesignController implements Initializable {
             } else if (TextUsed.contains(Text)) {
                 numofItems--;
             }
+            
+            
         }
         
         //System.out.println("Info: " + numofItems + " I " + pauseTime);
@@ -240,7 +263,10 @@ public class HomeUI_DesignController implements Initializable {
     public void clearStundenplan() {
         
         StundenplanItems.stream().forEach((label) -> {
-            BackgroundPanel.getChildren().remove(label);
+            if (label.getId() != "Titel") {
+                BackgroundPanel.getChildren().remove(label);
+            }
+            //System.out.println("Label=" + label.getId());
         });
         
         StundenplanItems.clear();
