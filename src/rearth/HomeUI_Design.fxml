@@ -44,7 +44,7 @@
                   <Font name="Verdana" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="WeatherState" alignment="CENTER" layoutX="59.0" layoutY="87.0" prefHeight="26.0" prefWidth="109.0" text="Error">
+            <Label fx:id="WeatherState" alignment="CENTER" layoutX="59.0" layoutY="84.0" prefHeight="26.0" prefWidth="109.0" text="Error">
                <font>
                   <Font name="Verdana" size="15.0" />
                </font>
