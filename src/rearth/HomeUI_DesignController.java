@@ -16,14 +16,19 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Helpers.TimeService.*;
+import rearth.Helpers.Weather;
 
 /**
  *
@@ -59,6 +64,12 @@ public class HomeUI_DesignController implements Initializable {
     public Label TempUbermorgen;
     @FXML
     public Label WeatherState;
+    @FXML
+    public ImageView WeatherImage;
+    @FXML
+    public ImageView WeatherImageB;
+    @FXML
+    public ImageView WeatherImageC;
     
     @FXML
     private void QuitUI(Event event) {
@@ -102,13 +113,27 @@ public class HomeUI_DesignController implements Initializable {
     
     @FXML
     private void DoDebug(Event event) {
-        int[] Date = {8, 9, 2016};
-        Datum datum = new Datum(Date);
-        Zeit zeit = new Zeit();
-        //timeLabel.setText("test");
+        
         playScaleAnim(timeLabel);
-       // clearStundenplan();
-        System.out.println(datum.toString(DateFormat.KalenderInfo) + " I " + datum.toString(DateFormat.ActivityInfo) +" I " +  datum.toString(DateFormat.Normal) + " I " + zeit.toString(true));
+        ColorAdjust monochrome = new ColorAdjust();
+        monochrome.setSaturation(-1.0);
+        
+        Blend blush = new Blend(
+                BlendMode.MULTIPLY,
+                monochrome,
+                new ColorInput(
+                        0,
+                        0,
+                        WeatherImage.getImage().getWidth(),
+                        WeatherImage.getImage().getHeight(),
+                        Color.STEELBLUE
+                )
+        );
+        
+        WeatherImage.setEffect(blush);
+        
+        System.out.println("Color=" + TempToday.getTextFill().toString());
+        TempToday.setTextFill(Color.web("0x333333ff"));
         
     }
     
@@ -118,19 +143,18 @@ public class HomeUI_DesignController implements Initializable {
         
         timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
         dateLabel.setFont(Font.font("Calibri", 18));
-        TempToday.setFont(Font.font("Calibri", 65));
+        TempToday.setFont(Font.font("Verdana", FontWeight.BOLD, 62));
         
         Font font = Font.font("Verdana", 15);
         TempMorgen.setFont(font);
-        TempUbermorgen.setFont(font);
+        TempUbermorgen.setFont(Font.font("Verdana", 13));
         WeatherState.setFont(font);
         
-        DropShadow shadow = new DropShadow();
-        shadow.setOffsetX(6);
-        shadow.setOffsetY(6);
+        //WeatherImage.setImage(Weather.getinstance().);
         //testPane.setStyle("-fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 10, 0, 4, 4);");
         
     }
+    
     
     void playScaleAnim(Label label) {
         
@@ -147,7 +171,7 @@ public class HomeUI_DesignController implements Initializable {
     private final ArrayList<Label> StundenplanItems = new ArrayList<>();
     
     private final int ListGap = 42;
-    private final int ListWidth = 150;
+    private final int ListWidth = 180;
     private final int PosX = 60;
     private final int PosY = 170;
     
@@ -159,9 +183,9 @@ public class HomeUI_DesignController implements Initializable {
         clearStundenplan();
         
         Label title = new Label(Day);
-        title.setFont(Font.font("Verdana", FontWeight.BOLD, 36));
+        title.setFont(Font.font("Verdana", FontWeight.BOLD, 43));
         title.setLayoutX(PosX);
-        title.setLayoutY(PosY - 45);
+        title.setLayoutY(PosY - 55);
         title.setId("Titel");
         title.setVisible(true);
         BackgroundPanel.getChildren().add(title);
@@ -263,9 +287,7 @@ public class HomeUI_DesignController implements Initializable {
     public void clearStundenplan() {
         
         StundenplanItems.stream().forEach((label) -> {
-            if (label.getId() != "Titel") {
-                BackgroundPanel.getChildren().remove(label);
-            }
+            BackgroundPanel.getChildren().remove(label);
             //System.out.println("Label=" + label.getId());
         });
         

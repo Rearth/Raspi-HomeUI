@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import rearth.Fitness.FitnessData;
@@ -83,7 +84,8 @@ public class Raspi_HomeUI extends Application {
         Weather wetter = Weather.getinstance();
         HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
         Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
-        wetter.updateWidget(Labels);
+        ImageView[] Images = {UI.WeatherImage, UI.WeatherImageB, UI.WeatherImageC};
+        wetter.updateWidget(Labels, Images);
         
         Stundenplan stundenplan = Stundenplan.getInstance();
         System.out.println(stundenplan);
@@ -143,7 +145,8 @@ public class Raspi_HomeUI extends Application {
         }
         HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
         Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
-        wetter.updateWidget(Labels);
+        ImageView[] Images = {UI.WeatherImage, UI.WeatherImageB, UI.WeatherImageC};
+        wetter.updateWidget(Labels, Images);
         
         Stundenplan.getInstance().updateDay();
     }

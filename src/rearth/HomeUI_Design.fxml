@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
@@ -13,7 +14,7 @@
 <AnchorPane id="AnchorPane" fx:id="BackgroundPanel" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rearth.HomeUI_DesignController">
     <children>
       <Button fx:id="buttonQuit" cancelButton="true" focusTraversable="false" layoutX="913.0" layoutY="523.0" onAction="#QuitUI" prefHeight="53.0" prefWidth="86.0" text="Quit" />
-      <Button fx:id="DebugButton" focusTraversable="false" layoutX="60.0" layoutY="32.0" mnemonicParsing="false" onAction="#DoDebug" prefHeight="53.0" prefWidth="150.0" text="TestThis" />
+      <Button fx:id="DebugButton" focusTraversable="false" layoutX="60.0" layoutY="32.0" mnemonicParsing="false" onAction="#DoDebug" prefHeight="53.0" prefWidth="180.0" text="TestThis" />
       <Label fx:id="timeLabel" alignment="CENTER" layoutX="765.0" layoutY="32.0" prefHeight="92.0" prefWidth="239.0" text="00:00" textAlignment="CENTER">
          <font>
             <Font name="Verdana Bold" size="71.0" />
@@ -26,28 +27,31 @@
       </Label>
       <Button fx:id="NightModeButton" focusTraversable="false" layoutX="526.0" layoutY="450.0" mnemonicParsing="false" onAction="#toggleNightMode" prefHeight="53.0" prefWidth="123.0" text="DarkMode" />
       <Accordion layoutX="216.0" layoutY="104.0" />
-      <Pane layoutX="52.0" layoutY="462.0">
+      <Pane layoutX="51.0" layoutY="477.0" prefHeight="139.0" prefWidth="290.0">
          <children>
-            <Label fx:id="TempMorgen" layoutX="92.0" layoutY="61.0" text="0°">
+            <Label fx:id="TempMorgen" layoutX="172.0" layoutY="90.0" text="0°">
                <font>
                   <Font name="Verdana" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="TempToday" alignment="CENTER_RIGHT" layoutX="-53.0" layoutY="-21.0" prefHeight="139.0" prefWidth="134.0" text="99°">
+            <Label fx:id="TempToday" alignment="CENTER_RIGHT" layoutX="-53.0" prefHeight="139.0" prefWidth="134.0" text="99°">
                <font>
                   <Font name="Calibri" size="71.0" />
                </font>
             </Label>
-            <Label fx:id="TempUbermorgen" layoutX="137.0" layoutY="61.0" text="0°">
+            <Label fx:id="TempUbermorgen" layoutX="228.0" layoutY="92.0" text="0°">
                <font>
                   <Font name="Verdana" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="WeatherState" layoutX="86.0" layoutY="15.0" text="Error">
+            <Label fx:id="WeatherState" alignment="CENTER" layoutX="59.0" layoutY="87.0" prefHeight="26.0" prefWidth="109.0" text="Error">
                <font>
                   <Font name="Verdana" size="15.0" />
                </font>
             </Label>
+            <ImageView fx:id="WeatherImage" fitHeight="80.0" fitWidth="80.0" layoutX="74.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="WeatherImageB" fitHeight="56.0" fitWidth="56.0" layoutX="153.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="WeatherImageC" fitHeight="52.0" fitWidth="52.0" layoutX="213.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
     </children>

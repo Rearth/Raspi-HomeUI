@@ -10,9 +10,12 @@ import com.github.fedy2.weather.data.Channel;
 import com.github.fedy2.weather.data.Condition;
 import com.github.fedy2.weather.data.Forecast;
 import com.github.fedy2.weather.data.unit.DegreeUnit;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javax.xml.bind.JAXBException;
 import rearth.Helpers.TimeService.relativeDays;
 
@@ -24,8 +27,30 @@ public class Weather {
     
     final String WOEID = "646299";
     
+    public Image getImage() {
+        
+        return getImage(0);
+    }
+    public Image getImage(int day) {
+        
+        String ImageName = "";
+        String FilePath =      "C:/Users/Darkp/Desktop/Raspberri Pi/WeatherImages/Converted/" + nameState(Codes[day]) + ".png";
+        File tester = new File(FilePath);
+        if (tester.exists()) {
+            System.out.println("Weather image found: " + nameState(Codes[day]));
+        } else  {
+            System.out.println("No Weather image for \"" + nameState(Codes[day]) + "\" found, using default");
+            FilePath = "C:/Users/Darkp/Desktop/Raspberri Pi/WeatherImages/Converted/default.png";
+        }
+        
+        Image image = new Image("file:" + FilePath);
+        
+        return image;
+    }
+    
     private int Temperatur[] = {0, 0, 0};
     private String State[] = {"Error", "Error", "Error"};
+    private int Codes[] = {0, 0, 0};
     
     
     private static final Weather Instance = new Weather();
@@ -38,14 +63,18 @@ public class Weather {
         return Instance;
     }
     
-    public void updateWidget(Label[] Labels) {
+    public void updateWidget(Label[] Labels, ImageView[] imageA) {
         
         Labels[0].setText(Integer.toString(Temperatur[0]) + "°");
         Labels[1].setText(State[0]);
         Labels[2].setText(Integer.toString(Temperatur[1]) + "°");
         Labels[3].setText(Integer.toString(Temperatur[2]) + "°");
+        imageA[0].setImage(getImage());
+        imageA[1].setImage(getImage(1));
+        imageA[2].setImage(getImage(2));
         
     }
+    
     
     public void init() throws IOException {
         
@@ -67,8 +96,12 @@ public class Weather {
             State[1] = nameState(forecastTomorrow.getCode());
             State[2] = nameState(forecast2Days.getCode());
             
+            Codes[0] = condition.getCode();
+            Codes[1] = forecastTomorrow.getCode();
+            Codes[2] = forecast2Days.getCode();
+            
             System.out.println("Temperatur: " + Temperatur[0] + "°");
-            System.out.println("Zustand: " + State[0]);
+            System.out.println("Zustand: " + State[0] + " I " + condition.getText());
             System.out.println("Morgen: " + State[1] + " I " + Temperatur[1] + "°");
             System.out.println("Übermorgen: " + State[2] + " I " + Temperatur[2] + "°");
             
@@ -106,7 +139,7 @@ public class Weather {
             case 1: return "Sturm";
             case 2: return "Hurricane";
             case 3: return "Starke Gewitter";
-            case 4: return "Geweitter";
+            case 4: return "Gewitter";
             case 5: return "Schneeregen";
             case 6: return "Schneeregen";
             case 7: return "Schneeregen";
