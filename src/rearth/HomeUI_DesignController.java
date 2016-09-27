@@ -20,15 +20,12 @@ import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
-import rearth.Helpers.TimeService.*;
-import rearth.Helpers.Weather;
 
 /**
  *
@@ -170,10 +167,11 @@ public class HomeUI_DesignController implements Initializable {
     
     private final ArrayList<Label> StundenplanItems = new ArrayList<>();
     
-    private final int ListGap = 42;
+    private int ListGap = 42;
     private final int ListWidth = 180;
     private final int PosX = 60;
     private final int PosY = 170;
+    private final int maxHeight = 470 - PosY;
     
     public void createStundenplan(String[] Texts, String Day) {
         
@@ -192,6 +190,9 @@ public class HomeUI_DesignController implements Initializable {
         StundenplanItems.add(title);
         
         int numofItems = Texts.length;
+        if (numofItems >= 8) {      //begin: 170; end:470
+            ListGap = maxHeight / numofItems;
+        }
         int pauseTime = 0;
         int curItem = 0;
         int i = 0;

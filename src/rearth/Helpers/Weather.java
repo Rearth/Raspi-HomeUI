@@ -34,13 +34,13 @@ public class Weather {
     public Image getImage(int day) {
         
         String ImageName = "";
-        String FilePath =      "C:/Users/Darkp/Desktop/Raspberri Pi/WeatherImages/Converted/" + nameState(Codes[day]) + ".png";
+        String FilePath =      "/home/pi/Desktop/Java/Images/Weather/" + nameState(Codes[day]) + ".png";
         File tester = new File(FilePath);
         if (tester.exists()) {
             System.out.println("Weather image found: " + nameState(Codes[day]));
         } else  {
             System.out.println("No Weather image for \"" + nameState(Codes[day]) + "\" found, using default");
-            FilePath = "C:/Users/Darkp/Desktop/Raspberri Pi/WeatherImages/Converted/default.png";
+            FilePath = "/home/pi/Desktop/Java/Images/Weather/default.png";
         }
         
         Image image = new Image("file:" + FilePath);

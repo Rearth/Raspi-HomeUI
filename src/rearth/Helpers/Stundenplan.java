@@ -61,7 +61,7 @@ public final class Stundenplan {
         }
         
         Zeit zeit = new Zeit();
-        if ((zeit.getHours() - 10) >= Fächer[activeDay].length / 2) {
+        if ((zeit.getHours() - 10) >= Fächer[activeDay].length / 2 && curDay != Wochentage.Sonntag) {
             activeDay++;
         }
         if (activeDay >= 6) {
