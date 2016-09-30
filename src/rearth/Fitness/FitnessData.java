@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.TimeService.Datum;
 import rearth.Helpers.TimeService.Zeit;
@@ -31,7 +33,9 @@ public class FitnessData {
     private final String folderPath;
     private final String FitnessDataFile;
     private final File FitnessData;
-    private final int ElementGap = 13;
+    private final int ElementGap = 15;
+    private int posX;
+    private int posY;
     
     public enum Types {
         Joggen, Radeln, Workout
@@ -47,27 +51,64 @@ public class FitnessData {
         object.save();
         Activities.add(object);
         sortByDateTime(Activities);
-        
-        
+        updateList();
     }
     
     public void addActivity(Types typ, length dauer, Datum datum) {
         addActivity(typ, dauer, datum, new Zeit());
     }
     
+    public void updateList() {
+        
+        StyledLabel toRemove = DrawnObjects.get(0);
+        StyledLabel toAdd = new StyledLabel(lastFive().get(4).type.toString(), posX, posY + + ElementGap + (StyledLabel.defaultheight * 4), StyledLabel.defaultheight, 250);
+        toAdd.add(lastFive().get(4).datum.toString(TimeService.DateFormat.ActivityInfo));
+        toAdd.setVisible(false);
+                
+        toRemove.fade(300).setOnFinished((ActionEvent event) -> {
+            
+            toRemove.setVisible(false);
+            DrawnObjects.remove(toRemove);
+            toRemove.delete();
+            
+            for (int i = 0; i < 4; i++) {
+                DrawnObjects.get(i).move(0, -(DrawnObjects.get(2).getHeight()), 500);
+            }
+            toAdd.setVisible(true);
+            toAdd.showup(800).setOnFinished((ActionEvent evont) -> {
+                for (StyledLabel label: DrawnObjects) {
+                    label.delete();
+                }
+                toAdd.delete();
+                drawLatest(760, 270); 
+            });
+        });
+        
+        
+    }
+    
     public final ArrayList<StyledLabel> DrawnObjects;
     
     public void drawLatest(int x, int y) {
         
+        this.posX = x;
+        this.posY = y;
+        
         int i = 0;
         
         rearth.HomeUI_DesignController instance = rearth.HomeUI_DesignController.getInstance();
+        DrawnObjects.clear();
         for (DataObject thing : lastFive()) {
             StyledLabel test = new StyledLabel(thing.type.toString(), x, y + ElementGap + (StyledLabel.defaultheight * i), StyledLabel.defaultheight, 250);
             test.add(thing.datum.toString(TimeService.DateFormat.ActivityInfo));
             
             i++;
-            DrawnObjects.add(test);
+            if (!DrawnObjects.contains(test)) {
+                DrawnObjects.add(test);
+            } else {
+                test.delete();
+            }
+                        
         }
         
     }
@@ -144,6 +185,10 @@ public class FitnessData {
             
         }
         
+    }
+    
+    public int NumOfElements() {
+        return Activities.size();
     }
     
     private ArrayList<String> readFile(File file) {

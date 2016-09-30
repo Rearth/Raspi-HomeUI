@@ -37,6 +37,7 @@ public final class Stundenplan {
         
     }
     
+    
     public void updateDay(){
         
         Wochentage curDay = new Datum().getDayID();

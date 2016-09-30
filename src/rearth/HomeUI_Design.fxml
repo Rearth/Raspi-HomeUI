@@ -55,5 +55,6 @@
             <ImageView fx:id="WeatherImageC" fitHeight="56.0" fitWidth="56.0" layoutX="213.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
+      <Button fx:id="AddFitnessElement" focusTraversable="false" layoutX="772.0" layoutY="206.0" mnemonicParsing="false" onAction="#AddFitnessElem" text="Button" />
     </children>
 </AnchorPane>

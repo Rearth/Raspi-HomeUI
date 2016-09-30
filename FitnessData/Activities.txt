@@ -2,7 +2,6 @@ Workout/kurz/13:09:2016/18:26
 Joggen/lang/14:09:2016/14:56
 Radeln/mittel/11:09:2016/12:15
 Workout/kurz/15:09:2016/00:25
-Workout/kurz/26:09:2016/15:43
 Workout/kurz/29:09:2016/15:43
-Joggen/kurz/30:08:2016/15:47
-Radeln/kurz/30:09:2016/16:04
+Radeln/kurz/26:09:2016/15:43
+Joggen/kurz/01:10:2016/00:56

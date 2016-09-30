@@ -7,10 +7,14 @@ package rearth;
 
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 /**
  *
@@ -18,8 +22,8 @@ import javafx.scene.text.Font;
  */
 public final class StyledLabel {
     
-    private final java.awt.Font defaultFont = new java.awt.Font("Calibri", java.awt.Font.PLAIN, 18);
-    private final Font defaultfxFont = Font.font("Calibri", 18);
+    private final java.awt.Font defaultFont = new java.awt.Font("Carlito", java.awt.Font.PLAIN, 18);
+    private final Font defaultfxFont = Font.font("Carlito", 18);
     public static final int defaultheight = 45;
     private String Text;
     private int PosX;
@@ -46,7 +50,7 @@ public final class StyledLabel {
     public void add(String Text) {
         rightLabel.setText(Text);
         rightLabel.setPrefSize(width, height);
-        rightLabel.setLayoutX(PosX + width - (getStringSizeinPx(Text) + 25));
+        rightLabel.setLayoutX(PosX + width - (getStringSizeinPx(Text) + 30));
         rightLabel.setLayoutY(PosY);
         rightLabel.setFont(defaultfxFont);
         
@@ -86,13 +90,16 @@ public final class StyledLabel {
         textLabel.setText(this.Text);
         setLocation(this.PosX, this.PosY);
         setSize(this.height, this.width);
-        image.setImage(background);
+        
+        NightMode(rearth.HomeUI_DesignController.nightmode);
+        
         textLabel.setFont(defaultfxFont);
         textLabel.setVisible(true);
         image.setVisible(true);
         
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(image);
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(textLabel);
+        
     }
       
     
@@ -114,16 +121,22 @@ public final class StyledLabel {
     }
     
     
+    public void setTextCenter() {
+        
+        textLabel.setTextAlignment(TextAlignment.CENTER);
+        
+    }
+    
     public void setSize(int height, int width) {
         image.setFitHeight(height);
         image.setFitWidth(width);
         
-        textLabel.setPrefSize(width, height);
+        textLabel.setPrefSize(width * 0.97297297298, height);
         
     }
     
     public void setLocation(int x, int y) {
-        textLabel.setLayoutX(x);
+        textLabel.setLayoutX(x + (width * 0.02702702702));
         textLabel.setLayoutY(y);
         image.setLayoutX(x - 15);
         image.setLayoutY(y);
@@ -133,7 +146,7 @@ public final class StyledLabel {
         
         AffineTransform affinetransform = new AffineTransform();     
         FontRenderContext frc = new FontRenderContext(affinetransform,true,true);
-        int textwidth = (int)(new java.awt.Font("Calibri", java.awt.Font.PLAIN, 18).getStringBounds(Text, frc).getWidth());
+        int textwidth = (int)(new java.awt.Font("Carlito", java.awt.Font.PLAIN, 18).getStringBounds(Text, frc).getWidth());
         
         return textwidth;
     }
@@ -155,6 +168,89 @@ public final class StyledLabel {
 
     public void setText(String Text) {
         setText(Text, true);
+    }
+    
+    public void setVisible(boolean state) {
+        image.setVisible(state);
+        textLabel.setVisible(state);
+        rightLabel.setVisible(state);
+    }
+    
+    public void delete() {
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(image);
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(rightLabel);
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(textLabel);
+    }
+    
+    public TranslateTransition move(int byX, int byY, int time) {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(time), getImage());
+        tt.setByX(byX);
+        tt.setByY(byY);
+        tt.setCycleCount(1);
+        tt.setAutoReverse(true);
+        tt.play();
+        
+        tt = new TranslateTransition(Duration.millis(time), rightLabel);
+        tt.setByX(byX);
+        tt.setByY(byY);
+        tt.setCycleCount(1);
+        tt.setAutoReverse(true);
+        tt.play();
+        
+        tt = new TranslateTransition(Duration.millis(time), getLabel());
+        tt.setByX(byX);
+        tt.setByY(byY);
+        tt.setCycleCount(1);
+        tt.setAutoReverse(true);
+        tt.play();
+        
+        return tt;
+    }
+    
+    public FadeTransition fade(int time) {
+        FadeTransition ft = new FadeTransition(Duration.millis(time), getLabel());
+        ft.setFromValue(1.0F);
+        ft.setToValue(0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        ft = new FadeTransition(Duration.millis(time), getImage());
+        ft.setFromValue(1.0F);
+        ft.setToValue(0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        ft = new FadeTransition(Duration.millis(time), rightLabel);
+        ft.setFromValue(1.0F);
+        ft.setToValue(0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        
+        return ft;
+    }
+    
+    public FadeTransition showup(int time) {
+        FadeTransition ft = new FadeTransition(Duration.millis(time), getLabel());
+        ft.setFromValue(0.0F);
+        ft.setToValue(1.0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        ft = new FadeTransition(Duration.millis(time), getImage());
+        ft.setFromValue(0.0F);
+        ft.setToValue(1.0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        ft = new FadeTransition(Duration.millis(time), rightLabel);
+        ft.setFromValue(0.0F);
+        ft.setToValue(1.0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        
+        return ft;
     }
     
     public void setText(String Text, boolean resize) {
