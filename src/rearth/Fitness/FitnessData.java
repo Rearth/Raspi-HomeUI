@@ -55,7 +55,7 @@ public class FitnessData {
         addActivity(typ, dauer, datum, new Zeit());
     }
     
-    private final ArrayList<StyledLabel> DrawnObjects;
+    public final ArrayList<StyledLabel> DrawnObjects;
     
     public void drawLatest(int x, int y) {
         

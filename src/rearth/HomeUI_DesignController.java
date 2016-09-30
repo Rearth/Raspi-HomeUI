@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
+import rearth.Fitness.FitnessData;
 
 /**
  *
@@ -87,6 +88,10 @@ public class HomeUI_DesignController implements Initializable {
                 }
             }
             
+            for (StyledLabel label: FitnessData.getInstance().DrawnObjects) {
+                label.NightMode(true);
+            }
+            
             nightmode = true;
         } else {
             BackgroundPanel.setStyle("");
@@ -99,6 +104,10 @@ public class HomeUI_DesignController implements Initializable {
                 if (label.getId() != "Titel") {
                     label.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
                 }
+            }
+            
+            for (StyledLabel label: FitnessData.getInstance().DrawnObjects) {
+                label.NightMode(false);
             }
         }
         

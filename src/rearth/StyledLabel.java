@@ -35,6 +35,14 @@ public final class StyledLabel {
         return textLabel;
     }
     
+    public void NightMode(boolean state) {
+        if (state) {
+            image.setImage(new Image(getClass().getResource("/rearth/Images/TextElementNight.png").toString()));
+        } else {
+            image.setImage(background);
+        }
+    }
+    
     public void add(String Text) {
         rightLabel.setText(Text);
         rightLabel.setPrefSize(width, height);
