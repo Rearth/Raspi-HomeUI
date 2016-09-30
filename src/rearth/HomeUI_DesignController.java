@@ -16,10 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -112,22 +108,6 @@ public class HomeUI_DesignController implements Initializable {
     private void DoDebug(Event event) {
         
         playScaleAnim(timeLabel);
-        ColorAdjust monochrome = new ColorAdjust();
-        monochrome.setSaturation(-1.0);
-        
-        Blend blush = new Blend(
-                BlendMode.MULTIPLY,
-                monochrome,
-                new ColorInput(
-                        0,
-                        0,
-                        WeatherImage.getImage().getWidth(),
-                        WeatherImage.getImage().getHeight(),
-                        Color.STEELBLUE
-                )
-        );
-        
-        WeatherImage.setEffect(blush);
         
         System.out.println("Color=" + TempToday.getTextFill().toString());
         TempToday.setTextFill(Color.web("0x333333ff"));
@@ -146,10 +126,10 @@ public class HomeUI_DesignController implements Initializable {
         TempMorgen.setFont(font);
         TempUbermorgen.setFont(Font.font("Verdana", 13));
         WeatherState.setFont(font);
+        StyledLabel testLabel = new StyledLabel("Ein sehr langes Label mit noch mehr Text", 500, 200);
         
-        //WeatherImage.setImage(Weather.getinstance().);
-        //testPane.setStyle("-fx-effect: dropshadow(three-pass-box, derive(cadetblue, -20%), 10, 0, 4, 4);");
         
+                
     }
     
     
@@ -164,14 +144,28 @@ public class HomeUI_DesignController implements Initializable {
         scaleanim.setAutoReverse(true);
         scaleanim.play();
     }
+    void playScaleAnim(StyledLabel label) {
+        
+        ScaleTransition scaleanim = new ScaleTransition(Duration.millis(350), label.getLabel());
+        scaleanim.setFromX(1.4);
+        scaleanim.setToX(1);
+        scaleanim.setFromY(1.4);
+        scaleanim.setToY(1);
+        scaleanim.setCycleCount(1);
+        scaleanim.setAutoReverse(true);
+        scaleanim.play();
+        scaleanim = new ScaleTransition(Duration.millis(350), label.getImage());
+        scaleanim.play();
+    }
     
     private final ArrayList<Label> StundenplanItems = new ArrayList<>();
     
     private int ListGap = 42;
+    private final int GapDefault = 42;
     private final int ListWidth = 180;
     private final int PosX = 60;
     private final int PosY = 170;
-    private final int maxHeight = 470 - PosY;
+    private final int maxHeight = 480 - PosY;
     
     public void createStundenplan(String[] Texts, String Day) {
         
@@ -192,6 +186,8 @@ public class HomeUI_DesignController implements Initializable {
         int numofItems = Texts.length;
         if (numofItems >= 8) {      //begin: 170; end:470
             ListGap = maxHeight / numofItems;
+        } else {
+            ListGap = GapDefault;
         }
         int pauseTime = 0;
         int curItem = 0;

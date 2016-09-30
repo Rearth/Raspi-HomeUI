@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.web.*?>
 <?import javafx.scene.text.*?>
@@ -49,10 +50,12 @@
                   <Font name="Verdana" size="15.0" />
                </font>
             </Label>
-            <ImageView fx:id="WeatherImage" fitHeight="80.0" fitWidth="80.0" layoutX="74.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="WeatherImageB" fitHeight="56.0" fitWidth="56.0" layoutX="153.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="WeatherImageC" fitHeight="52.0" fitWidth="52.0" layoutX="213.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="WeatherImage" fitHeight="80.0" fitWidth="80.0" layoutX="74.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="WeatherImageB" fitHeight="56.0" fitWidth="56.0" layoutX="153.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="WeatherImageC" fitHeight="56.0" fitWidth="56.0" layoutX="213.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
+      <Label fx:id="testLabel" layoutX="512.0" layoutY="190.0" prefHeight="35.0" prefWidth="200.0" text="TestText" />
+      <ImageView fx:id="testImage" fitHeight="35.0" fitWidth="200.0" layoutX="512.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>
