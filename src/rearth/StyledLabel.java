@@ -20,18 +20,30 @@ public final class StyledLabel {
     
     private final java.awt.Font defaultFont = new java.awt.Font("Calibri", java.awt.Font.PLAIN, 18);
     private final Font defaultfxFont = Font.font("Calibri", 18);
-    private final int defaultheight = 45;
+    public static final int defaultheight = 45;
     private String Text;
     private int PosX;
     private int PosY;
     private int height;
     private int width;
-    private final Image background = new Image("file:" + "C:\\Users\\Darkp\\Desktop\\RaspberryPi\\Design\\TextElement.png");
+    private final Image background = new Image(getClass().getResource("/rearth/Images/TextElement.png").toString());
     private final ImageView image = new ImageView();
     private final Label textLabel = new Label();
+    private final Label rightLabel = new Label();
     
     public Label getLabel() {
         return textLabel;
+    }
+    
+    public void add(String Text) {
+        rightLabel.setText(Text);
+        rightLabel.setPrefSize(width, height);
+        rightLabel.setLayoutX(PosX + width - (getStringSizeinPx(Text) + 25));
+        rightLabel.setLayoutY(PosY);
+        rightLabel.setFont(defaultfxFont);
+        
+        rightLabel.setVisible(true);
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(rightLabel);
     }
     
     public void playAnim() {
@@ -49,9 +61,13 @@ public final class StyledLabel {
     public StyledLabel(String Text, int PosX, int PosY, int height, int width, boolean playAnim) {
         if (height == 0) {
             this.height = defaultheight;
+        } else {
+            this.height = height;
         }
         if (width == 0) {
             this.width = calcLength(Text);
+        } else {
+            this.width = width;
         }
         
         this.Text = Text;
@@ -70,22 +86,7 @@ public final class StyledLabel {
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(image);
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(textLabel);
     }
-    
-    public void setSize(int height, int width) {
-        image.setFitHeight(height);
-        image.setFitWidth(width);
-        
-        textLabel.setPrefSize(width, height);
-        
-    }
-    
-    public void setLocation(int x, int y) {
-        textLabel.setLayoutX(x);
-        textLabel.setLayoutY(y);
-        image.setLayoutX(x - 15);
-        image.setLayoutY(y);
-    }
-    
+      
     
     public StyledLabel() {
         this("", 0, 0, 0, 0);
@@ -102,6 +103,31 @@ public final class StyledLabel {
     
     public StyledLabel(int posX, int PosY) {
         this("", posX, PosY, 0, 0);
+    }
+    
+    
+    public void setSize(int height, int width) {
+        image.setFitHeight(height);
+        image.setFitWidth(width);
+        
+        textLabel.setPrefSize(width, height);
+        
+    }
+    
+    public void setLocation(int x, int y) {
+        textLabel.setLayoutX(x);
+        textLabel.setLayoutY(y);
+        image.setLayoutX(x - 15);
+        image.setLayoutY(y);
+    }
+    
+    public static int getStringSizeinPx(String Text) {
+        
+        AffineTransform affinetransform = new AffineTransform();     
+        FontRenderContext frc = new FontRenderContext(affinetransform,true,true);
+        int textwidth = (int)(new java.awt.Font("Calibri", java.awt.Font.PLAIN, 18).getStringBounds(Text, frc).getWidth());
+        
+        return textwidth;
     }
     
     private int calcLength(String Text) {

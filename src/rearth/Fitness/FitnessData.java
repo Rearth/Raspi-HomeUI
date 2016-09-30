@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.TimeService.Datum;
 import rearth.Helpers.TimeService.Zeit;
+import rearth.StyledLabel;
 
 /**
  *
@@ -30,6 +31,7 @@ public class FitnessData {
     private final String folderPath;
     private final String FitnessDataFile;
     private final File FitnessData;
+    private final int ElementGap = 13;
     
     public enum Types {
         Joggen, Radeln, Workout
@@ -53,9 +55,25 @@ public class FitnessData {
         addActivity(typ, dauer, datum, new Zeit());
     }
     
+    private final ArrayList<StyledLabel> DrawnObjects;
     
+    public void drawLatest(int x, int y) {
+        
+        int i = 0;
+        
+        rearth.HomeUI_DesignController instance = rearth.HomeUI_DesignController.getInstance();
+        for (DataObject thing : lastFive()) {
+            StyledLabel test = new StyledLabel(thing.type.toString(), x, y + ElementGap + (StyledLabel.defaultheight * i), StyledLabel.defaultheight, 250);
+            test.add(thing.datum.toString(TimeService.DateFormat.ActivityInfo));
+            
+            i++;
+            DrawnObjects.add(test);
+        }
+        
+    }
     
     private FitnessData() {
+        this.DrawnObjects = new ArrayList<>();
         
         String folderPathA = new File("").getAbsolutePath();
         folderPath = folderPathA + "/FitnessData";
@@ -80,6 +98,7 @@ public class FitnessData {
         
         initData(readFile(FitnessData));
         sortByDateTime(Activities);
+        System.out.println("folderpath=" + folderPath);
         System.out.println(Activities);
     }
     
@@ -90,6 +109,14 @@ public class FitnessData {
     }
     
     private final ArrayList<DataObject> Activities = new ArrayList<>();
+    
+    private ArrayList<DataObject> lastFive() {
+        ArrayList<DataObject> Objects = new ArrayList<>();
+        for (int i = 5; i >= 1; i--) {
+            Objects.add(Activities.get(Activities.size() - i));
+        }
+        return Objects;
+    }
     
     private static final FitnessData instance = new FitnessData();
     

@@ -126,7 +126,7 @@ public class HomeUI_DesignController implements Initializable {
         TempMorgen.setFont(font);
         TempUbermorgen.setFont(Font.font("Verdana", 13));
         WeatherState.setFont(font);
-        StyledLabel testLabel = new StyledLabel("Ein sehr langes Label mit noch mehr Text", 500, 200);
+        //StyledLabel testLabel = new StyledLabel("Ein sehr langes Label mit noch mehr Text", 500, 200);
         
         
                 

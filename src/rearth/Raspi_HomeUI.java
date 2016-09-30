@@ -93,7 +93,8 @@ public class Raspi_HomeUI extends Application {
         fastTasks();
         
         System.out.println(FitnessData.getInstance());
-        //FitnessData.getInstance().addActivity(FitnessData.Types.Workout, FitnessData.length.kurz, curDatum);
+        //FitnessData.getInstance().addActivity(FitnessData.Types.Radeln, FitnessData.length.kurz, curDatum);
+        FitnessData.getInstance().drawLatest(760, 270);
     }
     
     void fastTasks() {

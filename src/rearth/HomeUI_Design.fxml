@@ -26,7 +26,7 @@
             <Font name="Calibri" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="NightModeButton" focusTraversable="false" layoutX="526.0" layoutY="450.0" mnemonicParsing="false" onAction="#toggleNightMode" prefHeight="53.0" prefWidth="123.0" text="DarkMode" />
+      <Button fx:id="NightModeButton" focusTraversable="false" layoutX="389.0" layoutY="523.0" mnemonicParsing="false" onAction="#toggleNightMode" prefHeight="53.0" prefWidth="123.0" text="DarkMode" />
       <Accordion layoutX="216.0" layoutY="104.0" />
       <Pane layoutX="51.0" layoutY="477.0" prefHeight="139.0" prefWidth="290.0">
          <children>
@@ -55,7 +55,5 @@
             <ImageView fx:id="WeatherImageC" fitHeight="56.0" fitWidth="56.0" layoutX="213.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Label fx:id="testLabel" layoutX="512.0" layoutY="190.0" prefHeight="35.0" prefWidth="200.0" text="TestText" />
-      <ImageView fx:id="testImage" fitHeight="35.0" fitWidth="200.0" layoutX="512.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>
