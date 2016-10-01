@@ -128,6 +128,8 @@ public class Raspi_HomeUI extends Application {
         if (playAnim) {
             HomeUI_DesignController.getInstance().playScaleAnim(HomeUI_DesignController.getInstance().timeLabel);
         }
+        
+        rearth.networking.ComputerStats.getInstance().updateStats();
     }
     
     void hourlyTasks() {
