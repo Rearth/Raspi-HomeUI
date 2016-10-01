@@ -7,11 +7,15 @@ package rearth;
 
 import java.util.TimerTask;
 import javafx.application.Platform;
+import rearth.Helpers.TimeService.Zeit;
+import rearth.networking.ComputerConnection;
+import static rearth.networking.ComputerConnection.*;
 
 /**
  *
  * @author Darkp
  */
+
 public class fastTaskTimer extends TimerTask{
     
     @Override
@@ -21,6 +25,19 @@ public class fastTaskTimer extends TimerTask{
         
         Platform.runLater(GUI::updateTime);
         
-    }  
+        Runnable myRunnable = this::getPCData;
+
+        Thread thread = new Thread(myRunnable);
+        thread.start();
+        
+    }
+    
+    private void getPCData() {
+        
+        ComputerConnection connection = new ComputerConnection();
+        String data = connection.Communicate("");
+        System.out.println("PC Stats: " + "CPU=" + getCPUusage(data) + "% RAM=" + getRAMusage(data) + "% RAMused=" + getRAMused(data) + " Zeit=" +new Zeit().toString(true));
+        
+    }
     
 }

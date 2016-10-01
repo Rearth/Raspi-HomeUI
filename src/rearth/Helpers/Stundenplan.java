@@ -70,7 +70,7 @@ public final class Stundenplan {
         }
         
         ishidden = ((curDay.equals(Wochentage.Freitag) && zeit.getHours() >= 10)) || curDay.equals(Wochentage.Samstag);
-        System.out.println("hidded=" + ishidden);
+        System.out.println("hidded=" + ishidden);   
         show();
     }
     
