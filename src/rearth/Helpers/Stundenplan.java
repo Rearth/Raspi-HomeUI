@@ -33,7 +33,7 @@ public final class Stundenplan {
     public void show() {
         
         HomeUI_DesignController GUI = HomeUI_DesignController.getInstance();
-        GUI.createStundenplan(Fächer[activeDay], Wochentage.values()[activeDay].toString());
+        GUI.createStundenplan(Fächer[activeDay], Wochentage.values()[activeDay].toString(), ishidden);
         
     }
     
@@ -69,7 +69,8 @@ public final class Stundenplan {
             activeDay = 1;
         }
         
-        ishidden = (curDay.equals(Wochentage.Freitag) && zeit.getHours() >= 10) || curDay.equals(Wochentage.Samstag);
+        ishidden = ((curDay.equals(Wochentage.Freitag) && zeit.getHours() >= 10)) || curDay.equals(Wochentage.Samstag);
+        System.out.println("hidded=" + ishidden);
         show();
     }
     

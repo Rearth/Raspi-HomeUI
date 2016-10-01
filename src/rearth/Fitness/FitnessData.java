@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.TimeService.Datum;
 import rearth.Helpers.TimeService.Zeit;
@@ -140,7 +139,7 @@ public class FitnessData {
         initData(readFile(FitnessData));
         sortByDateTime(Activities);
         System.out.println("folderpath=" + folderPath);
-        System.out.println(Activities);
+        //System.out.println(Activities);
     }
     
     private void sortByDateTime(ArrayList<DataObject> List) {

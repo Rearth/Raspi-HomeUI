@@ -20,7 +20,7 @@ import javafx.util.Duration;
  *
  * @author Darkp
  */
-public final class StyledLabel {
+public class StyledLabel {
     
     private final java.awt.Font defaultFont = new java.awt.Font("Carlito", java.awt.Font.PLAIN, 18);
     private final Font defaultfxFont = Font.font("Carlito", 18);
@@ -37,6 +37,10 @@ public final class StyledLabel {
     
     public Label getLabel() {
         return textLabel;
+    }
+    
+    public void setImage(Image image) {
+        this.image.setImage(image);
     }
     
     public void NightMode(boolean state) {

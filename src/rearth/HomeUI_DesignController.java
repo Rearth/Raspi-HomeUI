@@ -8,6 +8,7 @@ package rearth;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
 
@@ -103,7 +104,7 @@ public class HomeUI_DesignController implements Initializable {
             AddFitnessElement.setStyle("");
             nightmode = false;
             
-            for (StyledLabel label: StundenplanItems) {
+            for (StyledLabel label : StundenplanItems) {
                 label.NightMode(false);
             }
             
@@ -187,12 +188,17 @@ public class HomeUI_DesignController implements Initializable {
     private final int PosY = 170;
     private final int maxHeight = 480 - PosY;
     
-    public void createStundenplan(String[] Texts, String Day) {
+    public void createStundenplan(String[] Texts, String Day, boolean ishidden) {
         
+        //TODO improve pause Draw 
         
         ArrayList<String> TextUsed = new ArrayList<>();
                 
         clearStundenplan();
+        
+        if (ishidden) {
+            return;
+        }
         
         Label title = new Label(Day);
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 43));
@@ -270,26 +276,18 @@ public class HomeUI_DesignController implements Initializable {
     
     void drawPause(int value, int curItem) {
         
-        //System.out.println("Drawing Pause: " + value + " I " + curItem);
-        
-        StyledLabel labelA = new StyledLabel("", PosX, PosY + ListGap * curItem);
-        labelA.setSize(ListGap * value + 1, ListWidth);
-        labelA.setTextCenter();
-        /*if (nightmode) {
-                   labelA.setStyle("-fx-border-color: rgba(179, 143, 0, 0.15); -fx-border-radius: 2; -fx-border-width: 3; -fx-background-color: #0a001a;");
-                } else {
-                    labelA.setStyle("-fx-border-color:  #0088cc; -fx-border-width: 3;");
-                }*/
+        StyledLabel labelA = new StyledConnector(PosX + ListWidth - 32, PosY + ListGap * curItem - 2, ListGap * value + 10, 2);
+        StyledLabel labelB = new StyledConnector(PosX + 32, PosY + ListGap * curItem - 2, ListGap * value + 10, 2);
                 
         StundenplanItems.add(labelA);
+        StundenplanItems.add(labelB);
     }
     
     public void clearStundenplan() {
         
-        StundenplanItems.stream().forEach((label) -> {
-            BackgroundPanel.getChildren().remove(label);
-            //System.out.println("Label=" + label.getId());
-        });
+        for (StyledLabel label: StundenplanItems) {
+            label.delete();
+        }
         
         BackgroundPanel.getChildren().remove(StundenPlanTitle);
         StundenplanItems.clear();
