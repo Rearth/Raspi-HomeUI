@@ -6,7 +6,6 @@
 package rearth.networking;
 
 import java.util.ArrayList;
-import javafx.scene.Node;
 import rearth.Helpers.TimeService.Zeit;
 import static rearth.networking.ComputerConnection.getCPUusage;
 import static rearth.networking.ComputerConnection.getRAMusage;

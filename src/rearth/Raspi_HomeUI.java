@@ -150,6 +150,8 @@ public class Raspi_HomeUI extends Application {
         ImageView[] Images = {UI.WeatherImage, UI.WeatherImageB, UI.WeatherImageC};
         wetter.updateWidget(Labels, Images);
         
+        FitnessData.getInstance().updateData();
+        
         Stundenplan.getInstance().updateDay();
     }
     

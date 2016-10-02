@@ -43,18 +43,27 @@ public class ComputerConnection {
     }
     
     public static double getCPUusage(String data) {       //both in %
+        if (data.equals("error")) {
+            return 0;
+        }
         String Parts[] = data.split(":");
         
         return runden(Double.valueOf(Parts[0]) / 4);
     }
     
     public static double getRAMusage(String data) {
+        if (data.equals("error")) {
+            return 0;
+        }
         String Parts[] = data.split(":");
         
         return runden((Double.valueOf(Parts[1]) / Double.valueOf(Parts[2])) * 100);
     }
     
     public static double getRAMused(String data) {
+        if (data.equals("error")) {
+            return 0;
+        }
         String Parts[] = data.split(":");
         
         return runden(Double.valueOf(Parts[1]));

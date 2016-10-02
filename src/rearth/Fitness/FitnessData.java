@@ -142,6 +142,14 @@ public class FitnessData {
         //System.out.println(Activities);
     }
     
+    public void updateData() {
+        
+        initData(readFile(FitnessData));
+        
+        drawLatest(760, 270);
+        
+    }
+    
     private void sortByDateTime(ArrayList<DataObject> List) {
         
         Collections.sort(List);
@@ -161,6 +169,8 @@ public class FitnessData {
     private static final FitnessData instance = new FitnessData();
     
     private void initData(ArrayList<String> Data) {
+        
+        Activities.clear();
         
         for (String Object : Data) {
             
