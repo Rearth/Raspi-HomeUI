@@ -187,6 +187,7 @@ public class StyledLabel {
         label.image = null;
         label.rightLabel = null;
         label.textLabel = null;
+        label = null;
         
     }
     

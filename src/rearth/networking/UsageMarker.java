@@ -16,27 +16,36 @@ public class UsageMarker extends Rectangle {
     
     private static final double height = 3;
     private static final double width = 40;
+    private Color color = Color.DARKRED;
+    private Color nightColor = Color.DARKSLATEBLUE;
 
     public UsageMarker(double x, double y) {
         super(x, y, width, height);
         
         setArcHeight(2);
         setArcWidth(2);
-        setFill(Color.DARKRED);
+        setFill(color);
         setVisible(true);
         
     }
     
     public static void delete(UsageMarker marker) {
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(marker);
+        
         marker = null;
+    }
+    
+    public void setColor(Color color) {
+        setFill(color);
+        this.color = color;
+        this.nightColor = color;
     }
     
     public void setNightMode(boolean state) {
         if (state) {
-            setFill(Color.DARKSLATEBLUE);
+            setFill(nightColor);
         } else {
-            setFill(Color.DARKRED);
+            setFill(color);
         }
     }
     

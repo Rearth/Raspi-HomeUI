@@ -50,8 +50,13 @@ public class ComputerConnection {
             return 0;
         }
         String Parts[] = data.split(":");
+        
+        double toReturn = runden(Double.valueOf(Parts[0]) / 2);
+        if (toReturn > 30) {
+            toReturn = toReturn * 2;
+        }
                 
-        return runden(Double.valueOf(Parts[0]) / 2);
+        return toReturn;
     }
     
     public static double getRAMusage(String data) {

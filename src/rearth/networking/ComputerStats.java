@@ -6,6 +6,7 @@
 package rearth.networking;
 
 import java.util.ArrayList;
+import javafx.scene.paint.Color;
 import rearth.Helpers.TimeService.Zeit;
 import rearth.StyledLabel;
 import static rearth.networking.ComputerConnection.*;
@@ -15,7 +16,7 @@ import static rearth.networking.ComputerConnection.*;
  * @author Darkp
  */
 
-public class ComputerStats {
+public final class ComputerStats {
 
     final static ComputerStats instance = new ComputerStats();
     
@@ -95,6 +96,9 @@ public class ComputerStats {
     private final ArrayList<UsageMarker> Elements = new ArrayList<>();
     private final ArrayList<StyledLabel> Labels = new ArrayList<>();
     
+    private final Color markerColor = Color.BLACK;
+    private final double toPass = 60;
+    
     private void drawBars() {
         
         if (!connected) {
@@ -126,22 +130,40 @@ public class ComputerStats {
         GPUUsage.getImage().setLayoutX(GPUUsage.getImage().getLayoutX() + labelSX);
         Labels.add(GPUUsage);
         
-        for (int i=0; i < CPUusage / 4; i++) {
+        for (int i=0; i < CPUusage / 6; i++) {
             UsageMarker marker = new UsageMarker(posX, posY - (heightGap*i));
             rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(marker);
             Elements.add(marker);
         }
+        if (CPUusage > toPass) {
+            UsageMarker topmark = new UsageMarker(posX, posY - (heightGap * 17));
+            topmark.setColor(markerColor);
+            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(topmark);
+            Elements.add(topmark);
+        }
         
-        for (int i=0; i < RAMusage / 2 / 4; i++) {
+        for (int i=0; i < RAMusage / 6; i++) {
             UsageMarker marker = new UsageMarker(posX + vGap, posY - (heightGap*i));
             rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(marker);
             Elements.add(marker);
         }
+        if (RAMusage > toPass) {
+            UsageMarker topmark = new UsageMarker(posX + vGap, posY - (heightGap * 17));
+            topmark.setColor(markerColor);
+            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(topmark);
+            Elements.add(topmark);
+        }
         
-        for (int i=0; i < GPUload / 2 / 4; i++) {
+        for (int i=0; i < GPUload / 6; i++) {
             UsageMarker marker = new UsageMarker(posX + vGap * 2, posY - (heightGap * i));
             rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(marker);
             Elements.add(marker);
+        }
+        if (GPUload > toPass) {
+            UsageMarker topmark = new UsageMarker(posX + vGap * 2, posY - (heightGap * 17));
+            topmark.setColor(markerColor);
+            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(topmark);
+            Elements.add(topmark);
         }
         
     }
