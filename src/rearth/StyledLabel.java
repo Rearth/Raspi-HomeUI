@@ -31,9 +31,9 @@ public class StyledLabel {
     private int height;
     private int width;
     private final Image background = new Image(getClass().getResource("/rearth/Images/TextElement.png").toString());
-    private final ImageView image = new ImageView();
-    private final Label textLabel = new Label();
-    private final Label rightLabel = new Label();
+    private ImageView image = new ImageView();
+    private Label textLabel = new Label();
+    private Label rightLabel = new Label();
     
     public Label getLabel() {
         return textLabel;
@@ -180,10 +180,14 @@ public class StyledLabel {
         rightLabel.setVisible(state);
     }
     
-    public void delete() {
-        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(image);
-        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(rightLabel);
-        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(textLabel);
+    public static void delete(StyledLabel label) {
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label.image);
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label.rightLabel);
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label.textLabel);
+        label.image = null;
+        label.rightLabel = null;
+        label.textLabel = null;
+        
     }
     
     public TranslateTransition move(int byX, int byY, int time) {

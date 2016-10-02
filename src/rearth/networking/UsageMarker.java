@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 public class UsageMarker extends Rectangle {
     
     private static final double height = 3;
-    private static final double width = 60;
+    private static final double width = 40;
 
     public UsageMarker(double x, double y) {
         super(x, y, width, height);
@@ -27,8 +27,17 @@ public class UsageMarker extends Rectangle {
         
     }
     
-    public void delete() {
-        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(this);
+    public static void delete(UsageMarker marker) {
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(marker);
+        marker = null;
+    }
+    
+    public void setNightMode(boolean state) {
+        if (state) {
+            setFill(Color.DARKSLATEBLUE);
+        } else {
+            setFill(Color.DARKRED);
+        }
     }
     
 }

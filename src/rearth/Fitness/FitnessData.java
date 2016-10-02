@@ -68,7 +68,7 @@ public class FitnessData {
             
             toRemove.setVisible(false);
             DrawnObjects.remove(toRemove);
-            toRemove.delete();
+            StyledLabel.delete(toRemove);
             
             for (int i = 0; i < 4; i++) {
                 DrawnObjects.get(i).move(0, -(DrawnObjects.get(2).getHeight()), 500);
@@ -76,9 +76,9 @@ public class FitnessData {
             toAdd.setVisible(true);
             toAdd.showup(800).setOnFinished((ActionEvent evont) -> {
                 for (StyledLabel label: DrawnObjects) {
-                    label.delete();
+                    StyledLabel.delete(label);
                 }
-                toAdd.delete();
+                StyledLabel.delete(toAdd);
                 drawLatest(760, 270); 
             });
         });
@@ -105,7 +105,7 @@ public class FitnessData {
             if (!DrawnObjects.contains(test)) {
                 DrawnObjects.add(test);
             } else {
-                test.delete();
+                StyledLabel.delete(test);
             }
                         
         }

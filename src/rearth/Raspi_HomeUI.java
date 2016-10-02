@@ -30,6 +30,8 @@ public class Raspi_HomeUI extends Application {
     
     TimeService.Datum curDatum;
     TimeService.Zeit curZeit;
+    
+    private final int refreshDelay = 1;
         
     private static Raspi_HomeUI instance = null;   
     
@@ -100,7 +102,7 @@ public class Raspi_HomeUI extends Application {
         
         TimerTask timerTask = new fastTaskTimer();
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 5 * 1000);
+        timer.scheduleAtFixedRate(timerTask, 0, refreshDelay * 1000);
         
     }
     

@@ -24,6 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
 import rearth.Helpers.TimeService.Datum;
+import rearth.networking.ComputerStats;
 
 /**
  *
@@ -93,6 +94,7 @@ public class HomeUI_DesignController implements Initializable {
             for (StyledLabel label: FitnessData.getInstance().DrawnObjects) {
                 label.NightMode(true);
             }
+            ComputerStats.setNightMode(true);
             
             nightmode = true;
         } else {
@@ -110,6 +112,7 @@ public class HomeUI_DesignController implements Initializable {
             for (StyledLabel label: FitnessData.getInstance().DrawnObjects) {
                 label.NightMode(false);
             }
+            ComputerStats.setNightMode(false);
         }
         
     }
@@ -285,7 +288,7 @@ public class HomeUI_DesignController implements Initializable {
     public void clearStundenplan() {
         
         for (StyledLabel label: StundenplanItems) {
-            label.delete();
+            StyledLabel.delete(label);
         }
         
         BackgroundPanel.getChildren().remove(StundenPlanTitle);
