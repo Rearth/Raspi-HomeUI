@@ -19,6 +19,7 @@ public class StyledConnector extends StyledLabel {
     StyledConnector(int posX, int posY, int height, int width) {
         super("", posX, posY, height, width, false);
         setImage(post);
+        NightMode(rearth.HomeUI_DesignController.nightmode);
     }
     
     @Override
