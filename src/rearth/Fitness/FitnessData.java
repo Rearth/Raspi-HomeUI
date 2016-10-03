@@ -96,6 +96,11 @@ public class FitnessData {
         int i = 0;
         
         rearth.HomeUI_DesignController instance = rearth.HomeUI_DesignController.getInstance();
+        
+        for (StyledLabel label: DrawnObjects) {
+            StyledLabel.delete(label);
+        }
+        
         DrawnObjects.clear();
         for (DataObject thing : lastFive()) {
             StyledLabel test = new StyledLabel(thing.type.toString(), x, y + ElementGap + (StyledLabel.defaultheight * i), StyledLabel.defaultheight, 250);

@@ -132,7 +132,7 @@ public class HomeUI_DesignController implements Initializable {
         instance = this;
         
         timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
-        dateLabel.setFont(Font.font("Carlito", 18));
+        dateLabel.setFont(Font.font("Carlito", 22));
         TempToday.setFont(Font.font("Verdana", FontWeight.BOLD, 62));
         
         Font font = Font.font("Verdana", 15);

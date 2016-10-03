@@ -27,7 +27,7 @@ public class ComputerConnection {
         
         try (Socket client = new Socket()){
             client.connect(new InetSocketAddress(serverName, port), timeout);
-            client.setSoTimeout(2000);
+            client.setSoTimeout(timeout);
             //System.out.println("Connecting to " + serverName + " on port " + port);
             OutputStream outToServer = client.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
