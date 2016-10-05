@@ -39,19 +39,24 @@ public final class ComputerStats {
     }
     
     public void updateStats() {
-        
-        try {
             
             Runnable myRunnable = () -> {
-                String data = new ComputerConnection().Communicate("");
+                try {
+                    String data = new ComputerConnection().Communicate("");
 
-                CPUusage = getCPUusage(data);
-                RAMusage = getRAMusage(data);
-                RAMused = getRAMused(data);
-                GPUload = getGPUload(data);
+                    CPUusage = getCPUusage(data);
+                    RAMusage = getRAMusage(data);
+                    RAMused = getRAMused(data);
+                    GPUload = getGPUload(data);
 
-                connected = true;
-                System.out.println(toString());
+                    connected = true;
+                    System.out.println(toString());
+                    
+                    return;
+                } catch (java.lang.NumberFormatException ex) {
+                    handleError();
+                    return;
+                }
             };
 
             Thread thread = new Thread(myRunnable);
@@ -60,7 +65,9 @@ public final class ComputerStats {
             drawBars();            
             
 
-        } catch (java.lang.NumberFormatException ex) {
+    }
+    
+    private void handleError() {
             System.err.println("Cant reach host");
             connected = false;
             for (UsageMarker thing : Elements) {
@@ -76,7 +83,7 @@ public final class ComputerStats {
             errorLabel.setSize(errorLabel.getHeight(), 200);
             errorLabel.setTextCenter();
             Labels.add(errorLabel);
-        }
+        
     }
     
     private ComputerStats() {
