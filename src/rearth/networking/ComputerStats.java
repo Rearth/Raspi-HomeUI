@@ -82,7 +82,7 @@ public final class ComputerStats {
             Elements.clear();
             Labels.clear();
             
-            StyledLabel errorLabel = new StyledLabel("PC not Reachable", (int) posX + 10, (int) posY + 5);
+            StyledLabel errorLabel = new StyledLabel("PC Offline", (int) posX + 10, (int) posY + 5);
             errorLabel.setSize(errorLabel.getHeight(), 200);
             errorLabel.setTextCenter();
             Labels.add(errorLabel);

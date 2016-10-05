@@ -9,6 +9,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -127,7 +128,9 @@ public class StyledLabel {
     
     public void setTextCenter() {
         
+        textLabel.setLayoutX(PosX - width * 0.06);
         textLabel.setTextAlignment(TextAlignment.CENTER);
+        textLabel.setAlignment(Pos.CENTER);
         
     }
     
@@ -142,7 +145,7 @@ public class StyledLabel {
     public void setLocation(int x, int y) {
         textLabel.setLayoutX(x + (width * 0.02702702702));
         textLabel.setLayoutY(y);
-        image.setLayoutX(x - 15);
+        image.setLayoutX(x - 12);
         image.setLayoutY(y);
     }
     
