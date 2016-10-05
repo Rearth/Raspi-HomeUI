@@ -54,13 +54,17 @@ public final class ComputerStats {
                     
                     return;
                 } catch (java.lang.NumberFormatException ex) {
-                    handleError();
+                    connected = false;
                     return;
                 }
             };
 
             Thread thread = new Thread(myRunnable);
             thread.start();
+            
+            if (!connected) {
+                handleError();
+            }
             
             drawBars();            
             
@@ -69,7 +73,6 @@ public final class ComputerStats {
     
     private void handleError() {
             System.err.println("Cant reach host");
-            connected = false;
             for (UsageMarker thing : Elements) {
             UsageMarker.delete(thing);
             }
