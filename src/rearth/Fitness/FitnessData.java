@@ -44,6 +44,39 @@ public class FitnessData {
         kurz, mittel, lang
     }
     
+    public void processInput(int type, int duration) {
+        Datum datum = new Datum();
+        Zeit zeit = new Zeit();
+        Types typ = Types.Joggen;
+        length dauer = length.kurz;
+        switch (type) {
+            case 0:
+                typ = Types.Radeln;
+                break;
+            case 1:
+                typ = Types.Joggen;
+                break;
+            case 2:
+                typ = Types.Workout;
+                break;
+        }
+        
+        switch (duration) {
+            case 0:
+                dauer = length.kurz;
+                break;
+            case 1:
+                dauer = length.mittel;
+                break;
+            case 2:
+                dauer = length.lang;
+                break;
+        }
+        
+        addActivity(typ, dauer, datum, zeit);
+        
+    }
+    
     public void addActivity(Types typ, length dauer, Datum datum, Zeit zeit) {
         
         DataObject object = new DataObject(typ, dauer, datum, zeit);
@@ -60,7 +93,7 @@ public class FitnessData {
     public void updateList() {
         
         StyledLabel toRemove = DrawnObjects.get(0);
-        StyledLabel toAdd = new StyledLabel(lastFive().get(4).type.toString(), posX, posY + + ElementGap + (StyledLabel.defaultheight * 4), StyledLabel.defaultheight, 250);
+        StyledLabel toAdd = new StyledLabel(lastFive().get(4).type.toString(), posX, posY + ElementGap + (StyledLabel.defaultheight * 4), StyledLabel.defaultheight, 250);
         toAdd.add(lastFive().get(4).datum.toString(TimeService.DateFormat.ActivityInfo));
         toAdd.setVisible(false);
                 
@@ -79,7 +112,7 @@ public class FitnessData {
                     StyledLabel.delete(label);
                 }
                 StyledLabel.delete(toAdd);
-                drawLatest(760, 270); 
+                drawLatest(775, 350); 
             });
         });
         
@@ -151,7 +184,7 @@ public class FitnessData {
         
         initData(readFile(FitnessData));
         
-        drawLatest(760, 270);
+        drawLatest(775, 350);
         
     }
     

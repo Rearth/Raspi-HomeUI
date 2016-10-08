@@ -14,7 +14,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="BackgroundPanel" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rearth.HomeUI_DesignController">
     <children>
-      <Button fx:id="buttonQuit" cancelButton="true" focusTraversable="false" layoutX="913.0" layoutY="523.0" onAction="#QuitUI" prefHeight="53.0" prefWidth="86.0" text="Quit" />
+      <Button fx:id="buttonQuit" cancelButton="true" focusTraversable="false" layoutX="380.0" layoutY="32.0" onAction="#QuitUI" prefHeight="53.0" prefWidth="86.0" text="Quit" />
       <Button fx:id="DebugButton" focusTraversable="false" layoutX="60.0" layoutY="32.0" mnemonicParsing="false" onAction="#DoDebug" prefHeight="53.0" prefWidth="180.0" text="TestThis" />
       <Label fx:id="timeLabel" alignment="CENTER" layoutX="765.0" layoutY="32.0" prefHeight="92.0" prefWidth="239.0" text="00:00" textAlignment="CENTER">
          <font>
@@ -55,6 +55,6 @@
             <ImageView fx:id="WeatherImageC" fitHeight="56.0" fitWidth="56.0" layoutX="213.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Button fx:id="AddFitnessElement" focusTraversable="false" layoutX="772.0" layoutY="206.0" mnemonicParsing="false" onAction="#AddFitnessElem" text="Button" />
+      <Button fx:id="addFitness" focusTraversable="false" layoutX="475.0" layoutY="32.0" mnemonicParsing="false" onAction="#addFitnessClicked" prefHeight="53.0" prefWidth="123.0" text="Add!" />
     </children>
 </AnchorPane>

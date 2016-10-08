@@ -39,6 +39,8 @@ public class Raspi_HomeUI extends Application {
         return instance;
     }
     
+    //Background color at day: F4F4F4
+    
     @Override
     public void start(Stage stage) throws Exception {
         
@@ -95,7 +97,7 @@ public class Raspi_HomeUI extends Application {
         fastTasks();
         
         System.out.println("Fitnesselements=" + FitnessData.getInstance().NumOfElements());
-        FitnessData.getInstance().drawLatest(760, 270);
+        FitnessData.getInstance().drawLatest(775, 350);     //270
     }
     
     void fastTasks() {

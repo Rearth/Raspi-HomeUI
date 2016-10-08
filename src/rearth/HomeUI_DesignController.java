@@ -7,7 +7,6 @@ package rearth;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
 
@@ -23,7 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
-import rearth.Helpers.TimeService.Datum;
+import rearth.Helpers.StyledSwitch;
 import rearth.networking.ComputerStats;
 
 /**
@@ -67,7 +66,12 @@ public class HomeUI_DesignController implements Initializable {
     @FXML
     public ImageView WeatherImageC;
     @FXML
-    public Button AddFitnessElement;
+    public Button addFitness;
+    
+    @FXML
+    private void addFitnessClicked(Event event) {
+        FitnessData.getInstance().processInput(programs.getSelected(), timers.getSelected());
+    }
     
     @FXML
     private void QuitUI(Event event) {
@@ -85,7 +89,6 @@ public class HomeUI_DesignController implements Initializable {
             DebugButton.setStyle("-fx-border-color: rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             NightModeButton.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
-            AddFitnessElement.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             
             for (StyledLabel label: StundenplanItems) {
                 label.NightMode(true);
@@ -102,7 +105,6 @@ public class HomeUI_DesignController implements Initializable {
             DebugButton.setStyle("");
             NightModeButton.setStyle("");
             buttonQuit.setStyle("");
-            AddFitnessElement.setStyle("");
             nightmode = false;
             
             for (StyledLabel label : StundenplanItems) {
@@ -129,30 +131,27 @@ public class HomeUI_DesignController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         instance = this;
         
         timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
-        dateLabel.setFont(Font.font("Carlito", 22));
+        dateLabel.setFont(Font.font("Carlito", 20));
         TempToday.setFont(Font.font("Verdana", FontWeight.BOLD, 62));
         
         Font font = Font.font("Verdana", 15);
         TempMorgen.setFont(font);
         TempUbermorgen.setFont(Font.font("Verdana", 13));
         WeatherState.setFont(font);
-        //StyledLabel testLabel = new StyledLabel("Ein sehr langes Label mit noch mehr Text", 500, 200);
+        
+        programs = new StyledSwitch(760, 240, 250, "Radeln", "Joggen", "Workout");
+        programs.setFitnessMode();
+        timers = new StyledSwitch(760, 300, 250, "Kurz", "Mittel", "Lang");
+        timers.setFitnessMode();
         
     }
     
-    @FXML
-    private void AddFitnessElem() {
-        ArrayList<FitnessData.Types> FitnessTypes = new ArrayList<>();
-        FitnessTypes.add(FitnessData.Types.Joggen);
-        FitnessTypes.add(FitnessData.Types.Radeln);
-        FitnessTypes.add(FitnessData.Types.Workout);
-        Collections.shuffle(FitnessTypes);
-        FitnessData.getInstance().addActivity(FitnessTypes.get(1), FitnessData.length.kurz, new Datum());
-    }
-    
+    public StyledSwitch programs;
+    public StyledSwitch timers;
     
     public void playScaleAnim(Label label) {
         
