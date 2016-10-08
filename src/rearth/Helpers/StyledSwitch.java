@@ -47,12 +47,13 @@ public class StyledSwitch {
     private final int animTime = 500;
     private final int radius = 3;
     private boolean FitnessMode = false;
+    private final Insets insets =  new Insets(0, -2, 0, -2);
     private final CornerRadii radii = new CornerRadii(
             radius, radius, radius, radius, radius, radius, radius, radius,
             false,  false,  false,  false,  false,  false,  false,  false
     );
     
-    private final Label selection = new Label();
+    private Label selection = new Label();
     private int selected = 0;
     
     public StyledSwitch(int posX, int posY, String... Text) {
@@ -129,10 +130,10 @@ public class StyledSwitch {
         selection.setText(Text[0]);
         selection.setPrefHeight(height * 0.8);
         selection.setFont(Font.font("Carlito", 18));
-        selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, Insets.EMPTY)));
-        selection.setLayoutX(getElementPosition(0) + (width * 0.05) - 1);
+        selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
+        selection.setLayoutX(getElementPosition(0) + (width * 0.05));
         selection.setLayoutY(posY + height * 0.1);
-        selection.setScaleX(1.05D);
+        //selection.setScaleX(0.9);
         selection.setVisible(true);
         selection.setOnTouchPressed((TouchEvent e) -> {
             if (FitnessMode) {
@@ -167,9 +168,9 @@ public class StyledSwitch {
         Label klicked = (Label) e.getSource();
         String text = klicked.getText();
         int select = Texts.indexOf(text);
+        selection.setText(text);
         moveSelection(select, selected);
         selected = select;
-        selection.setText(text);
         System.out.println("klicked: " + klicked.getText() + " value=" + select);
     }
     
@@ -258,6 +259,29 @@ public class StyledSwitch {
     
     public void setFitnessMode() {
         FitnessMode = true;
+    }
+    
+    public void delete(StyledSwitch selector) {
+        Labels.stream().map((label) -> {
+            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label);
+            return label;
+        }).forEach((label) -> {
+            label = null;
+        });
+        Labels.clear();
+        rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(selection);
+        selection = null;
+        
+        selector = null;
+    }
+    
+    public void setNightMode(boolean state) {
+        if (state) {
+            selection.setBackground(new Background(new BackgroundFill(Color.rgb(35, 5, 5, 1), radii, insets)));
+        } else {
+            selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
+        }
+        
     }
     
 }

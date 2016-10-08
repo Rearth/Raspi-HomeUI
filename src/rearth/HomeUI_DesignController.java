@@ -89,6 +89,7 @@ public class HomeUI_DesignController implements Initializable {
             DebugButton.setStyle("-fx-border-color: rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             NightModeButton.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
+            addFitness.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             
             for (StyledLabel label: StundenplanItems) {
                 label.NightMode(true);
@@ -98,6 +99,8 @@ public class HomeUI_DesignController implements Initializable {
                 label.NightMode(true);
             }
             ComputerStats.setNightMode(true);
+            programs.setNightMode(true);
+            timers.setNightMode(true);
             
             nightmode = true;
         } else {
@@ -105,7 +108,10 @@ public class HomeUI_DesignController implements Initializable {
             DebugButton.setStyle("");
             NightModeButton.setStyle("");
             buttonQuit.setStyle("");
+            addFitness.setStyle("");
             nightmode = false;
+            programs.setNightMode(false);
+            timers.setNightMode(false);
             
             for (StyledLabel label : StundenplanItems) {
                 label.NightMode(false);
