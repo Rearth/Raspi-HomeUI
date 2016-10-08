@@ -13,11 +13,26 @@ import javafx.animation.ScaleTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.FillRule;
+import javafx.scene.shape.HLineTo;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
@@ -153,13 +168,160 @@ public class HomeUI_DesignController implements Initializable {
         programs.setFitnessMode();
         timers = new StyledSwitch(760, 300, 250, "Kurz", "Mittel", "Lang");
         timers.setFitnessMode();
+        drawMusicControls();
         
     }
+    
+    private void drawMusicControls() {
+        
+        Arc topArc = new Arc(450, 250, 100, 100, 40, 100);       // 45, 90
+        topArc.setType(ArcType.CHORD);
+        topArc.setStroke(Color.DARKRED);
+        topArc.setFill(null);
+        topArc.setStrokeWidth(4);
+        setEffect(topArc);
+        MusicElements.add(topArc);
+        
+        Arc bottomArc = new Arc(450, 250, 100, 100, 220, 100);
+        bottomArc.setType(ArcType.CHORD);
+        bottomArc.setStroke(Color.DARKRED);
+        bottomArc.setFill(null);
+        bottomArc.setStrokeWidth(4);
+        setEffect(bottomArc);
+        MusicElements.add(bottomArc);
+        
+        Arc CenterRight = new Arc(450, 250, 100, 100, -25, 50);
+        CenterRight.setType(ArcType.OPEN);
+        CenterRight.setStroke(Color.DARKRED);
+        CenterRight.setFill(null);
+        CenterRight.setStrokeWidth(4);
+        setEffect(CenterRight);
+        MusicElements.add(CenterRight);
+        
+        Arc CenterLeft = new Arc(450, 250, 100, 100, 155, 50);
+        CenterLeft.setType(ArcType.OPEN);
+        CenterLeft.setStroke(Color.DARKRED);
+        CenterLeft.setFill(null);
+        CenterLeft.setStrokeWidth(4);
+        setEffect(CenterLeft);
+        MusicElements.add(CenterLeft);
+        
+        Line bottomLine = new Line();
+        bottomLine.setFill(null);
+        bottomLine.setStroke(Color.DARKRED);
+        bottomLine.setStrokeWidth(4);
+        bottomLine.setStartX(360);
+        bottomLine.setStartY(207);
+        bottomLine.setEndX(540);
+        bottomLine.setEndY(207);
+        setEffect(bottomLine);
+        MusicElements.add(bottomLine);
+        
+        int posY = 293;
+        Line topLine = new Line();
+        topLine.setFill(null);
+        topLine.setStroke(Color.DARKRED);
+        topLine.setStrokeWidth(4);
+        topLine.setStartX(360);
+        topLine.setStartY(posY);
+        topLine.setEndX(540);
+        topLine.setEndY(posY);
+        setEffect(topLine);
+        MusicElements.add(topLine);
+        
+        Label lowerVol = new Label();
+        lowerVol.setText("-");
+        lowerVol.setFont(Font.font("Verdana", FontWeight.BOLD, 38));
+        lowerVol.setTextFill(Color.BROWN);
+        lowerVol.setPrefSize(150, 40);
+        lowerVol.setAlignment(Pos.CENTER);
+        lowerVol.setLayoutX(374);
+        lowerVol.setLayoutY(307);
+        lowerVol.setOnTouchPressed((TouchEvent e) -> {
+                playScaleAnim(lowerVol);
+                lowerVolume();
+            });
+        setEffect(lowerVol);
+        MusicElements.add(lowerVol);
+        
+        Label incrVol = new Label();
+        incrVol.setText("+");
+        incrVol.setFont(Font.font("Verdana", FontWeight.BOLD, 32));
+        incrVol.setTextFill(Color.BROWN);
+        incrVol.setPrefSize(150, 40);
+        incrVol.setAlignment(Pos.CENTER);
+        incrVol.setLayoutX(375);
+        incrVol.setLayoutY(147);
+        incrVol.setOnTouchPressed((TouchEvent e) -> {
+            
+                playScaleAnim(incrVol);
+                increaseVolume();
+            });
+        setEffect(incrVol);
+        MusicElements.add(incrVol);
+        
+        centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));
+        int size = 72;
+        centerIcon.setFitHeight(size);
+        centerIcon.setFitWidth(size);
+        centerIcon.setLayoutX(414);
+        centerIcon.setLayoutY(213);
+        centerIcon.setOnTouchPressed((TouchEvent e) -> {
+                switchState();
+            });
+        setEffect(centerIcon);
+        MusicElements.add(centerIcon);
+        
+        BackgroundPanel.getChildren().add(topArc);
+        BackgroundPanel.getChildren().add(bottomArc);
+        BackgroundPanel.getChildren().add(CenterRight);
+        BackgroundPanel.getChildren().add(CenterLeft);
+        BackgroundPanel.getChildren().add(bottomLine);
+        BackgroundPanel.getChildren().add(topLine);
+        BackgroundPanel.getChildren().add(incrVol);
+        BackgroundPanel.getChildren().add(lowerVol);
+        BackgroundPanel.getChildren().add(centerIcon);
+        
+    }
+    
+    private void increaseVolume() {
+        ComputerStats.getInstance().Volume += 0.05;
+    }
+    
+    private void lowerVolume() {
+        ComputerStats.getInstance().Volume -= 0.05;
+        
+    }
+    
+    private void switchState() {
+        playScaleAnim(centerIcon);
+        if (ComputerStats.getInstance().playing) {
+            centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));
+            ComputerStats.getInstance().playing = false;
+        } else {
+            centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/pause.png").toString()));
+            ComputerStats.getInstance().playing = true;
+        }
+        
+    }
+    
+    public final ImageView centerIcon = new ImageView();
+    private final ArrayList<Node> MusicElements = new ArrayList<>();
+    
+    private void setEffect(Node node) {
+        DropShadow borderGlow = new DropShadow();
+        int size = 32;
+        borderGlow.setWidth(size);
+        borderGlow.setHeight(size);
+        borderGlow.setColor(Color.RED);
+        node.setEffect(borderGlow);
+    }
+    
     
     public StyledSwitch programs;
     public StyledSwitch timers;
     
-    public void playScaleAnim(Label label) {
+    public void playScaleAnim(Node label) {
         
         ScaleTransition scaleanim = new ScaleTransition(Duration.millis(350), label);
         scaleanim.setFromX(1.4);

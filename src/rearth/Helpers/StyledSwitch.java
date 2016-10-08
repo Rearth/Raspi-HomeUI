@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.Background;
@@ -47,6 +48,7 @@ public class StyledSwitch {
     private final int animTime = 500;
     private final int radius = 3;
     private boolean FitnessMode = false;
+    private final DropShadow borderGlow;
     private final Insets insets =  new Insets(0, -2, 0, -2);
     private final CornerRadii radii = new CornerRadii(
             radius, radius, radius, radius, radius, radius, radius, radius,
@@ -126,7 +128,13 @@ public class StyledSwitch {
         Background.setArcWidth(9);
         Background.setFill(color);
         //Background.setEffect(innerShadow);
+         
+        borderGlow = new DropShadow();
+        borderGlow.setOffsetY(3f);
+        borderGlow.setOffsetX(3f);
+        borderGlow.setColor(Color.GREY);
         
+        selection.setEffect(borderGlow);
         selection.setText(Text[0]);
         selection.setPrefHeight(height * 0.8);
         selection.setFont(Font.font("Carlito", 18));
@@ -278,8 +286,10 @@ public class StyledSwitch {
     public void setNightMode(boolean state) {
         if (state) {
             selection.setBackground(new Background(new BackgroundFill(Color.rgb(35, 5, 5, 1), radii, insets)));
+            selection.setEffect(null);
         } else {
             selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
+            selection.setEffect(borderGlow);
         }
         
     }

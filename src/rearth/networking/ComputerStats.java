@@ -6,6 +6,7 @@
 package rearth.networking;
 
 import java.util.ArrayList;
+import javafx.scene.image.Image;
 import rearth.Helpers.TimeService.Zeit;
 import rearth.StyledLabel;
 import static rearth.networking.ComputerConnection.*;
@@ -31,6 +32,11 @@ public final class ComputerStats {
     public double RAMusage = 0;        //in %
     public double RAMused = 0;         //in GigaByte
     public double GPUload = 0;
+    public boolean playing = false;
+    public float Volume = 0F;
+    public boolean muted = false;
+    private boolean started = false;
+    private String Title = "";
     
     private boolean connected = true;
     
@@ -42,12 +48,28 @@ public final class ComputerStats {
             
             Runnable myRunnable = () -> {
                 try {
-                    String data = new ComputerConnection().Communicate("");
+                    String toSend = "Null";
+                    if (started) {
+                        toSend = Volume + ":" + playing;
+                    }
+                    
+                    String data = new ComputerConnection().Communicate(toSend);
 
                     CPUusage = getCPUusage(data);
                     RAMusage = getRAMusage(data);
                     RAMused = getRAMused(data);
                     GPUload = getGPUload(data);
+                    Title = getTitle(data);
+                    if (Volume == 0F && !muted) {
+                        Volume = getVolume(data);
+                        playing = isPlaying(data);
+                        if (playing) {
+                            rearth.HomeUI_DesignController.getInstance().centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/pause.png").toString()));
+                        } else {
+                            rearth.HomeUI_DesignController.getInstance().centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));
+                        }
+                        started = true;
+                    }
 
                     connected = true;
                     System.out.println(toString());
@@ -66,7 +88,8 @@ public final class ComputerStats {
                 handleError();
             }
             
-            drawBars();            
+            drawBars();
+            drawMusic();
             
 
     }
@@ -95,7 +118,7 @@ public final class ComputerStats {
 
     @Override
     public String toString() {
-        return "ComputerStats{" + "CPUusage=" + CPUusage + ", RAMusage=" + RAMusage + ", RAMused=" + RAMused + ", GPUload=" + GPUload + '}' + new Zeit().toString(true);
+        return "ComputerStats{" + "CPUusage=" + CPUusage + ", RAMusage=" + RAMusage + ", RAMused=" + RAMused + ", GPUload=" + GPUload + " playing=" + playing + " Volume=" + Volume + " Title=" + Title + '}' + new Zeit().toString(true);
     }
 
     public static void setNightMode(boolean state) {
@@ -111,6 +134,12 @@ public final class ComputerStats {
     
     private final ArrayList<UsageMarker> Elements = new ArrayList<>();
     private final ArrayList<StyledLabel> Labels = new ArrayList<>();
+    
+    private void drawMusic() {
+        
+        rearth.HomeUI_DesignController Design = rearth.HomeUI_DesignController.getInstance();
+        
+    }
     
     private void drawBars() {
         

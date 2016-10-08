@@ -93,4 +93,48 @@ public class ComputerConnection {
         return (double) ((int) (number * 10)) / 10;
     }
     
+    public static float getVolume(String data) {
+        if (data.equals("error")) {
+            return 0;
+        }
+        String Parts[] = data.split(":");
+        return Float.valueOf(Parts[6]);
+    }
+    
+    public static int getState(String data) {
+        if (data.equals("error")) {
+            return 0;
+        }
+        String Parts[] = data.split(":");
+        return Integer.valueOf(data);
+    }
+    
+    public static boolean isPlaying(String data) {
+        if (data.equals("error")) {
+            return false;
+        }
+        
+        String Parts[] = data.split(":");
+        if (null != Integer.valueOf(Parts[5])) switch (Integer.valueOf(Parts[5])) {
+            case 0:
+                return false;       //unconfigured
+            case 1:
+                return true;        //playing
+            case 2:
+                return false;       //paused
+            default:
+                return false;
+        }
+        return false;
+    }
+    
+    public static String getTitle(String data) {
+        if (data.equals("error")) {
+            return "Null";
+        }
+        
+        String Parts[] = data.split(":");
+        return Parts[5];
+    }
+    
 }
