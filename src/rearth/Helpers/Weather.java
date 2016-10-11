@@ -26,6 +26,7 @@ import rearth.Helpers.TimeService.relativeDays;
 public class Weather {
     
     final String WOEID = "646299";
+    final String WOEIDalternative = "677069";
     
     public Image getImage() {
         
@@ -82,7 +83,19 @@ public class Weather {
         
         try {
             YahooWeatherService service = new YahooWeatherService();
-            Channel channel = service.getForecast(WOEID, DegreeUnit.CELSIUS);
+            Channel channel = null;
+            try {
+            channel = service.getForecast(WOEID, DegreeUnit.CELSIUS);
+            } catch(IllegalStateException ex) {
+                System.err.println("Error getting weather Data: No result from the Service!");
+                System.err.println("Trying again with Nagold");
+                try {
+                    channel = service.getForecast(WOEIDalternative, DegreeUnit.CELSIUS);
+                } catch (IllegalStateException ex2) {
+                    System.err.println("Nagold also not Working");
+                    return;
+                }
+            }
             List<Forecast> forecast= channel.getItem().getForecasts();
             Condition condition = channel.getItem().getCondition();
             Forecast forecastTomorrow = forecast.get(1);

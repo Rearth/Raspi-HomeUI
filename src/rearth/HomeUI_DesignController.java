@@ -15,8 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -25,16 +23,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.FillRule;
-import javafx.scene.shape.HLineTo;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
 import rearth.Helpers.StyledSwitch;
@@ -47,6 +41,8 @@ import rearth.networking.ComputerStats;
 public class HomeUI_DesignController implements Initializable {
      
     public static boolean nightmode = false;
+    public static final Color lightGrayBackground = Color.rgb(208, 208, 208);
+    public static final Color darkGrayBackground = Color.rgb(45, 0, 22);
     
     private static HomeUI_DesignController instance = null;
     
@@ -82,6 +78,26 @@ public class HomeUI_DesignController implements Initializable {
     public ImageView WeatherImageC;
     @FXML
     public Button addFitness;
+    @FXML
+    public Button MusicHider;
+    
+    private boolean MusicHidden = false;
+    
+    @FXML
+    private void hideMusic(Event event) {
+        if (MusicHidden) {
+            for (Node node: MusicElements) {
+                node.setVisible(true);
+            }
+            MusicHidden = false;
+        } else {
+            for (Node node: MusicElements) {
+                node.setVisible(false);
+            }
+            MusicHidden = true;
+            
+        }
+    }
     
     @FXML
     private void addFitnessClicked(Event event) {
@@ -101,6 +117,7 @@ public class HomeUI_DesignController implements Initializable {
         
         if (!nightmode) {
             BackgroundPanel.setStyle("-fx-background-color: #0a001a;");
+            MusicHider.setStyle("-fx-border-color: rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             DebugButton.setStyle("-fx-border-color: rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             NightModeButton.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
@@ -113,6 +130,11 @@ public class HomeUI_DesignController implements Initializable {
             for (StyledLabel label: FitnessData.getInstance().DrawnObjects) {
                 label.NightMode(true);
             }
+            
+            for (Shape shape: MusicElementsBackground) {
+                shape.setFill(darkGrayBackground);
+            }
+            
             ComputerStats.setNightMode(true);
             programs.setNightMode(true);
             timers.setNightMode(true);
@@ -124,6 +146,7 @@ public class HomeUI_DesignController implements Initializable {
             NightModeButton.setStyle("");
             buttonQuit.setStyle("");
             addFitness.setStyle("");
+            MusicHider.setStyle("");
             nightmode = false;
             programs.setNightMode(false);
             timers.setNightMode(false);
@@ -134,6 +157,9 @@ public class HomeUI_DesignController implements Initializable {
             
             for (StyledLabel label: FitnessData.getInstance().DrawnObjects) {
                 label.NightMode(false);
+            }
+            for (Shape shape: MusicElementsBackground) {
+                shape.setFill(lightGrayBackground);
             }
             ComputerStats.setNightMode(false);
         }
@@ -172,124 +198,113 @@ public class HomeUI_DesignController implements Initializable {
         
     }
     
+    private final int MusicX = 0;
+    private final int MusicY = -6;
+    
     private void drawMusicControls() {
         
-        Arc topArc = new Arc(450, 250, 100, 100, 40, 100);       // 45, 90
-        topArc.setType(ArcType.CHORD);
-        topArc.setStroke(Color.DARKRED);
-        topArc.setFill(null);
-        topArc.setStrokeWidth(4);
-        setEffect(topArc);
-        MusicElements.add(topArc);
+        Circle center = new Circle();
+        center.setCenterX(640 + MusicX);
+        center.setCenterY(560 + MusicY);
+        center.setRadius(40);
+        center.setFill(lightGrayBackground);
+        center.setOnTouchPressed((TouchEvent e) -> {
+                switchState();
+            });
+        MusicElements.add(center);
+        MusicElementsBackground.add(center);
         
-        Arc bottomArc = new Arc(450, 250, 100, 100, 220, 100);
-        bottomArc.setType(ArcType.CHORD);
-        bottomArc.setStroke(Color.DARKRED);
-        bottomArc.setFill(null);
-        bottomArc.setStrokeWidth(4);
-        setEffect(bottomArc);
-        MusicElements.add(bottomArc);
+        Rectangle higher = new Rectangle();
+        higher.setLayoutX(643 + MusicX);
+        higher.setLayoutY(537 + MusicY);
+        higher.setHeight(50);
+        higher.setWidth(80);
+        higher.setArcWidth(25);
+        higher.setArcHeight(25);
+        higher.setFill(lightGrayBackground);
+        MusicElements.add(higher);
+        MusicElementsBackground.add(higher);
         
-        Arc CenterRight = new Arc(450, 250, 100, 100, -25, 50);
-        CenterRight.setType(ArcType.OPEN);
-        CenterRight.setStroke(Color.DARKRED);
-        CenterRight.setFill(null);
-        CenterRight.setStrokeWidth(4);
-        setEffect(CenterRight);
-        MusicElements.add(CenterRight);
-        
-        Arc CenterLeft = new Arc(450, 250, 100, 100, 155, 50);
-        CenterLeft.setType(ArcType.OPEN);
-        CenterLeft.setStroke(Color.DARKRED);
-        CenterLeft.setFill(null);
-        CenterLeft.setStrokeWidth(4);
-        setEffect(CenterLeft);
-        MusicElements.add(CenterLeft);
-        
-        Line bottomLine = new Line();
-        bottomLine.setFill(null);
-        bottomLine.setStroke(Color.DARKRED);
-        bottomLine.setStrokeWidth(4);
-        bottomLine.setStartX(360);
-        bottomLine.setStartY(207);
-        bottomLine.setEndX(540);
-        bottomLine.setEndY(207);
-        setEffect(bottomLine);
-        MusicElements.add(bottomLine);
-        
-        int posY = 293;
-        Line topLine = new Line();
-        topLine.setFill(null);
-        topLine.setStroke(Color.DARKRED);
-        topLine.setStrokeWidth(4);
-        topLine.setStartX(360);
-        topLine.setStartY(posY);
-        topLine.setEndX(540);
-        topLine.setEndY(posY);
-        setEffect(topLine);
-        MusicElements.add(topLine);
+        Rectangle lower = new Rectangle();
+        lower.setLayoutX(560 + MusicX);
+        lower.setLayoutY(537 + MusicY);
+        lower.setHeight(50);
+        lower.setWidth(80);
+        lower.setArcWidth(25);
+        lower.setArcHeight(25);
+        lower.setFill(lightGrayBackground);
+        MusicElements.add(lower);
+        MusicElementsBackground.add(lower);
         
         Label lowerVol = new Label();
         lowerVol.setText("-");
-        lowerVol.setFont(Font.font("Verdana", FontWeight.BOLD, 38));
-        lowerVol.setTextFill(Color.BROWN);
-        lowerVol.setPrefSize(150, 40);
+        lowerVol.setFont(Font.font("Verdana", FontWeight.BOLD, 42));
+        lowerVol.setTextFill(Color.rgb(220, 30, 30));
+        //lowerVol.setPrefSize(150, 40);
         lowerVol.setAlignment(Pos.CENTER);
-        lowerVol.setLayoutX(374);
-        lowerVol.setLayoutY(307);
-        lowerVol.setOnTouchPressed((TouchEvent e) -> {
-                playScaleAnim(lowerVol);
-                lowerVolume();
-            });
-        setEffect(lowerVol);
+        lowerVol.setLayoutX(574 + MusicX);
+        lowerVol.setLayoutY(534 + MusicY);
         MusicElements.add(lowerVol);
         
         Label incrVol = new Label();
         incrVol.setText("+");
-        incrVol.setFont(Font.font("Verdana", FontWeight.BOLD, 32));
-        incrVol.setTextFill(Color.BROWN);
-        incrVol.setPrefSize(150, 40);
+        incrVol.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
+        incrVol.setTextFill(Color.rgb(220, 30, 30));
+        //incrVol.setPrefSize(150, 40);
         incrVol.setAlignment(Pos.CENTER);
-        incrVol.setLayoutX(375);
-        incrVol.setLayoutY(147);
-        incrVol.setOnTouchPressed((TouchEvent e) -> {
-            
-                playScaleAnim(incrVol);
-                increaseVolume();
-            });
-        setEffect(incrVol);
+        incrVol.setLayoutX(684 + MusicX);
+        incrVol.setLayoutY(534 + MusicY);
         MusicElements.add(incrVol);
         
         centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));
         int size = 72;
         centerIcon.setFitHeight(size);
         centerIcon.setFitWidth(size);
-        centerIcon.setLayoutX(414);
-        centerIcon.setLayoutY(213);
+        centerIcon.setLayoutX(604 + MusicX);
+        centerIcon.setLayoutY(523 + MusicY);
         centerIcon.setOnTouchPressed((TouchEvent e) -> {
                 switchState();
             });
-        setEffect(centerIcon);
         MusicElements.add(centerIcon);
         
-        BackgroundPanel.getChildren().add(topArc);
-        BackgroundPanel.getChildren().add(bottomArc);
-        BackgroundPanel.getChildren().add(CenterRight);
-        BackgroundPanel.getChildren().add(CenterLeft);
-        BackgroundPanel.getChildren().add(bottomLine);
-        BackgroundPanel.getChildren().add(topLine);
+        
+        higher.setOnTouchPressed((TouchEvent e) -> {
+                playScaleAnim(higher, incrVol);
+                increaseVolume();
+            });
+        incrVol.setOnTouchPressed((TouchEvent e) -> {
+                playScaleAnim(higher, incrVol);
+                increaseVolume();
+            });
+        
+        lowerVol.setOnTouchPressed((TouchEvent e) -> {
+                playScaleAnim(lowerVol, lower);
+                lowerVolume();
+            });
+        lower.setOnTouchPressed((TouchEvent e) -> {
+                playScaleAnim(lower, lowerVol);
+                lowerVolume();
+            });
+        
+        BackgroundPanel.getChildren().add(higher);
+        BackgroundPanel.getChildren().add(lower);
+        BackgroundPanel.getChildren().add(center);
         BackgroundPanel.getChildren().add(incrVol);
         BackgroundPanel.getChildren().add(lowerVol);
         BackgroundPanel.getChildren().add(centerIcon);
-        
     }
     
     private void increaseVolume() {
-        ComputerStats.getInstance().Volume += 0.05;
+        if (ComputerStats.getInstance().Volume < 1) {
+            ComputerStats.getInstance().Volume += 0.05;  
+        }
+        
     }
     
     private void lowerVolume() {
-        ComputerStats.getInstance().Volume -= 0.05;
+        if (ComputerStats.getInstance().Volume > 0.05) {
+            ComputerStats.getInstance().Volume -= 0.05;
+        }
         
     }
     
@@ -307,19 +322,17 @@ public class HomeUI_DesignController implements Initializable {
     
     public final ImageView centerIcon = new ImageView();
     private final ArrayList<Node> MusicElements = new ArrayList<>();
-    
-    private void setEffect(Node node) {
-        DropShadow borderGlow = new DropShadow();
-        int size = 32;
-        borderGlow.setWidth(size);
-        borderGlow.setHeight(size);
-        borderGlow.setColor(Color.RED);
-        node.setEffect(borderGlow);
-    }
+    private final ArrayList<Shape> MusicElementsBackground = new ArrayList<>();
     
     
     public StyledSwitch programs;
     public StyledSwitch timers;
+    
+    public void playScaleAnim(Node... Nodes) {
+        for (Node node: Nodes) {
+            playScaleAnim(node);
+        }
+    }
     
     public void playScaleAnim(Node label) {
         

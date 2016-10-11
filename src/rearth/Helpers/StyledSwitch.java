@@ -37,7 +37,7 @@ public class StyledSwitch {
     private final String[] Text;
     private final Rectangle Background = new Rectangle();
     private final Color color = Color.rgb(0, 0, 0, 0.15);
-    private final Color selectorColor = Color.rgb(220, 30, 30, 0.4);
+    private final Color selectorColor = Color.rgb(220, 30, 30, 0.7);
     private int numofTexts = 0;
     private static final java.awt.Font defaultFont = new java.awt.Font("Carlito", java.awt.Font.PLAIN, 18);
     private int width = 0;

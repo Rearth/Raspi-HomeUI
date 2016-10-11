@@ -56,5 +56,6 @@
          </children>
       </Pane>
       <Button fx:id="addFitness" focusTraversable="false" layoutX="475.0" layoutY="32.0" mnemonicParsing="false" onAction="#addFitnessClicked" prefHeight="53.0" prefWidth="123.0" text="Add!" />
+      <Button fx:id="MusicHider" focusTraversable="false" layoutX="607.0" layoutY="32.0" mnemonicParsing="false" onAction="#hideMusic" prefHeight="53.0" prefWidth="103.0" text="Hide Music" />
     </children>
 </AnchorPane>
