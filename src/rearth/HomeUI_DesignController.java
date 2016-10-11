@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -72,6 +73,8 @@ public class HomeUI_DesignController implements Initializable {
     @FXML
     public ImageView WeatherImageC;
     
+    public Button SleepMode = new Button("Schlafen");
+    
     public void hideMusic(int state) {
         if (state == 1) {
             for (Node node: MusicElements) {
@@ -102,6 +105,7 @@ public class HomeUI_DesignController implements Initializable {
         }
         
         if (!nightmode) {
+            SleepMode.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             BackgroundPanel.setStyle("-fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             
@@ -128,6 +132,7 @@ public class HomeUI_DesignController implements Initializable {
             nightmode = true;
         } else {
             BackgroundPanel.setStyle("");
+            SleepMode.setStyle("");
             //NightModeButton.setStyle("");
             buttonQuit.setStyle("");
             nightmode = false;
@@ -182,10 +187,58 @@ public class HomeUI_DesignController implements Initializable {
         MusicChanger.setMusicControl();
         MusicChanger.setState(1);
         
+        SleepMode.setLayoutX(200);
+        SleepMode.setLayoutY(20);
+        SleepMode.setPrefSize(150, 90);
+        SleepMode.setFocusTraversable(false);
+        BackgroundPanel.getChildren().add(SleepMode);
+        SleepMode.setOnTouchPressed((TouchEvent e) -> {
+                startSleepMode();
+            });
+        
         drawMusicControls();
         
-        
     }
+    
+    private void startSleepMode() {
+        
+        Sleeping = true;
+        Rectangle black = new Rectangle();
+        black.setFill(Color.BLACK);
+        black.setHeight(800);
+        black.setWidth(1200);
+        BackgroundPanel.getChildren().add(black);
+        
+        timeLabel.setLayoutX(362);
+        timeLabel.setLayoutY(250);
+        timeLabel.setPrefSize(400, 100);
+        timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 114));
+        dateLabel.setLayoutX(362);
+        dateLabel.setLayoutY(360);
+        dateLabel.setPrefSize(400, 100);
+        dateLabel.setFont(Font.font("Carlito", 40));
+        
+        BackgroundPanel.getChildren().remove(timeLabel);
+        BackgroundPanel.getChildren().remove(dateLabel);
+        BackgroundPanel.getChildren().add(timeLabel);
+        BackgroundPanel.getChildren().add(dateLabel);
+                
+        black.setOnTouchPressed((TouchEvent e) -> {
+                Sleeping = false;
+                black.setVisible(false);
+                timeLabel.setLayoutX(765);
+                timeLabel.setLayoutY(32);
+                timeLabel.setPrefSize(239, 92);
+                timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
+                dateLabel.setLayoutX(795);
+                dateLabel.setLayoutY(115);
+                dateLabel.setPrefSize(239, 26);
+                dateLabel.setFont(Font.font("Carlito", 20));
+                BackgroundPanel.getChildren().remove(black);
+            });
+    }
+    
+    public static boolean Sleeping = false;
     
     private StyledLabel nightlabel = null;
     private StyledLabel musiclabel = null;

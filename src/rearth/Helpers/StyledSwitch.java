@@ -345,7 +345,7 @@ public class StyledSwitch {
     
     public void setNightMode(boolean state) {
         if (state) {
-            selection.setBackground(new Background(new BackgroundFill(Color.rgb(45, 0, 22), radii, insets)));
+            selection.setBackground(new Background(new BackgroundFill(Color.rgb(80, 0, 20), radii, insets)));
             selection.setEffect(null);
         } else {
             selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));

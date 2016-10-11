@@ -134,10 +134,16 @@ public class Raspi_HomeUI extends Application {
             HomeUI_DesignController.getInstance().playScaleAnim(HomeUI_DesignController.getInstance().timeLabel);
         }
         
-        rearth.networking.ComputerStats.getInstance().updateStats();
+        if (!rearth.HomeUI_DesignController.Sleeping) {
+            rearth.networking.ComputerStats.getInstance().updateStats();
+        }
     }
     
     void hourlyTasks() {
+        
+        if (rearth.HomeUI_DesignController.Sleeping) {
+            return;
+        }
         
         Weather wetter = Weather.getinstance();
         try {
