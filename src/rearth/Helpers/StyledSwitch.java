@@ -50,6 +50,10 @@ public class StyledSwitch {
     private boolean FitnessMode = false;
     private final DropShadow borderGlow;
     private final Insets insets =  new Insets(0, -2, 0, -2);
+    private boolean twomode = false;
+    private boolean NightControl = false;
+    private boolean MusicControl = false;
+    private boolean used = false;
     private final CornerRadii radii = new CornerRadii(
             radius, radius, radius, radius, radius, radius, radius, radius,
             false,  false,  false,  false,  false,  false,  false,  false
@@ -60,7 +64,7 @@ public class StyledSwitch {
     
     public StyledSwitch(int posX, int posY, String... Text) {
         
-        this(posX, posY, (int)((double) calcLength(Text) * 1.1F), Text);
+        this(posX, posY, (int)((double) calcLength(Text) * 1.1F + 8), Text);
         
     }
     
@@ -77,6 +81,10 @@ public class StyledSwitch {
         }
         
         int i = 0;
+        
+        if (numofTexts == 2) {
+            twomode = true;
+        }
         
         for (String elem : Text) {
             if (elem == null || elem.equals("")) {
@@ -96,6 +104,12 @@ public class StyledSwitch {
             if (i == numofTexts - 1) {
                 label.setLayoutX(label.getLayoutX() - (width * 0.05));
             }
+            if (twomode && i == 0) {
+                label.setLayoutX(getElementPosition(i));
+            }
+            if (twomode && i == 1) {
+                label.setLayoutX(getElementPosition(i) + (width * 0.05));
+            }
             label.setFont(Font.font("Carlito", 18));
             label.setVisible(true);
             label.setAlignment(Pos.CENTER);
@@ -107,7 +121,7 @@ public class StyledSwitch {
             i++;
             
         }
-        System.out.println("creating fixed size Switch: Elements=" + numofTexts + " Width=" + width);
+        System.out.println("creating fixed size Switch: Elements=" + numofTexts + " Width=" + width + " twoway=" + twomode);
         
         InnerShadow shadowtop = new InnerShadow();
         shadowtop.setOffsetX(shadowsize);
@@ -127,6 +141,11 @@ public class StyledSwitch {
         Background.setArcHeight(9);
         Background.setArcWidth(9);
         Background.setFill(color);
+        if (twomode) {
+            Background.setOnTouchPressed((TouchEvent e) -> {
+                handleAction(e);
+            });
+        }
         //Background.setEffect(innerShadow);
          
         borderGlow = new DropShadow();
@@ -146,6 +165,9 @@ public class StyledSwitch {
         selection.setOnTouchPressed((TouchEvent e) -> {
             if (FitnessMode) {
                 FitnessData.getInstance().processInput(rearth.HomeUI_DesignController.getInstance().programs.getSelected(), rearth.HomeUI_DesignController.getInstance().timers.getSelected());
+            }
+            if (twomode) {
+                handleAction(e);
             }
         });
         
@@ -173,13 +195,39 @@ public class StyledSwitch {
     }
     
     private void handleAction(TouchEvent e) {
-        Label klicked = (Label) e.getSource();
-        String text = klicked.getText();
-        int select = Texts.indexOf(text);
-        selection.setText(text);
-        moveSelection(select, selected);
-        selected = select;
-        System.out.println("klicked: " + klicked.getText() + " value=" + select);
+        
+        if (used) {
+            return;
+        }
+        
+        used = true;
+        
+        if (twomode) {
+            if (selected == 0) {
+                selected = 1;
+                selection.setText(Texts.get(1));
+                moveSelection(1, 0);
+            } else {
+                selected = 0;
+                selection.setText(Texts.get(0));
+                moveSelection(0, 1);
+            }
+            System.out.println("Two-Mode selection! new Values: id=" + selected + " Text=" + Texts.get(selected));
+        } else {
+            Label klicked = (Label) e.getSource();
+            String text = klicked.getText();
+            int select = Texts.indexOf(text);
+            selection.setText(text);
+            moveSelection(select, selected);
+            selected = select;
+            System.out.println("klicked: " + klicked.getText() + " value=" + select);
+        }
+        if (NightControl) {
+            rearth.HomeUI_DesignController.getInstance().toggleNightMode(selected);
+        }
+        if (MusicControl) {
+            rearth.HomeUI_DesignController.getInstance().hideMusic(selected);
+        }
     }
     
     private void moveSelection(int index, int oldIndex) {
@@ -191,19 +239,31 @@ public class StyledSwitch {
         tt.setCycleCount(1);
         tt.setAutoReverse(true);
         tt.setOnFinished((ActionEvent event) -> {
+            used = false;
             hideSelected();
         });
         tt.play();
     }
     
     private int getElementPosition(int i) {
-        return (int)((double) posX + (double) (width * (double)((double) i / (double) numofTexts)));
+        int toadd = 0;
+        if (twomode && i== 0) {
+            toadd += 3;
+        }
+        return toadd + (int)((double) posX + (double) (width * (double)((double) i / (double) numofTexts)));
     }
     private int getElementPosition(int i, boolean state) {
         if (i == 0) {
-            return (int) (getElementPosition(i) + (width * 0.05));
+            int toadd = 0;
+            if (twomode) {
+                toadd += 3;
+            }
+            return toadd + (int) (getElementPosition(i) + (width * 0.05));
         }
         if (i == numofTexts - 1) {
+            if (twomode) {
+                return (int) (getElementPosition(i) + (width * 0.05));
+            }
             return (int) (getElementPosition(i) - (width * 0.05));
         }
         return getElementPosition(i);
@@ -285,7 +345,7 @@ public class StyledSwitch {
     
     public void setNightMode(boolean state) {
         if (state) {
-            selection.setBackground(new Background(new BackgroundFill(Color.rgb(35, 5, 5, 1), radii, insets)));
+            selection.setBackground(new Background(new BackgroundFill(Color.rgb(45, 0, 22), radii, insets)));
             selection.setEffect(null);
         } else {
             selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
@@ -294,4 +354,22 @@ public class StyledSwitch {
         
     }
     
+    public void setState(int index) {
+        
+        if (index > numofTexts - 1) {
+            throw new IllegalArgumentException("Index too high");
+        }
+        
+        selected = index;
+        selection.setText(Texts.get(index));
+        moveSelection(index, 0);
+    }
+    
+    public void setNightControl() {
+        NightControl = true;
+    }
+    
+    public void setMusicControl() {
+        MusicControl = true;
+    }
 }

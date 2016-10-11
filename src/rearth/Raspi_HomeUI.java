@@ -78,7 +78,7 @@ public class Raspi_HomeUI extends Application {
         try {
             Weather.getinstance().init();
         } catch (IOException ex) {
-           System.out.println("Error getting Weather Data, trying again");
+            System.out.println("Error getting Weather Data, trying again");
             try {
                 Weather.getinstance().init();
             } catch (IOException ex1) {

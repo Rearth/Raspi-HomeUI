@@ -18,7 +18,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.TouchEvent;
@@ -29,7 +28,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
 import rearth.Helpers.StyledSwitch;
@@ -58,10 +56,6 @@ public class HomeUI_DesignController implements Initializable {
     @FXML
     public Button buttonQuit;
     @FXML
-    public Button NightModeButton;
-    @FXML
-    public Button DebugButton;
-    @FXML
     public AnchorPane BackgroundPanel;
     @FXML
     public Label TempToday;
@@ -77,32 +71,18 @@ public class HomeUI_DesignController implements Initializable {
     public ImageView WeatherImageB;
     @FXML
     public ImageView WeatherImageC;
-    @FXML
-    public Button addFitness;
-    @FXML
-    public Button MusicHider;
     
-    private boolean MusicHidden = false;
-    
-    @FXML
-    private void hideMusic(Event event) {
-        if (MusicHidden) {
+    public void hideMusic(int state) {
+        if (state == 1) {
             for (Node node: MusicElements) {
                 node.setVisible(true);
             }
-            MusicHidden = false;
         } else {
             for (Node node: MusicElements) {
                 node.setVisible(false);
             }
-            MusicHidden = true;
             
         }
-    }
-    
-    @FXML
-    private void addFitnessClicked(Event event) {
-        FitnessData.getInstance().processInput(programs.getSelected(), timers.getSelected());
     }
     
     @FXML
@@ -111,18 +91,19 @@ public class HomeUI_DesignController implements Initializable {
         System.exit(0);
     }
     
-    @FXML
-    private void toggleNightMode(Event event) {
+    //@FXML
+    public void toggleNightMode(int state) {
         
-        System.out.println("changing night mode");
+        System.out.println("changing night mode; state=" + state);
+        if (state == 0) {
+            nightmode = true;
+        } else {
+            nightmode = false;
+        }
         
         if (!nightmode) {
             BackgroundPanel.setStyle("-fx-background-color: #0a001a;");
-            MusicHider.setStyle("-fx-border-color: rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
-            DebugButton.setStyle("-fx-border-color: rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
-            NightModeButton.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
-            addFitness.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             
             for (StyledLabel label: StundenplanItems) {
                 label.NightMode(true);
@@ -139,18 +120,23 @@ public class HomeUI_DesignController implements Initializable {
             ComputerStats.setNightMode(true);
             programs.setNightMode(true);
             timers.setNightMode(true);
+            ModeSelector.setNightMode(true);
+            MusicChanger.setNightMode(true);
+            musiclabel.NightMode(true);
+            nightlabel.NightMode(true);
             
             nightmode = true;
         } else {
             BackgroundPanel.setStyle("");
-            DebugButton.setStyle("");
-            NightModeButton.setStyle("");
+            //NightModeButton.setStyle("");
             buttonQuit.setStyle("");
-            addFitness.setStyle("");
-            MusicHider.setStyle("");
             nightmode = false;
             programs.setNightMode(false);
             timers.setNightMode(false);
+            ModeSelector.setNightMode(false);
+            MusicChanger.setNightMode(false);
+            musiclabel.NightMode(false);
+            nightlabel.NightMode(false);
             
             for (StyledLabel label : StundenplanItems) {
                 label.NightMode(false);
@@ -164,16 +150,6 @@ public class HomeUI_DesignController implements Initializable {
             }
             ComputerStats.setNightMode(false);
         }
-        
-    }
-    
-    @FXML
-    private void DoDebug(Event event) {
-        
-        playScaleAnim(timeLabel);
-        
-        System.out.println("Color=" + TempToday.getTextFill().toString());
-        TempToday.setTextFill(Color.web("0x333333ff"));
         
     }
     
@@ -195,12 +171,29 @@ public class HomeUI_DesignController implements Initializable {
         programs.setFitnessMode();
         timers = new StyledSwitch(760, 300, 250, "Kurz", "Mittel", "Lang");
         timers.setFitnessMode();
+        
+        nightlabel = new StyledLabel("Dunkel", 22, 10);
+        
+        ModeSelector = new StyledSwitch(5, 58, 90, "Aus", "Ein");
+        ModeSelector.setNightControl();
+        
+        musiclabel = new StyledLabel("Music", 121, 10);
+        MusicChanger = new StyledSwitch(100, 58, 90, "Aus", "Ein");
+        MusicChanger.setMusicControl();
+        MusicChanger.setState(1);
+        
         drawMusicControls();
+        
         
     }
     
+    private StyledLabel nightlabel = null;
+    private StyledLabel musiclabel = null;
+    private StyledSwitch ModeSelector = null;
+    private StyledSwitch MusicChanger = null;
+    
     private final int MusicX = 0;
-    private final int MusicY = -6;
+    private final int MusicY = -8;
     
     private void drawMusicControls() {
         
