@@ -65,12 +65,13 @@ public final class ComputerStats {
                         playing = isPlaying(data);
                         if (playing) {
                             rearth.HomeUI_DesignController.getInstance().centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/pause.png").toString()));
+                            rearth.HomeUI_DesignController.getInstance().sizeAnim();
                         } else {
                             rearth.HomeUI_DesignController.getInstance().centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));
                         }
                         started = true;
                     }
-
+                    rearth.HomeUI_DesignController.getInstance().sizeAnim();
                     connected = true;
                     System.out.println(toString());
                     

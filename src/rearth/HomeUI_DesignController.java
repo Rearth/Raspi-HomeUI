@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
+import javafx.event.ActionEvent;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -203,7 +204,6 @@ public class HomeUI_DesignController implements Initializable {
     
     private void drawMusicControls() {
         
-        Circle center = new Circle();
         center.setCenterX(640 + MusicX);
         center.setCenterY(560 + MusicY);
         center.setRadius(40);
@@ -292,7 +292,68 @@ public class HomeUI_DesignController implements Initializable {
         BackgroundPanel.getChildren().add(incrVol);
         BackgroundPanel.getChildren().add(lowerVol);
         BackgroundPanel.getChildren().add(centerIcon);
+        
+        startAnimation();
     }
+    
+    private void startAnimation() {
+        
+        sizeAnim();
+        //widthAnim();
+        
+    }
+    
+    private static boolean playingAnim = false;
+    
+    public void sizeAnim() {
+        //System.out.println("Called anim: state=" + playingAnim + " playing=" + ComputerStats.getInstance().playing);
+        if (!ComputerStats.getInstance().playing) {
+            playingAnim = false;
+            return;
+        }
+        if (playingAnim) {
+            return;
+        }
+        
+        playingAnim = true;
+        
+        Double valScale = 1 + (Math.random() * 0.25);
+        Double valTime = 0.24 + Math.random() * 0.15;
+        
+        if (valTime < 0.1) {
+            valTime += 0.05;
+        }
+        ScaleTransition sizeanim = new ScaleTransition(Duration.millis(valTime * 500), center);
+        sizeanim.setFromX(1);
+        sizeanim.setToX(valScale);
+        sizeanim.setFromY(1);
+        sizeanim.setToY(valScale);
+        sizeanim.setCycleCount(1);
+        sizeanim.setAutoReverse(true);
+        
+        ScaleTransition scaleanim = new ScaleTransition(Duration.millis(valTime * 300), center);
+        scaleanim.setFromX(valScale);
+        scaleanim.setToX(1);
+        scaleanim.setFromY(valScale);
+        scaleanim.setToY(1);
+        scaleanim.setCycleCount(1);
+        scaleanim.setAutoReverse(true);
+        
+        sizeanim.setOnFinished((ActionEvent e) -> {
+                scaleanim.play();
+            });
+        sizeanim.play();
+        scaleanim.setOnFinished((ActionEvent e) -> {
+                playingAnim = false;
+                sizeAnim();
+            });
+    }
+    
+    private void widthAnim() {
+        //Not Used
+    }
+    
+    private final Circle center = new Circle();
     
     private void increaseVolume() {
         if (ComputerStats.getInstance().Volume < 1) {
@@ -316,6 +377,7 @@ public class HomeUI_DesignController implements Initializable {
         } else {
             centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/pause.png").toString()));
             ComputerStats.getInstance().playing = true;
+            startAnimation();
         }
         
     }
