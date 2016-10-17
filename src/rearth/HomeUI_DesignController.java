@@ -226,11 +226,11 @@ public class HomeUI_DesignController implements Initializable {
         black.setOnTouchPressed((TouchEvent e) -> {
                 Sleeping = false;
                 black.setVisible(false);
-                timeLabel.setLayoutX(765);
+                timeLabel.setLayoutX(759);
                 timeLabel.setLayoutY(32);
                 timeLabel.setPrefSize(239, 92);
                 timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
-                dateLabel.setLayoutX(795);
+                dateLabel.setLayoutX(759);
                 dateLabel.setLayoutY(115);
                 dateLabel.setPrefSize(239, 26);
                 dateLabel.setFont(Font.font("Carlito", 20));
