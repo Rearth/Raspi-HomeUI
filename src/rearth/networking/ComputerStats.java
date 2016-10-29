@@ -7,6 +7,7 @@ package rearth.networking;
 
 import java.util.ArrayList;
 import javafx.scene.image.Image;
+import rearth.Helpers.StyledDisplay;
 import rearth.Helpers.StyledSwitch;
 import rearth.Helpers.TimeService.Zeit;
 import rearth.StyledLabel;
@@ -21,13 +22,9 @@ public final class ComputerStats {
 
     final static ComputerStats instance = new ComputerStats();
     
-    private final double posX = 350;
-    private final double posY = 540;
-    private final double heightGap = 6;
+    private final int posX = 350;
+    private final int posY = 540;
     private final int vGap = 60;
-    private final int labelDX = 2;
-    private final int labelDY = 5;
-    private final int labelSX = 8;
     
     public double CPUusage = 0;        //in %
     public double RAMusage = 0;        //in %
@@ -97,22 +94,18 @@ public final class ComputerStats {
     
     private void handleError() {
             System.err.println("Cant reach host");
-            for (UsageMarker thing : Elements) {
-            UsageMarker.delete(thing);
+            for (StyledDisplay label : Displays) {
+                label.setVisible(false);
             }
-            for (StyledLabel label : Labels) {
-                label.delete();
-            }
-            Elements.clear();
-            Labels.clear();
             
-            StyledLabel errorLabel = new StyledLabel("PC Offline", (int) posX + 10, (int) posY + 5);
+            errorLabel = new StyledLabel("PC Offline", (int) posX + 10, (int) posY + 5);
             errorLabel.setSize(errorLabel.getHeight(), 200);
             errorLabel.setTextCenter();
-            Labels.add(errorLabel);
             hideMusic();
         
     }
+    
+    private StyledLabel errorLabel = null;
     
     private void hideMusic() {
         
@@ -154,16 +147,36 @@ public final class ComputerStats {
     public static void setNightMode(boolean state) {
         ComputerStats stats = getInstance();
         
-        for (UsageMarker marker: stats.Elements) {
+        for (StyledDisplay marker: stats.Displays) {
             marker.setNightMode(state);
-        }
-        for (StyledLabel label: stats.Labels) {
-            label.NightMode(state);
         }
     }
     
-    private final ArrayList<UsageMarker> Elements = new ArrayList<>();
-    private final ArrayList<StyledLabel> Labels = new ArrayList<>();
+    boolean inited = false;
+    
+    private void init() {
+        
+        if (inited) {
+            return;
+        }
+        
+        cpuDisplay = new StyledDisplay(posX, posY, "CPU");
+        Displays.add(cpuDisplay);
+        ramDisplay = new StyledDisplay(posX + vGap, posY, "RAM");
+        Displays.add(ramDisplay);
+        gpuDisplay = new StyledDisplay(posX + vGap * 2, posY, "GPU");
+        Displays.add(gpuDisplay);
+        
+        System.out.println("Initialised Displays");
+        
+        inited = true;
+        
+    }
+    
+    private final ArrayList<StyledDisplay> Displays = new ArrayList<>();
+    StyledDisplay cpuDisplay = null;
+    StyledDisplay gpuDisplay = null;   
+    StyledDisplay ramDisplay = null; 
         
     private void drawBars() {
         
@@ -171,48 +184,17 @@ public final class ComputerStats {
             return;
         }
         
-        for (UsageMarker thing : Elements) {
-            UsageMarker.delete(thing);
+        //System.out.println("drawing bars");
+        
+        if (errorLabel != null) {
+            errorLabel.delete();
         }
-        for (StyledLabel label : Labels) {
-            label.delete();
-        }
+        init();
         
-        Elements.clear();
-        Labels.clear();
+        cpuDisplay.setLevel((int) CPUusage +1);
+        ramDisplay.setLevel((int) RAMusage + 1);
+        gpuDisplay.setLevel((int) GPUload + 1);
         
-        StyledLabel CPUload = new StyledLabel("CPU", (int) posX + 2, (int) posY + 5);
-        CPUload.setSize(CPUload.getHeight(), CPUload.getWidth() - labelSX);
-        CPUload.getImage().setLayoutX(CPUload.getImage().getLayoutX() + labelSX);
-        Labels.add(CPUload);
-        
-        StyledLabel MemUsage = new StyledLabel("RAM", (int) posX + labelDX + vGap, (int) posY + labelDY);
-        MemUsage.setSize(MemUsage.getHeight(), MemUsage.getWidth() - labelSX);
-        MemUsage.getImage().setLayoutX(MemUsage.getImage().getLayoutX() + labelSX);
-        Labels.add(MemUsage);
-        
-        StyledLabel GPUUsage = new StyledLabel("GPU", (int) posX + labelDX + vGap * 2, (int) posY + labelDY);
-        GPUUsage.setSize(GPUUsage.getHeight(), GPUUsage.getWidth() - labelSX);
-        GPUUsage.getImage().setLayoutX(GPUUsage.getImage().getLayoutX() + labelSX);
-        Labels.add(GPUUsage);
-        
-        for (int i=0; i < CPUusage / 6; i++) {
-            UsageMarker marker = new UsageMarker(posX, posY - (heightGap*i));
-            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(marker);
-            Elements.add(marker);
-        }
-        
-        for (int i=0; i < RAMusage / 6; i++) {
-            UsageMarker marker = new UsageMarker(posX + vGap, posY - (heightGap*i));
-            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(marker);
-            Elements.add(marker);
-        }
-        
-        for (int i=0; i < GPUload / 6; i++) {
-            UsageMarker marker = new UsageMarker(posX + vGap * 2, posY - (heightGap * i));
-            rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().add(marker);
-            Elements.add(marker);
-        }
         
     }
         

@@ -64,14 +64,25 @@ public class Weather {
         return Instance;
     }
     
+    private boolean moved = false;
+    
     public void updateWidget(Label[] Labels, ImageView[] imageA) {
         
-        if (Temperatur[0] < 10) {
+        if (Temperatur[0] < 10 && !moved) {
             for (Label label : Labels) {
                 label.setLayoutX(label.getLayoutX() - 30);
             }
             for (ImageView label : imageA) {
                 label.setLayoutX(label.getLayoutX() - 30);
+            }
+            moved = true;
+        } else if (Temperatur[0] >= 10 && moved){
+            for (Label label : Labels) {
+                label.setLayoutX(label.getLayoutX() + 30);
+            }
+            for (ImageView label : imageA) {
+                label.setLayoutX(label.getLayoutX() + 30);
+                moved = false;
             }
         }
         Labels[0].setText(Integer.toString(Temperatur[0]) + "°");

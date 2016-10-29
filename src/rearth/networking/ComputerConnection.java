@@ -20,7 +20,7 @@ import java.net.Socket;
 public class ComputerConnection {
     
     private static final int port = 230;
-    private static final String serverName = "192.168.0.20";    //"192.168.0.20" or "localhost"
+    private static final String serverName = "192.168.0.10";    //"192.168.0.20" or "localhost"
     private static final int timeout = 1000;
            
     public String Communicate(String toSend) {

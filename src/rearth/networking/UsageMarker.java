@@ -27,18 +27,21 @@ public class UsageMarker extends Rectangle {
         
     }
     
-    public static void delete(UsageMarker marker) {
+    public void delete() {
+        refineDelete(this);
+    }
+    
+    public void setColor(Color color) {
+        setFill(color);
+    }
+    
+    private static void refineDelete(UsageMarker marker) {
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(marker);
-        
         marker = null;
     }
     
     public void setNightMode(boolean state) {
-        if (state) {
-            setFill(Color.DARKSLATEBLUE);
-        } else {
-            setFill(Color.DARKRED);
-        }
+        
     }
     
 }

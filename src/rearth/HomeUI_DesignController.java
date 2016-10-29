@@ -30,6 +30,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
+import rearth.Helpers.StyledDisplay;
 import rearth.Helpers.StyledSwitch;
 import rearth.networking.ComputerStats;
 
@@ -198,7 +199,7 @@ public class HomeUI_DesignController implements Initializable {
             });
         
         drawMusicControls();
-        
+                
     }
     
     private void startSleepMode() {
@@ -485,9 +486,9 @@ public class HomeUI_DesignController implements Initializable {
                 
         clearStundenplan();
         
-        /*if (ishidden) {
+        if (ishidden) {
             return;
-        }*/
+        }
         
         Label title = new Label(Day);
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 43));
