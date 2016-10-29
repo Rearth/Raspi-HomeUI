@@ -101,7 +101,7 @@ public class FitnessData {
             
             toRemove.setVisible(false);
             DrawnObjects.remove(toRemove);
-            StyledLabel.delete(toRemove);
+            toRemove.delete();
             
             for (int i = 0; i < 4; i++) {
                 DrawnObjects.get(i).move(0, -(DrawnObjects.get(2).getHeight()), 500);
@@ -109,9 +109,9 @@ public class FitnessData {
             toAdd.setVisible(true);
             toAdd.showup(800).setOnFinished((ActionEvent evont) -> {
                 for (StyledLabel label: DrawnObjects) {
-                    StyledLabel.delete(label);
+                    label.delete();
                 }
-                StyledLabel.delete(toAdd);
+                toAdd.delete();
                 drawLatest(775, 350); 
             });
         });
@@ -130,9 +130,9 @@ public class FitnessData {
         
         rearth.HomeUI_DesignController instance = rearth.HomeUI_DesignController.getInstance();
         
-        for (StyledLabel label: DrawnObjects) {
-            StyledLabel.delete(label);
-        }
+        DrawnObjects.stream().forEach((label) -> {
+            label.delete();
+        });
         
         DrawnObjects.clear();
         for (DataObject thing : lastFive()) {
@@ -143,7 +143,7 @@ public class FitnessData {
             if (!DrawnObjects.contains(test)) {
                 DrawnObjects.add(test);
             } else {
-                StyledLabel.delete(test);
+                test.delete();
             }
                         
         }
@@ -183,6 +183,7 @@ public class FitnessData {
     public void updateData() {
         
         initData(readFile(FitnessData));
+        sortByDateTime(Activities);
         
         drawLatest(775, 350);
         

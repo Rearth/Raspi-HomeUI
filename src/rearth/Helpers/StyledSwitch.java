@@ -15,7 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.input.TouchEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -54,6 +54,7 @@ public class StyledSwitch {
     private boolean NightControl = false;
     private boolean MusicControl = false;
     private boolean used = false;
+    private States state = States.normal;
     private final CornerRadii radii = new CornerRadii(
             radius, radius, radius, radius, radius, radius, radius, radius,
             false,  false,  false,  false,  false,  false,  false,  false
@@ -61,6 +62,10 @@ public class StyledSwitch {
     
     private Label selection = new Label();
     private int selected = 0;
+    
+    public static enum States {
+        normal, locked, displayOnly
+    }
     
     public StyledSwitch(int posX, int posY, String... Text) {
         
@@ -114,7 +119,7 @@ public class StyledSwitch {
             label.setVisible(true);
             label.setAlignment(Pos.CENTER);
             label.setTextAlignment(TextAlignment.CENTER);
-            label.setOnTouchPressed((TouchEvent e) -> {
+            label.setOnMouseClicked((MouseEvent e) -> {
                 handleAction(e);
             });
             Labels.add(label);
@@ -142,7 +147,7 @@ public class StyledSwitch {
         Background.setArcWidth(9);
         Background.setFill(color);
         if (twomode) {
-            Background.setOnTouchPressed((TouchEvent e) -> {
+            Background.setOnMouseClicked((MouseEvent e) -> {
                 handleAction(e);
             });
         }
@@ -162,8 +167,8 @@ public class StyledSwitch {
         selection.setLayoutY(posY + height * 0.1);
         //selection.setScaleX(0.9);
         selection.setVisible(true);
-        selection.setOnTouchPressed((TouchEvent e) -> {
-            if (FitnessMode) {
+        selection.setOnMouseClicked((MouseEvent e) -> {
+            if (FitnessMode && interactable()) {
                 FitnessData.getInstance().processInput(rearth.HomeUI_DesignController.getInstance().programs.getSelected(), rearth.HomeUI_DesignController.getInstance().timers.getSelected());
             }
             if (twomode) {
@@ -194,9 +199,9 @@ public class StyledSwitch {
         Labels.get(selected).setVisible(false);
     }
     
-    private void handleAction(TouchEvent e) {
+    private void handleAction(MouseEvent e) {
         
-        if (used) {
+        if (used || !interactable()) {
             return;
         }
         
@@ -230,7 +235,15 @@ public class StyledSwitch {
         }
     }
     
+    private boolean AnimPlaying = false;
+    
     private void moveSelection(int index, int oldIndex) {
+        
+        if (AnimPlaying) {
+            return;
+        }
+        
+        AnimPlaying = true;
         
         showall();
         TranslateTransition tt = new TranslateTransition(Duration.millis(animTime), selection);
@@ -240,6 +253,7 @@ public class StyledSwitch {
         tt.setAutoReverse(true);
         tt.setOnFinished((ActionEvent event) -> {
             used = false;
+            AnimPlaying = false;
             hideSelected();
         });
         tt.play();
@@ -356,13 +370,15 @@ public class StyledSwitch {
     
     public void setState(int index) {
         
+        System.out.println("Changing State to: " + index + " oldstate=" + selected);
         if (index > numofTexts - 1) {
             throw new IllegalArgumentException("Index too high");
         }
         
+        int oldselected = selected;
         selected = index;
         selection.setText(Texts.get(index));
-        moveSelection(index, 0);
+        moveSelection(index, oldselected);
     }
     
     public void setNightControl() {
@@ -371,5 +387,37 @@ public class StyledSwitch {
     
     public void setMusicControl() {
         MusicControl = true;
+    }
+    
+    public void setState(States stateSelected) {
+        
+        updateState(stateSelected);
+        
+    }
+    
+    public void updateState(States State) {
+        
+        if (state.equals(State)) {
+            return;
+        }
+        
+        state = State;
+        
+        switch (state) {
+            case normal:
+                selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
+                break;
+            case locked:
+                selection.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, radii, insets)));
+                break;
+            case displayOnly:
+                selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
+                break;
+        }
+        
+    }
+    
+    private boolean interactable() {
+        return state.equals(States.normal);
     }
 }

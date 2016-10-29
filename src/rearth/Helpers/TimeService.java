@@ -178,7 +178,13 @@ public class TimeService {
         }
         
         public int howLongAgo() {
-            long difference =  new Date().getTime() - date.getTime();
+            
+            Date olddate = new Date();
+            olddate.setDate(date.getDate());
+            olddate.setMonth(date.getMonth());
+            olddate.setYear(date.getYear());
+            
+            long difference =  new Date().getTime() - olddate.getTime();
             
             return (int) (difference / (24* 1000 * 60 * 60));
         }

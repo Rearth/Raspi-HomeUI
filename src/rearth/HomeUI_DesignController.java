@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -185,14 +184,16 @@ public class HomeUI_DesignController implements Initializable {
         musiclabel = new StyledLabel("Music", 121, 10);
         MusicChanger = new StyledSwitch(100, 58, 90, "Aus", "Ein");
         MusicChanger.setMusicControl();
-        MusicChanger.setState(1);
+        if (ComputerStats.getInstance().connected) {
+            MusicChanger.setState(1);
+        }
         
         SleepMode.setLayoutX(200);
         SleepMode.setLayoutY(20);
         SleepMode.setPrefSize(150, 90);
         SleepMode.setFocusTraversable(false);
         BackgroundPanel.getChildren().add(SleepMode);
-        SleepMode.setOnTouchPressed((TouchEvent e) -> {
+        SleepMode.setOnMouseClicked((MouseEvent e) -> {
                 startSleepMode();
             });
         
@@ -223,7 +224,7 @@ public class HomeUI_DesignController implements Initializable {
         BackgroundPanel.getChildren().add(timeLabel);
         BackgroundPanel.getChildren().add(dateLabel);
                 
-        black.setOnTouchPressed((TouchEvent e) -> {
+        black.setOnMouseClicked((MouseEvent e) -> {
                 Sleeping = false;
                 black.setVisible(false);
                 timeLabel.setLayoutX(759);
@@ -243,7 +244,7 @@ public class HomeUI_DesignController implements Initializable {
     private StyledLabel nightlabel = null;
     private StyledLabel musiclabel = null;
     private StyledSwitch ModeSelector = null;
-    private StyledSwitch MusicChanger = null;
+    public StyledSwitch MusicChanger = null;
     
     private final int MusicX = 0;
     private final int MusicY = -8;
@@ -254,7 +255,7 @@ public class HomeUI_DesignController implements Initializable {
         center.setCenterY(560 + MusicY);
         center.setRadius(40);
         center.setFill(lightGrayBackground);
-        center.setOnTouchPressed((TouchEvent e) -> {
+        center.setOnMouseClicked((MouseEvent e) -> {
                 switchState();
             });
         MusicElements.add(center);
@@ -302,32 +303,32 @@ public class HomeUI_DesignController implements Initializable {
         incrVol.setLayoutY(534 + MusicY);
         MusicElements.add(incrVol);
         
-        centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));
+        centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/pause.png").toString()));
         int size = 72;
         centerIcon.setFitHeight(size);
         centerIcon.setFitWidth(size);
         centerIcon.setLayoutX(604 + MusicX);
         centerIcon.setLayoutY(523 + MusicY);
-        centerIcon.setOnTouchPressed((TouchEvent e) -> {
+        centerIcon.setOnMouseClicked((MouseEvent e) -> {
                 switchState();
             });
         MusicElements.add(centerIcon);
         
         
-        higher.setOnTouchPressed((TouchEvent e) -> {
+        higher.setOnMouseClicked((MouseEvent e) -> {
                 playScaleAnim(higher, incrVol);
                 increaseVolume();
             });
-        incrVol.setOnTouchPressed((TouchEvent e) -> {
+        incrVol.setOnMouseClicked((MouseEvent e) -> {
                 playScaleAnim(higher, incrVol);
                 increaseVolume();
             });
         
-        lowerVol.setOnTouchPressed((TouchEvent e) -> {
+        lowerVol.setOnMouseClicked((MouseEvent e) -> {
                 playScaleAnim(lowerVol, lower);
                 lowerVolume();
             });
-        lower.setOnTouchPressed((TouchEvent e) -> {
+        lower.setOnMouseClicked((MouseEvent e) -> {
                 playScaleAnim(lower, lowerVol);
                 lowerVolume();
             });
@@ -474,21 +475,19 @@ public class HomeUI_DesignController implements Initializable {
     private int ListGap = 42;
     private final int GapDefault = 42;
     private final int ListWidth = 180;
-    private final int PosX = 60;
-    private final int PosY = 170;
+    private final int PosX = 35;
+    private final int PosY = 180;
     private final int maxHeight = 480 - PosY;
     
     public void createStundenplan(String[] Texts, String Day, boolean ishidden) {
-        
-        //TODO improve pause Draw 
-        
+                
         ArrayList<String> TextUsed = new ArrayList<>();
                 
         clearStundenplan();
         
-        if (ishidden) {
+        /*if (ishidden) {
             return;
-        }
+        }*/
         
         Label title = new Label(Day);
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 43));
@@ -576,7 +575,7 @@ public class HomeUI_DesignController implements Initializable {
     public void clearStundenplan() {
         
         for (StyledLabel label: StundenplanItems) {
-            StyledLabel.delete(label);
+            label.delete();
         }
         
         BackgroundPanel.getChildren().remove(StundenPlanTitle);

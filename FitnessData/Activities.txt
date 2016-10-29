@@ -8,3 +8,4 @@ Joggen/kurz/01:10:2016/00:56
 Joggen/kurz/01:10:2016/03:08
 Workout/kurz/01:10:2016/03:09
 Joggen/kurz/01:10:2016/12:26
+Workout/kurz/28:10:2016/19:48

@@ -7,6 +7,7 @@ package rearth.networking;
 
 import java.util.ArrayList;
 import javafx.scene.image.Image;
+import rearth.Helpers.StyledSwitch;
 import rearth.Helpers.TimeService.Zeit;
 import rearth.StyledLabel;
 import static rearth.networking.ComputerConnection.*;
@@ -38,7 +39,7 @@ public final class ComputerStats {
     private boolean started = false;
     private String Title = "";
     
-    private boolean connected = true;
+    public boolean connected = true;
     
     public static ComputerStats getInstance() {
         return instance;
@@ -75,10 +76,8 @@ public final class ComputerStats {
                     connected = true;
                     System.out.println(toString());
                     
-                    return;
                 } catch (java.lang.NumberFormatException ex) {
                     connected = false;
-                    return;
                 }
             };
 
@@ -87,10 +86,11 @@ public final class ComputerStats {
             
             if (!connected) {
                 handleError();
+            } else {
+               showMusic();
             }
             
             drawBars();
-            drawMusic();
             
 
     }
@@ -101,7 +101,7 @@ public final class ComputerStats {
             UsageMarker.delete(thing);
             }
             for (StyledLabel label : Labels) {
-                StyledLabel.delete(label);
+                label.delete();
             }
             Elements.clear();
             Labels.clear();
@@ -110,7 +110,36 @@ public final class ComputerStats {
             errorLabel.setSize(errorLabel.getHeight(), 200);
             errorLabel.setTextCenter();
             Labels.add(errorLabel);
+            hideMusic();
         
+    }
+    
+    private void hideMusic() {
+        
+        
+        if (musicHidden || rearth.HomeUI_DesignController.getInstance().MusicChanger.getSelected() == 0) {
+            return;
+        }
+        rearth.HomeUI_DesignController.getInstance().hideMusic(0);
+        rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(0);
+        rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(StyledSwitch.States.locked);
+        System.out.println("hiding music");
+        musicHidden = true;
+    }
+    
+    private boolean musicHidden = false;
+    
+    private void showMusic() {
+        
+        
+        if (!musicHidden || rearth.HomeUI_DesignController.getInstance().MusicChanger.getSelected() == 1) {
+            return;
+        }
+        rearth.HomeUI_DesignController.getInstance().hideMusic(1);
+        rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(1);
+        rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(StyledSwitch.States.normal);
+        System.out.println("showing music");
+        musicHidden = false;
     }
     
     private ComputerStats() {
@@ -135,13 +164,7 @@ public final class ComputerStats {
     
     private final ArrayList<UsageMarker> Elements = new ArrayList<>();
     private final ArrayList<StyledLabel> Labels = new ArrayList<>();
-    
-    private void drawMusic() {
         
-        rearth.HomeUI_DesignController Design = rearth.HomeUI_DesignController.getInstance();
-        
-    }
-    
     private void drawBars() {
         
         if (!connected) {
@@ -152,7 +175,7 @@ public final class ComputerStats {
             UsageMarker.delete(thing);
         }
         for (StyledLabel label : Labels) {
-            StyledLabel.delete(label);
+            label.delete();
         }
         
         Elements.clear();

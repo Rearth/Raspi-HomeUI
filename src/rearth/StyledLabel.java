@@ -183,7 +183,12 @@ public class StyledLabel {
         rightLabel.setVisible(state);
     }
     
-    public static void delete(StyledLabel label) {
+    public void delete() {
+        refineDelete(this);
+    }
+    
+    private static void refineDelete(StyledLabel label) {
+        
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label.image);
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label.rightLabel);
         rearth.HomeUI_DesignController.getInstance().BackgroundPanel.getChildren().remove(label.textLabel);
@@ -191,7 +196,6 @@ public class StyledLabel {
         label.rightLabel = null;
         label.textLabel = null;
         label = null;
-        
     }
     
     public TranslateTransition move(int byX, int byY, int time) {

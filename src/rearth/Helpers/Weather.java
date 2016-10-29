@@ -66,6 +66,14 @@ public class Weather {
     
     public void updateWidget(Label[] Labels, ImageView[] imageA) {
         
+        if (Temperatur[0] < 10) {
+            for (Label label : Labels) {
+                label.setLayoutX(label.getLayoutX() - 30);
+            }
+            for (ImageView label : imageA) {
+                label.setLayoutX(label.getLayoutX() - 30);
+            }
+        }
         Labels[0].setText(Integer.toString(Temperatur[0]) + "°");
         Labels[1].setText(State[0]);
         Labels[2].setText(Integer.toString(Temperatur[1]) + "°");
