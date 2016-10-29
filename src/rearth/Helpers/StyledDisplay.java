@@ -15,7 +15,7 @@ import rearth.networking.UsageMarker;
  */
 public final class StyledDisplay {
     
-    private final UsageMarker Elements[] = new UsageMarker[100 / 6];
+    private final UsageMarker Elements[] = new UsageMarker[100 / 5];
     private final StyledLabel label;
     private int posX;
     private int posY;
@@ -24,7 +24,7 @@ public final class StyledDisplay {
     private final int labelYGap = 6;
     private final int labelDiffX = 8;
     private final int heightGap = 6;
-    private int level = 0;
+    private float level = 0;
     private boolean visible = true;
     private Color color = Color.DARKRED;
     private Color nightColor = Color.DARKRED;
@@ -64,17 +64,24 @@ public final class StyledDisplay {
         label.setText(Text);
     }
 
-    public int getLevel() {
+    public float getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-        for (int i=0; i < (level / divide); i++) {
-            Elements[i].setVisible(true);
+    public void setLevel(float level) {
+        if (level > 100) {
+            level = 99;
         }
-        for (int i = level / divide; i < (100 / divide); i++) {
-            Elements[i].setVisible(false);
+        this.level = level;
+        try {
+            for (int i = 0; i < (level / divide); i++) {
+                Elements[i].setVisible(true);
+            }
+            for (int i = (int) level / divide; i < (100 / divide); i++) {
+                Elements[i].setVisible(false);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.err.println("error setting level: " + ex);
         }
     }
 
@@ -83,11 +90,19 @@ public final class StyledDisplay {
     }
 
     public void setVisible(boolean visible) {
-        this.visible = visible;
-        for (UsageMarker marker : Elements) {
-            marker.setVisible(visible);
+        try {
+            this.visible = visible;
+            for (UsageMarker marker : Elements) {
+                if (marker != null) {
+                    marker.setVisible(visible);
+                }
+            }
+        } catch (NullPointerException ex) {
+            System.err.println("NullPointer at StyledDisplay.setVisible(visible)");
+            ex.printStackTrace();
         }
         label.setVisible(visible);
+        
     }
 
     public Color getColor() {
@@ -118,6 +133,9 @@ public final class StyledDisplay {
         nightMode = state;
         
         for (UsageMarker marker : Elements) {
+            if (marker == null) {
+                break;
+            }
             if (nightMode) {
                 marker.setColor(nightColor);
             } else {

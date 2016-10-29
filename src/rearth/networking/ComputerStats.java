@@ -94,9 +94,12 @@ public final class ComputerStats {
     
     private void handleError() {
             System.err.println("Cant reach host");
-            for (StyledDisplay label : Displays) {
-                label.setVisible(false);
+            if (errorLabel != null) {
+                errorLabel.delete();
             }
+            Displays.stream().filter((label) -> (label != null)).forEach((label) -> {
+                label.setVisible(false);
+            });
             
             errorLabel = new StyledLabel("PC Offline", (int) posX + 10, (int) posY + 5);
             errorLabel.setSize(errorLabel.getHeight(), 200);
@@ -132,6 +135,9 @@ public final class ComputerStats {
         rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(1);
         rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(StyledSwitch.States.normal);
         System.out.println("showing music");
+        Displays.stream().filter((label) -> (label != null)).forEach((label) -> {
+            label.setVisible(true);
+        });
         musicHidden = false;
     }
     
@@ -191,9 +197,15 @@ public final class ComputerStats {
         }
         init();
         
-        cpuDisplay.setLevel((int) CPUusage +1);
-        ramDisplay.setLevel((int) RAMusage + 1);
-        gpuDisplay.setLevel((int) GPUload + 1);
+        if (CPUusage < 6 && CPUusage > 1) {
+            CPUusage = 5;
+        }if (GPUload < 6 && GPUload > 1) {
+            GPUload = 5;
+        }
+        
+        cpuDisplay.setLevel((int) CPUusage);
+        ramDisplay.setLevel((int) RAMusage);
+        gpuDisplay.setLevel((int) GPUload);
         
         
     }

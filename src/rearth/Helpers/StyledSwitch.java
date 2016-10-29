@@ -37,6 +37,7 @@ public class StyledSwitch {
     private final String[] Text;
     private final Rectangle Background = new Rectangle();
     private final Color color = Color.rgb(0, 0, 0, 0.15);
+    private final Color lockedColor = Color.rgb(30, 30, 30, 0.35);
     private final Color selectorColor = Color.rgb(220, 30, 30, 0.7);
     private int numofTexts = 0;
     private static final java.awt.Font defaultFont = new java.awt.Font("Carlito", java.awt.Font.PLAIN, 18);
@@ -55,6 +56,7 @@ public class StyledSwitch {
     private boolean MusicControl = false;
     private boolean used = false;
     private States state = States.normal;
+    private boolean nightmode = false;
     private final CornerRadii radii = new CornerRadii(
             radius, radius, radius, radius, radius, radius, radius, radius,
             false,  false,  false,  false,  false,  false,  false,  false
@@ -358,10 +360,22 @@ public class StyledSwitch {
     }
     
     public void setNightMode(boolean state) {
+        nightmode = state;
         if (state) {
+            if (this.state.equals(States.locked)) {
+                selection.setBackground(new Background(new BackgroundFill(Color.rgb(60, 60, 60, 0.45), radii, insets)));
+                selection.setEffect(null);
+                return;
+            }
             selection.setBackground(new Background(new BackgroundFill(Color.rgb(80, 0, 20), radii, insets)));
             selection.setEffect(null);
         } else {
+            System.out.println(this.state);
+            if (this.state.equals(States.locked)) {
+                selection.setBackground(new Background(new BackgroundFill(lockedColor, radii, insets)));
+                selection.setEffect(borderGlow);
+                return;
+            }
             selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
             selection.setEffect(borderGlow);
         }
@@ -406,9 +420,12 @@ public class StyledSwitch {
         switch (state) {
             case normal:
                 selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
+                if (nightmode) {
+                    selection.setBackground(new Background(new BackgroundFill(Color.rgb(80, 0, 20), radii, insets)));
+                }
                 break;
             case locked:
-                selection.setBackground(new Background(new BackgroundFill(Color.DARKGRAY, radii, insets)));
+                selection.setBackground(new Background(new BackgroundFill(lockedColor, radii, insets)));
                 break;
             case displayOnly:
                 selection.setBackground(new Background(new BackgroundFill(selectorColor, radii, insets)));
