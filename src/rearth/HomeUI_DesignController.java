@@ -30,8 +30,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
-import rearth.Helpers.StyledDisplay;
 import rearth.Helpers.StyledSwitch;
+import rearth.Helpers.Weather;
 import rearth.networking.ComputerStats;
 
 /**
@@ -72,7 +72,13 @@ public class HomeUI_DesignController implements Initializable {
     public ImageView WeatherImageB;
     @FXML
     public ImageView WeatherImageC;
-    
+    @FXML
+    public Rectangle WeatherA;
+    @FXML
+    public Rectangle WeatherB;
+    @FXML
+    public Rectangle WeatherC;
+        
     public Button SleepMode = new Button("Schlafen");
     
     public void hideMusic(int state) {

@@ -47,16 +47,16 @@ public class StyledSwitch {
     private final ArrayList<Label> Labels = new ArrayList<>();
     private final ArrayList<String> Texts = new ArrayList<>();
     private final int animTime = 500;
-    private final int radius = 3;
     private boolean FitnessMode = false;
     private final DropShadow borderGlow;
-    private final Insets insets =  new Insets(0, -2, 0, -2);
     private boolean twomode = false;
     private boolean NightControl = false;
     private boolean MusicControl = false;
     private boolean used = false;
     private States state = States.normal;
     private boolean nightmode = false;
+    private final int radius = 3;
+    private final Insets insets =  new Insets(0, -2, 0, -2);
     private final CornerRadii radii = new CornerRadii(
             radius, radius, radius, radius, radius, radius, radius, radius,
             false,  false,  false,  false,  false,  false,  false,  false

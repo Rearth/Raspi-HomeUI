@@ -16,6 +16,7 @@ import java.util.List;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import javax.xml.bind.JAXBException;
 import rearth.Helpers.TimeService.relativeDays;
 
@@ -25,8 +26,8 @@ import rearth.Helpers.TimeService.relativeDays;
  */
 public class Weather {
     
-    final String WOEID = "646299";
-    final String WOEIDalternative = "677069";
+    private final String WOEID = "646299";
+    private final String WOEIDalternative = "677069";
     
     public Image getImage() {
         
@@ -65,25 +66,32 @@ public class Weather {
     }
     
     private boolean moved = false;
+    private final static int moveby = 10;
     
-    public void updateWidget(Label[] Labels, ImageView[] imageA) {
+    public void updateWidget(Label[] Labels, ImageView[] imageA, Rectangle[] Rects) {
         
-        if (Temperatur[0] < 10 && !moved) {
+        if (Temperatur[0] < 10 && Temperatur[0] >= 0 && !moved) {
             for (Label label : Labels) {
-                label.setLayoutX(label.getLayoutX() - 30);
+                label.setLayoutX(label.getLayoutX() - moveby);
             }
             for (ImageView label : imageA) {
-                label.setLayoutX(label.getLayoutX() - 30);
+                label.setLayoutX(label.getLayoutX() - moveby);
+            }
+            for (Rectangle rect : Rects) {
+                rect.setLayoutX(rect.getLayoutX() - moveby);
             }
             moved = true;
         } else if (Temperatur[0] >= 10 && moved){
             for (Label label : Labels) {
-                label.setLayoutX(label.getLayoutX() + 30);
+                label.setLayoutX(label.getLayoutX() + moveby);
+            }
+            for (Rectangle rect : Rects) {
+                rect.setLayoutX(rect.getLayoutX() - moveby);
             }
             for (ImageView label : imageA) {
-                label.setLayoutX(label.getLayoutX() + 30);
-                moved = false;
+                label.setLayoutX(label.getLayoutX() + moveby);
             }
+            moved = false;
         }
         Labels[0].setText(Integer.toString(Temperatur[0]) + "°");
         Labels[1].setText(State[0]);
@@ -104,7 +112,8 @@ public class Weather {
             YahooWeatherService service = new YahooWeatherService();
             Channel channel = null;
             try {
-            channel = service.getForecast(WOEID, DegreeUnit.CELSIUS);
+                channel = service.getForecast(WOEID, DegreeUnit.CELSIUS);
+                System.out.println("trying here");
             } catch(IllegalStateException ex) {
                 System.err.println("Error getting weather Data: No result from the Service!");
                 System.err.println("Trying again with Nagold");
@@ -140,6 +149,7 @@ public class Weather {
         } catch (JAXBException ex) {
             System.err.println("Cant get Weather Data" + ex);
         }
+        System.out.println("-----------------Weather Done-----------------------");
         
     }
     
@@ -220,5 +230,6 @@ public class Weather {
                 return "Error";
         }
     }
+    
     
 }

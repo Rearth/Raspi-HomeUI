@@ -20,7 +20,8 @@ import java.net.Socket;
 public class ComputerConnection {
     
     private static final int port = 230;
-    private static final String serverName = "192.168.0.10";    //"192.168.0.20" or "localhost"
+    private static final String serverName = "192.168.0.50";    //"192.168.0.50" or "localhost"
+    private static final String serverNameAlternative = "192.168.0.51";    //"192.168.0.51" or "localhost"
     private static final int timeout = 1000;
            
     public String Communicate(String toSend) {
@@ -42,8 +43,25 @@ public class ComputerConnection {
             //System.err.println("Error: 643");
         }
         
+        try (Socket client = new Socket()){
+            client.connect(new InetSocketAddress(serverNameAlternative, port), timeout);
+            client.setSoTimeout(timeout);
+            //System.out.println("Connecting to " + serverName + " on port " + port);
+            OutputStream outToServer = client.getOutputStream();
+            DataOutputStream out = new DataOutputStream(outToServer);
+            out.writeUTF(toSend);
+            
+            InputStream inFromServer = client.getInputStream();
+            DataInputStream in = new DataInputStream(inFromServer);
+
+            return in.readUTF();
+            
+        }catch(IOException e) {
+            //System.err.println("Error: 643");
+        }
         return "couldnt connect";
     }
+    
     
     public static double getCPUusage(String data) {       //both in %
         if (data.equals("error")) {

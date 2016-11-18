@@ -128,8 +128,6 @@ public class FitnessData {
         
         int i = 0;
         
-        rearth.HomeUI_DesignController instance = rearth.HomeUI_DesignController.getInstance();
-        
         DrawnObjects.stream().forEach((label) -> {
             label.delete();
         });

@@ -11,11 +11,13 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import rearth.Fitness.FitnessData;
@@ -67,16 +69,11 @@ public class Raspi_HomeUI extends Application {
         
     }
     
-    void initStartUp() {
-        
-        System.out.println("-------------------Starting-------------------------");
-        
-        curDatum = new TimeService.Datum();
-        curZeit = new TimeService.Zeit();
-        updateTime();
+    private void startWeather() {
         
         try {
             Weather.getinstance().init();
+            Platform.runLater(this::showWeather);
         } catch (IOException ex) {
             System.out.println("Error getting Weather Data, trying again");
             try {
@@ -85,12 +82,42 @@ public class Raspi_HomeUI extends Application {
                 Logger.getLogger(Raspi_HomeUI.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
+    }
+    
+    private void showWeather() {
+        
+            HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
+            Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
+            ImageView[] Images = {UI.WeatherImage, UI.WeatherImageB, UI.WeatherImageC};
+            Rectangle[] Rects = {UI.WeatherA, UI.WeatherB, UI.WeatherC};
+            Weather.getinstance().updateWidget(Labels, Images, Rects);
+    }
+    
+    void initStartUp() {
+        
+        System.out.println("-------------------Starting-------------------------");
+        
+        curDatum = new TimeService.Datum();
+        curZeit = new TimeService.Zeit();
+        updateTime();
+        
+        
+        
+        Thread thread = new Thread(){
+            @Override
+            public void run(){
+                startWeather();
+            }
+        };
+
+        thread.start();
         
         Weather wetter = Weather.getinstance();
         HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
         Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
         ImageView[] Images = {UI.WeatherImage, UI.WeatherImageB, UI.WeatherImageC};
-        wetter.updateWidget(Labels, Images);
+        Rectangle[] Rects = {UI.WeatherA, UI.WeatherB, UI.WeatherC};
+        wetter.updateWidget(Labels, Images, Rects);
         
         Stundenplan stundenplan = Stundenplan.getInstance();
         System.out.println(stundenplan);
@@ -159,7 +186,8 @@ public class Raspi_HomeUI extends Application {
         HomeUI_DesignController UI = HomeUI_DesignController.getInstance();
         Label[] Labels = {UI.TempToday, UI.WeatherState, UI.TempMorgen, UI.TempUbermorgen};
         ImageView[] Images = {UI.WeatherImage, UI.WeatherImageB, UI.WeatherImageC};
-        wetter.updateWidget(Labels, Images);
+        Rectangle[] Rects = {UI.WeatherA, UI.WeatherB, UI.WeatherC};
+        wetter.updateWidget(Labels, Images, Rects);
         
         FitnessData.getInstance().updateData();
         
