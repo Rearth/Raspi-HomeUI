@@ -104,11 +104,7 @@ public class HomeUI_DesignController implements Initializable {
     public void toggleNightMode(int state) {
         
         System.out.println("changing night mode; state=" + state);
-        if (state == 0) {
-            nightmode = true;
-        } else {
-            nightmode = false;
-        }
+        nightmode = state == 0;
         
         if (!nightmode) {
             SleepMode.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
@@ -134,6 +130,10 @@ public class HomeUI_DesignController implements Initializable {
             MusicChanger.setNightMode(true);
             musiclabel.NightMode(true);
             nightlabel.NightMode(true);
+            Color nightColor = Color.rgb(0, 0, 0, 0.18);
+            WeatherA.setFill(nightColor);
+            WeatherB.setFill(nightColor);
+            WeatherC.setFill(nightColor);
             
             nightmode = true;
         } else {
@@ -148,6 +148,10 @@ public class HomeUI_DesignController implements Initializable {
             MusicChanger.setNightMode(false);
             musiclabel.NightMode(false);
             nightlabel.NightMode(false);
+            Color color = Color.rgb(0, 0, 0, 0.1);
+            WeatherA.setFill(color);
+            WeatherB.setFill(color);
+            WeatherC.setFill(color);
             
             for (StyledLabel label : StundenplanItems) {
                 label.NightMode(false);

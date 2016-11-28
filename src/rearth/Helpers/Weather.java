@@ -86,7 +86,7 @@ public class Weather {
                 label.setLayoutX(label.getLayoutX() + moveby);
             }
             for (Rectangle rect : Rects) {
-                rect.setLayoutX(rect.getLayoutX() - moveby);
+                rect.setLayoutX(rect.getLayoutX() + moveby);
             }
             for (ImageView label : imageA) {
                 label.setLayoutX(label.getLayoutX() + moveby);

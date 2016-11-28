@@ -28,9 +28,9 @@
       <Accordion layoutX="216.0" layoutY="104.0" />
       <Pane layoutX="31.0" layoutY="465.0" prefHeight="139.0" prefWidth="290.0">
          <children>
-            <Rectangle fx:id="WeatherA" arcHeight="10.0" arcWidth="10.0" fill="#00000026" height="105.0" layoutX="-17.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="172.0" />
-            <Rectangle fx:id="WeatherB" arcHeight="10.0" arcWidth="10.0" fill="#00000026" height="86.0" layoutX="158.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="68.0" />
-            <Rectangle fx:id="WeatherC" arcHeight="10.0" arcWidth="10.0" fill="#00000026" height="86.0" layoutX="229.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="68.0" />
+            <Rectangle fx:id="WeatherA" arcHeight="15.0" arcWidth="15.0" fill="#0000001a" height="105.0" layoutX="-17.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="172.0" />
+            <Rectangle fx:id="WeatherB" arcHeight="15.0" arcWidth="15.0" fill="#0000001a" height="86.0" layoutX="158.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="68.0" />
+            <Rectangle fx:id="WeatherC" arcHeight="15.0" arcWidth="15.0" fill="#0000001a" height="86.0" layoutX="229.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="68.0" />
             <Label fx:id="TempMorgen" layoutX="182.0" layoutY="95.0" text="0°">
                <font>
                   <Font name="Verdana" size="15.0" />
