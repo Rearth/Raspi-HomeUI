@@ -8,6 +8,8 @@ package rearth;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 
@@ -31,7 +33,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
 import rearth.Helpers.StyledSwitch;
-import rearth.Helpers.Weather;
+import rearth.IO.PinHandler.DisplayState;
 import rearth.networking.ComputerStats;
 
 /**
@@ -98,6 +100,29 @@ public class HomeUI_DesignController implements Initializable {
     private void QuitUI(Event event) {
         System.out.println("Ending");
         System.exit(0);
+    }
+    
+    @FXML
+    private void timeClicked(Event event) {
+        
+        DisplayState display = rearth.IO.PinHandler.getDisplayState();
+        System.out.println("time clicked; state=" + display.name());
+        if (display.equals(DisplayState.closed)) {
+            rearth.IO.PinHandler.setDisplayPos(DisplayState.opened);
+        }
+        
+        Sleeping = false;
+        black.setVisible(false);
+        timeLabel.setLayoutX(759);
+        timeLabel.setLayoutY(32);
+        timeLabel.setPrefSize(239, 92);
+        timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 71));
+        dateLabel.setLayoutX(759);
+        dateLabel.setLayoutY(115);
+        dateLabel.setPrefSize(239, 26);
+        dateLabel.setFont(Font.font("Carlito", 20));
+        BackgroundPanel.getChildren().remove(black);
+        
     }
     
     //@FXML
@@ -211,11 +236,11 @@ public class HomeUI_DesignController implements Initializable {
         drawMusicControls();
                 
     }
-    
+    private Rectangle black = null;
     private void startSleepMode() {
         
         Sleeping = true;
-        Rectangle black = new Rectangle();
+        black = new Rectangle();
         black.setFill(Color.BLACK);
         black.setHeight(800);
         black.setWidth(1200);
@@ -248,6 +273,9 @@ public class HomeUI_DesignController implements Initializable {
                 dateLabel.setFont(Font.font("Carlito", 20));
                 BackgroundPanel.getChildren().remove(black);
             });
+        
+            rearth.IO.PinHandler.setDisplayPos(DisplayState.closed);
+        
     }
     
     public static boolean Sleeping = false;

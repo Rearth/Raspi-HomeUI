@@ -15,17 +15,16 @@
 <AnchorPane id="AnchorPane" fx:id="BackgroundPanel" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rearth.HomeUI_DesignController">
     <children>
       <Button fx:id="buttonQuit" cancelButton="true" focusTraversable="false" layoutX="948.0" layoutY="149.0" onAction="#QuitUI" prefHeight="34.0" prefWidth="50.0" text="Quit" />
-      <Label fx:id="timeLabel" alignment="CENTER" layoutX="759.0" layoutY="32.0" prefHeight="92.0" prefWidth="239.0" text="00:00" textAlignment="CENTER">
+      <Label fx:id="timeLabel" alignment="CENTER" layoutX="759.0" layoutY="32.0" onMouseClicked="#timeClicked" prefHeight="92.0" prefWidth="239.0" text="00:00" textAlignment="CENTER">
          <font>
             <Font name="Verdana Bold" size="71.0" />
          </font>
       </Label>
-      <Label fx:id="dateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="759.0" layoutY="115.0" prefHeight="26.0" prefWidth="239.0" text="Sonntag, 1. September" textAlignment="CENTER">
+      <Label fx:id="dateLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="759.0" layoutY="115.0" onMouseClicked="#timeClicked" prefHeight="26.0" prefWidth="239.0" text="Sonntag, 1. September" textAlignment="CENTER">
          <font>
             <Font name="Calibri" size="22.0" />
          </font>
       </Label>
-      <Accordion layoutX="216.0" layoutY="104.0" />
       <Pane layoutX="31.0" layoutY="465.0" prefHeight="139.0" prefWidth="290.0">
          <children>
             <Rectangle fx:id="WeatherA" arcHeight="15.0" arcWidth="15.0" fill="#0000001a" height="105.0" layoutX="-17.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="172.0" />

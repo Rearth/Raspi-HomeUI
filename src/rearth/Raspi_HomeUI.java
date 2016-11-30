@@ -24,6 +24,7 @@ import rearth.Fitness.FitnessData;
 import rearth.Helpers.Stundenplan;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.Weather;
+import rearth.IO.PinHandler;
 /**
  *
  * @author Darkp
@@ -126,6 +127,8 @@ public class Raspi_HomeUI extends Application {
         
         System.out.println("Fitnesselements=" + FitnessData.getInstance().NumOfElements());
         FitnessData.getInstance().drawLatest(775, 350);     //270
+        System.out.println("---------------Setting Servos-----------------------");
+        rearth.IO.PinHandler.setDisplayPos(PinHandler.DisplayState.opened);
     }
     
     void fastTasks() {
