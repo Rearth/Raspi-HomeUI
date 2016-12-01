@@ -46,24 +46,23 @@ public class PinHandler {
         System.out.println("setting display to " + state);
         
         if (state.equals(DisplayState.closed)) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                instance.servoDisplay.moveTo(servoDisplayPosUp, 100, 10, 500);
+                }
+            }, 10);
             
-            instance.servoDisplay.setpos(servoDisplayPosDown - 3);
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    instance.servoDisplay.setpos(servoDisplayPosUp);
-                }
-            }, 2*1000);
+            
         } else {
-            instance.servoDisplay.setpos(servoDisplayPosUp + 3);
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    instance.servoDisplay.setpos(servoDisplayPosDown);
+                instance.servoDisplay.moveTo(servoDisplayPosDown, 100, 10);
                 }
-            }, 2*1000);          
+            }, 10);
         }
         instance.displayState = state;
     }

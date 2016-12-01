@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 
@@ -246,6 +247,13 @@ public class HomeUI_DesignController implements Initializable {
         black.setWidth(1200);
         BackgroundPanel.getChildren().add(black);
         
+        FadeTransition ft = new FadeTransition(Duration.millis(500), black);
+        ft.setFromValue(0F);
+        ft.setToValue(1.0F);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
+        
         timeLabel.setLayoutX(362);
         timeLabel.setLayoutY(250);
         timeLabel.setPrefSize(400, 100);
@@ -272,6 +280,7 @@ public class HomeUI_DesignController implements Initializable {
                 dateLabel.setPrefSize(239, 26);
                 dateLabel.setFont(Font.font("Carlito", 20));
                 BackgroundPanel.getChildren().remove(black);
+                rearth.IO.PinHandler.setDisplayPos(DisplayState.opened);
             });
         
             rearth.IO.PinHandler.setDisplayPos(DisplayState.closed);

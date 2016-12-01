@@ -6,8 +6,11 @@
 package rearth.IO;
 
 import com.pi4j.wiringpi.Gpio;
+import java.awt.Point;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -65,13 +68,50 @@ public class PWMPin extends IOPin{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                nothingAgain();
+                stop();
             }
-        }, 2*1000);
+        }, 1500);
     }
     
-    private void nothingAgain() {
-        stop();       
+    public void moveTo(int moveTo, int steps, int sleepTime) {
+        moveTo(moveTo, steps, sleepTime, 0);
+    }
+    
+    public void moveTo(int moveTo, int steps, int sleepTime, int initialDelay) {
+                     
+        try {
+            Thread.sleep(initialDelay);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PWMPin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Point p1 = new Point(0, pos);
+        Point p2 = new Point(steps, moveTo);
+        float m = ((float) p2.y - (float)p1.y) / ((float)p2.x - (float)p1.x);
+
+        System.out.println("starting servo linear curve: p1=" + p1 + " p2=" + p2 + " m=" + m + " theor: " + ((p2.y - p1.y) / (p2.x - p1.x)));
+        init(number);
+
+        for (int x = 0; x <= steps; x++) {
+            
+            float xf = x;
+            float curVal = (m * (xf - p1.x)) + p1.y;
+            Gpio.pwmWrite(number, (int) curVal);
+            this.pos = (int) curVal;
+
+            //System.out.println("x=" + x + " f(x)=" + curVal);
+
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PWMPin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        System.out.println("done linear curve");
+        stop();
+        
+        
     }
     
 }
