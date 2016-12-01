@@ -50,7 +50,7 @@ public class PinHandler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                instance.servoDisplay.moveTo(servoDisplayPosUp, 100, 10, 500);
+                instance.servoDisplay.moveTo(servoDisplayPosUp, 100, 15, 500);
                 }
             }, 10);
             
@@ -60,7 +60,7 @@ public class PinHandler {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                instance.servoDisplay.moveTo(servoDisplayPosDown, 100, 10);
+                instance.servoDisplay.moveTo(servoDisplayPosDown, 100, 10, 200);
                 }
             }, 10);
         }
