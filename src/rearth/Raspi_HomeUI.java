@@ -127,8 +127,12 @@ public class Raspi_HomeUI extends Application {
         
         System.out.println("Fitnesselements=" + FitnessData.getInstance().NumOfElements());
         FitnessData.getInstance().drawLatest(775, 350);     //270
-        System.out.println("---------------Setting Servos-----------------------");
-        rearth.IO.PinHandler.setDisplayPos(PinHandler.DisplayState.opened);
+        if (System.getProperty("os.name").equals("Windows 10")) {
+            System.out.println("using Windows 10, not setting Servos");
+        } else {
+            System.out.println("---------------Setting Servos-----------------------");
+            rearth.IO.PinHandler.setDisplayPos(PinHandler.DisplayState.opened);
+        }
     }
     
     void fastTasks() {

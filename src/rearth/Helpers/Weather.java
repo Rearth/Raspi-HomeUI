@@ -26,8 +26,9 @@ import rearth.Helpers.TimeService.relativeDays;
  */
 public class Weather {
     
-    private final String WOEID = "646299";
-    private final String WOEIDalternative = "677069";
+    private static final String WOEID = "646299";
+    private static final String WOEIDalternative = "677069";
+    private static final String WOEIDthird = "698064";
     
     public Image getImage() {
         
@@ -120,8 +121,13 @@ public class Weather {
                 try {
                     channel = service.getForecast(WOEIDalternative, DegreeUnit.CELSIUS);
                 } catch (IllegalStateException ex2) {
-                    System.err.println("Nagold also not Working");
-                    return;
+                    System.err.println("Nagold also not Working, trying Stuttgart");
+                    try {
+                        channel = service.getForecast(WOEIDthird, DegreeUnit.CELSIUS);
+                    } catch (IllegalStateException ex3) {
+                        System.err.println("Stuttgart also not Working");
+                        return;
+                    }
                 }
             }
             List<Forecast> forecast= channel.getItem().getForecasts();
