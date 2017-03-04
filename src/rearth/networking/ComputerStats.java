@@ -22,7 +22,7 @@ public final class ComputerStats {
 
     final static ComputerStats instance = new ComputerStats();
     
-    private final int posX = 350;
+    private final int posX = 375;
     private final int posY = 540;
     private final int vGap = 60;
     

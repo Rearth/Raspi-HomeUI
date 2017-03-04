@@ -8,8 +8,6 @@ package rearth;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
@@ -281,6 +279,7 @@ public class HomeUI_DesignController implements Initializable {
                 dateLabel.setFont(Font.font("Carlito", 20));
                 BackgroundPanel.getChildren().remove(black);
                 rearth.IO.PinHandler.setDisplayPos(DisplayState.opened);
+                Raspi_HomeUI.getInstance().hourlyTasks();
             });
         
             rearth.IO.PinHandler.setDisplayPos(DisplayState.closed);

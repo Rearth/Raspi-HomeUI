@@ -36,7 +36,6 @@ public class Weather {
     }
     public Image getImage(int day) {
         
-        String ImageName = "";
         String FilePath =      "/home/pi/Desktop/Java/Images/Weather/" + nameState(Codes[day]) + ".png";
         File tester = new File(FilePath);
         if (tester.exists()) {
@@ -51,9 +50,9 @@ public class Weather {
         return image;
     }
     
-    private int Temperatur[] = {0, 0, 0};
-    private String State[] = {"Error", "Error", "Error"};
-    private int Codes[] = {0, 0, 0};
+    private final int Temperatur[] = {0, 0, 0};
+    private final String State[] = {"Error", "Error", "Error"};
+    private final int Codes[] = {0, 0, 0};
     
     
     private static final Weather Instance = new Weather();
@@ -67,11 +66,14 @@ public class Weather {
     }
     
     private boolean moved = false;
-    private final static int moveby = 10;
+    private final static int moveby = 25;
     
     public void updateWidget(Label[] Labels, ImageView[] imageA, Rectangle[] Rects) {
         
-        if (Temperatur[0] < 10 && Temperatur[0] >= 0 && !moved) {
+        System.out.println("updating widget, moved=" + moved);
+        
+        if (Temperatur[0] < 10 && Temperatur[0] >= 0 && moved) {
+            System.out.println("creating one-digit temp");
             for (Label label : Labels) {
                 label.setLayoutX(label.getLayoutX() - moveby);
             }
@@ -81,8 +83,10 @@ public class Weather {
             for (Rectangle rect : Rects) {
                 rect.setLayoutX(rect.getLayoutX() - moveby);
             }
-            moved = true;
-        } else if (Temperatur[0] >= 10 && moved){
+            Labels[0].setPrefWidth(Labels[0].getPrefWidth() - moveby);
+            moved = false;
+        } else if (Temperatur[0] >= 10 && !moved){
+            System.out.println("creating two-digit temp");
             for (Label label : Labels) {
                 label.setLayoutX(label.getLayoutX() + moveby);
             }
@@ -92,7 +96,11 @@ public class Weather {
             for (ImageView label : imageA) {
                 label.setLayoutX(label.getLayoutX() + moveby);
             }
-            moved = false;
+            Labels[0].setPrefWidth(Labels[0].getPrefWidth() + moveby);
+            Labels[0].setLayoutX(Labels[0].getLayoutX() - moveby);
+            Rects[0].setWidth(Rects[0].getWidth() + moveby);
+            Rects[0].setLayoutX(Rects[0].getLayoutX() - moveby);
+            moved = true;
         }
         Labels[0].setText(Integer.toString(Temperatur[0]) + "°");
         Labels[1].setText(State[0]);

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Darkp
  */
-public class PWMPin extends IOPin{
+public class PWMPin extends IOPin {
 
     private static final int defaultClock = 384;
     private static final int defaultRange = 1000;

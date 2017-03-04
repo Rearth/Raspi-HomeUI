@@ -186,7 +186,7 @@ public class TimeService {
             
             long difference =  new Date().getTime() - olddate.getTime();
             
-            return (int) (difference / (24* 1000 * 60 * 60));
+            return (int) (difference / (24 * 1000 * 60 * 60));
         }
                 
         public String getDay() {

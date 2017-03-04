@@ -151,8 +151,7 @@ public class FitnessData {
     private FitnessData() {
         this.DrawnObjects = new ArrayList<>();
         
-        String folderPathA = new File("").getAbsolutePath();
-        folderPath = folderPathA + "/FitnessData";
+        folderPath = System.getProperty("user.home") + File.separator + "FitnessData";
         File folder = new File(folderPath);
         
         if(!folder.exists()) {
@@ -196,9 +195,30 @@ public class FitnessData {
     private final ArrayList<DataObject> Activities = new ArrayList<>();
     
     private ArrayList<DataObject> lastFive() {
+        
         ArrayList<DataObject> Objects = new ArrayList<>();
-        for (int i = 5; i >= 1; i--) {
-            Objects.add(Activities.get(Activities.size() - i));
+        try {
+            for (int i = 5; i >= 1; i--) {
+                Objects.add(Activities.get(Activities.size() - i));
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("unable to find fitness dada, creating new");
+            String toWrite = "Joggen/kurz/01:03:2017/14:22";
+            
+            try {
+                Files.write(Paths.get(FitnessDataFile), toWrite.getBytes(), StandardOpenOption.APPEND);
+            } catch (IOException exe) {
+                Logger.getLogger(FitnessData.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i = 0; i < 5; i++) {
+                DataObject object = new DataObject(Types.Joggen, length.kurz, new Datum(), new Zeit());
+                object.save();
+                Activities.add(object);
+            }
+                
+            sortByDateTime(Activities);
+            updateList();
+            drawLatest(775, 350);
         }
         return Objects;
     }
