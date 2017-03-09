@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
 import javafx.event.Event;
@@ -124,13 +125,18 @@ public class HomeUI_DesignController implements Initializable {
         
     }
     
-    //@FXML
-    public void toggleNightMode(int state) {
+    public static boolean autoDark = false;
+    private static boolean darkened = false;
+    
+    private void setDark(boolean state) {
         
-        System.out.println("changing night mode; state=" + state);
-        nightmode = state == 0;
+        if (darkened == state) {
+            return;
+        }
         
-        if (!nightmode) {
+        darkened = state;
+        
+        if (state) {
             SleepMode.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
             BackgroundPanel.setStyle("-fx-background-color: #0a001a;");
             buttonQuit.setStyle("-fx-border-color:  rgba(52, 17, 17, 0.8); -fx-border-radius: 5; -fx-border-width: 3; -fx-background-color: #0a001a;");
@@ -189,6 +195,34 @@ public class HomeUI_DesignController implements Initializable {
             }
             ComputerStats.setNightMode(false);
         }
+    }
+    
+    public static void switchDark(boolean dark) {
+        
+        if (darkened == dark) {
+            return;
+        }
+        
+        Platform.runLater(() -> {
+            instance.setDark(dark);
+        });
+    }
+    
+    //@FXML
+    public void toggleNightMode(int state) {
+        
+        if (state == 2) {
+            System.out.println("Started Dark mode auto...");
+            autoDark = true;
+            return;
+        }
+        
+        autoDark = false;
+        
+        System.out.println("changing dark mode; state=" + state);
+        nightmode = state == 0;
+        
+        this.setDark(!nightmode);
         
     }
     
@@ -211,19 +245,19 @@ public class HomeUI_DesignController implements Initializable {
         timers = new StyledSwitch(760, 300, 250, "Kurz", "Mittel", "Lang");
         timers.setFitnessMode();
         
-        nightlabel = new StyledLabel("Dunkel", 22, 10);
-        
-        ModeSelector = new StyledSwitch(5, 58, 90, "Aus", "Ein");
+        nightlabel = new StyledLabel("Dunkel", 18, 10, 45, 140);
+        nightlabel.setTextCenter();
+        ModeSelector = new StyledSwitch(5, 58, 150, "Aus", "Ein", "Auto");
         ModeSelector.setNightControl();
         
-        musiclabel = new StyledLabel("Music", 121, 10);
-        MusicChanger = new StyledSwitch(100, 58, 90, "Aus", "Ein");
+        musiclabel = new StyledLabel("Music", 177, 10, 45, 85);
+        MusicChanger = new StyledSwitch(164, 58, 90, "Aus", "Ein");
         MusicChanger.setMusicControl();
         if (ComputerStats.getInstance().connected) {
             MusicChanger.setState(1);
         }
         
-        SleepMode.setLayoutX(200);
+        SleepMode.setLayoutX(280);
         SleepMode.setLayoutY(20);
         SleepMode.setPrefSize(150, 90);
         SleepMode.setFocusTraversable(false);
@@ -235,7 +269,9 @@ public class HomeUI_DesignController implements Initializable {
         drawMusicControls();
                 
     }
+    
     private Rectangle black = null;
+    
     private void startSleepMode() {
         
         Sleeping = true;

@@ -84,6 +84,9 @@ public class Weather {
                 rect.setLayoutX(rect.getLayoutX() - moveby);
             }
             Labels[0].setPrefWidth(Labels[0].getPrefWidth() - moveby);
+            Labels[0].setLayoutX(Labels[0].getLayoutX() + moveby);
+            Rects[0].setWidth(Rects[0].getWidth() - moveby);
+            Rects[0].setLayoutX(Rects[0].getLayoutX() + moveby);
             moved = false;
         } else if (Temperatur[0] >= 10 && !moved){
             System.out.println("creating two-digit temp");

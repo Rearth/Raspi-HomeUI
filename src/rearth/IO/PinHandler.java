@@ -5,9 +5,12 @@
  */
 package rearth.IO;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,17 +22,31 @@ public class PinHandler {
         opened, closed
     }
     
-    private final ArrayList<IOPin> Pins = new ArrayList<>();
-    private final PWMPin servoDisplay = new PWMPin(1, servoDisplayPosUp);
+    public final ArrayList<IOPin> Pins = new ArrayList<>();
+    public final PWMPin servoDisplay;
+    public final AnalogInputPin LDR;
+    public final AnalogInputPin ClapSensor;
     
     private static final PinHandler instance = new PinHandler();
     private static final int servoDisplayPosUp = 1;
     private static final int servoDisplayPosDown = 81;
+    private static Thread AnalogHandle;
     
     private DisplayState displayState = DisplayState.opened;
     
     private PinHandler() {
+        clearGPIO();
+        
+        servoDisplay = new PWMPin(1, servoDisplayPosUp);
+        LDR = new AnalogInputPin(0, 10);
+        ClapSensor = new AnalogInputPin(1, 32);
+        
         Pins.add(servoDisplay);
+        Pins.add(LDR);
+        Pins.add(ClapSensor);
+        
+        AnalogHandle = new AnalogHandler();
+        AnalogHandle.start();
     }
     
     public static PinHandler getInstance() {
@@ -69,6 +86,14 @@ public class PinHandler {
 
     public static DisplayState getDisplayState() {
         return instance.displayState;
+    }
+    
+    private void clearGPIO() {
+        try {
+            Runtime.getRuntime().exec("python /home/pi/Desktop/Shutdown.py");
+        } catch (IOException ex) {
+            Logger.getLogger(PinHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
