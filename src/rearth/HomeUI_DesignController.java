@@ -33,6 +33,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
 import rearth.Helpers.StyledSwitch;
+import rearth.IO.PinHandler;
 import rearth.IO.PinHandler.DisplayState;
 import rearth.networking.ComputerStats;
 
@@ -99,6 +100,7 @@ public class HomeUI_DesignController implements Initializable {
     @FXML
     private void QuitUI(Event event) {
         System.out.println("Ending");
+        PinHandler.getInstance().shutdown();
         System.exit(0);
     }
     
