@@ -160,6 +160,8 @@ public class HomeUI_DesignController implements Initializable {
             timers.setNightMode(true);
             ModeSelector.setNightMode(true);
             MusicChanger.setNightMode(true);
+            claplabel.NightMode(true);
+            clapChanger.setNightMode(true);
             musiclabel.NightMode(true);
             nightlabel.NightMode(true);
             Color nightColor = Color.rgb(0, 0, 0, 0.18);
@@ -180,6 +182,8 @@ public class HomeUI_DesignController implements Initializable {
             MusicChanger.setNightMode(false);
             musiclabel.NightMode(false);
             nightlabel.NightMode(false);
+            claplabel.NightMode(false);
+            clapChanger.setNightMode(false);
             Color color = Color.rgb(0, 0, 0, 0.1);
             WeatherA.setFill(color);
             WeatherB.setFill(color);
@@ -259,7 +263,16 @@ public class HomeUI_DesignController implements Initializable {
             MusicChanger.setState(1);
         }
         
-        SleepMode.setLayoutX(280);
+        claplabel = new StyledLabel("Clap", 275, 10, 45, 85);
+        clapChanger = new StyledSwitch(264, 58, 90, "Aus", "Ein");
+        clapChanger.setClapControl();
+        clapChanger.setState(1);
+        //MusicChanger.setMusicControl();
+        //if (ComputerStats.getInstance().connected) {
+        //    MusicChanger.setState(1);
+        //}
+        
+        SleepMode.setLayoutX(380);
         SleepMode.setLayoutY(20);
         SleepMode.setPrefSize(150, 90);
         SleepMode.setFocusTraversable(false);
@@ -328,8 +341,10 @@ public class HomeUI_DesignController implements Initializable {
     
     private StyledLabel nightlabel = null;
     private StyledLabel musiclabel = null;
+    private StyledLabel claplabel = null;
     private StyledSwitch ModeSelector = null;
     public StyledSwitch MusicChanger = null;
+    public StyledSwitch clapChanger = null;
     
     private final int MusicX = 0;
     private final int MusicY = -8;
@@ -501,7 +516,7 @@ public class HomeUI_DesignController implements Initializable {
         
     }
     
-    private void switchState() {
+    public void switchState() {
         playScaleAnim(centerIcon);
         if (ComputerStats.getInstance().playing) {
             centerIcon.setImage(new Image(getClass().getResource("/rearth/Images/play.png").toString()));

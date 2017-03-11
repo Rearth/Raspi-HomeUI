@@ -25,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import rearth.Fitness.FitnessData;
+import rearth.IO.AnalogHandler;
 
 /**
  *
@@ -52,6 +53,7 @@ public class StyledSwitch {
     private boolean twomode = false;
     private boolean NightControl = false;
     private boolean MusicControl = false;
+    private boolean ClapControl = false;
     private boolean used = false;
     private States state = States.normal;
     private boolean nightmode = false;
@@ -235,6 +237,9 @@ public class StyledSwitch {
         if (MusicControl) {
             rearth.HomeUI_DesignController.getInstance().hideMusic(selected);
         }
+        if (ClapControl) {
+            AnalogHandler.clapEnabled = selected == 1;
+        }
     }
     
     private boolean AnimPlaying = false;
@@ -401,6 +406,10 @@ public class StyledSwitch {
     
     public void setMusicControl() {
         MusicControl = true;
+    }
+    
+    public void setClapControl() {
+        ClapControl = true;
     }
     
     public void setState(States stateSelected) {

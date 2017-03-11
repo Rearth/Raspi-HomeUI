@@ -18,8 +18,11 @@ public class AnalogHandler extends Thread {
     
     private int avgLDR = 0;
     private int avgSound = 0;
+    private int avgSoundDif = 40;
     private int LDRhigh = 0;
     private boolean clapUsed = false;
+    
+    public static boolean clapEnabled = true;
     
     @Override
     public void run() {
@@ -45,7 +48,7 @@ public class AnalogHandler extends Thread {
             LDRhigh--;
         }
         
-        if (!clapUsed) {
+        if (!clapUsed && clapEnabled) {
             checkClap();
         }
         
@@ -69,10 +72,17 @@ public class AnalogHandler extends Thread {
         avgLDR = total / PinHandler.getInstance().LDR.getValues().length;
         
         total = 0;
+        int totaldif = 0;
+        int lastvalue = 500;
         for (int i : PinHandler.getInstance().ClapSensor.getValues()) {
             if (i != 0)
                 total += i;
+            try {
+                totaldif += dif(i, lastvalue);
+            } catch (ArrayIndexOutOfBoundsException ex) { }
+            lastvalue = i;
         }
+        avgSoundDif = totaldif / PinHandler.getInstance().ClapSensor.getValues().length;
         avgSound = total / PinHandler.getInstance().ClapSensor.getValues().length;
     }
     
@@ -93,19 +103,24 @@ public class AnalogHandler extends Thread {
         int values[] = PinHandler.getInstance().ClapSensor.getValues();
         //System.out.println("values: " + Arrays.toString(values));
         
-        for (int i = 55; i < 118; i++) {
+        for (int i = 35; i < 118; i++) {
+            
+            int highpeaks = 0;
             
             int peaks = 0;
             for (int k=0; k < 10; k++) {
                 //System.out.println("dif: " + dif(values[i + k], avgSound) + " value: " + values[i + k] + " avg=" + avgSound);
-                if (dif(values[i + k], avgSound) > 75) {
+                if (dif(values[i + k], avgSound) > (int) (avgSoundDif * 1.1) + 20) {
+                    if (dif(values[i + k], avgSound) > avgSoundDif * 3 + 40) {
+                        highpeaks++;
+                    }
                     //System.out.println("found peak");
                     peaks++;
                 }
             }
             
             //System.out.println("peaks: " + peaks + " avg=" + avgSound);
-            if (peaks > 4) {
+            if (peaks > 4 && highpeaks > 0) {
                 claps++;
                 i += 10;
                 System.out.println("found possible clap");
@@ -119,7 +134,7 @@ public class AnalogHandler extends Thread {
             }
         }
         
-        System.out.println("found claps: " + claps);
+        System.out.println("found claps: " + claps + " avgSoundDif=" + avgSoundDif);
         if (claps == 2) {
             if (validateNotMore(values)) {
                 foundDoubleClap();
@@ -144,17 +159,21 @@ public class AnalogHandler extends Thread {
         
         for (int i = 1; i < 118; i++) {
             
+            int highpeaks = 0;
             int peaks = 0;
             for (int k=0; k < 10; k++) {
                 //System.out.println("dif: " + dif(values[i + k], avgSound) + " value: " + values[i + k] + " avg=" + avgSound);
-                if (dif(values[i + k], avgSound) > 75) {
+                if (dif(values[i + k], avgSound) > (int) (avgSoundDif * 1.2) + 20) {
+                    if (dif(values[i + k], avgSound) > avgSoundDif * 3) {
+                        highpeaks++;
+                    }
                     //System.out.println("found peak");
                     peaks++;
                 }
             }
             
             //System.out.println("peaks: " + peaks + " avg=" + avgSound);
-            if (peaks > 4) {
+            if (peaks > 4 && highpeaks > 0) {
                 clapN++;
                 i += 10;
             }
@@ -163,7 +182,7 @@ public class AnalogHandler extends Thread {
         return clapN == 2;
     }
     
-    private int dif (int a, int b) {
+    public static int dif (int a, int b) {
         if (a > b) {
             return a - b;
         }
@@ -175,13 +194,18 @@ public class AnalogHandler extends Thread {
         System.out.println("double clap!");
         
         clapUsed = true;
+        onDoubleClap();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 clapUsed = false;
             }
-        }, 5000);
+        }, 2000);
         
+    }
+    
+    public static void onDoubleClap() {
+        HomeUI_DesignController.getInstance().switchState();
     }
 }
