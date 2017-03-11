@@ -264,6 +264,7 @@ public class HomeUI_DesignController implements Initializable {
         }
         
         claplabel = new StyledLabel("Clap", 275, 10, 45, 85);
+        claplabel.setTextCenter();
         clapChanger = new StyledSwitch(264, 58, 90, "Aus", "Ein");
         clapChanger.setClapControl();
         clapChanger.setState(1);

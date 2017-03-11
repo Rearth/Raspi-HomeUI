@@ -20,14 +20,15 @@ import rearth.HomeUI_DesignController;
 public class AnalogInputPin extends IOPin {
     
     protected Process pythonReader;
-    private final int[] values = new int[128];
+    private final int[]values;
     private final int refreshRate;      //in Hz
     private boolean log = false;
     
-    public AnalogInputPin(int number, int refreshRate) {
+    public AnalogInputPin(int number, int refreshRate, int saveLength) {
         super(number);
         System.out.println("creating Analog Pin at number " + number);
         this.refreshRate = refreshRate;
+        values = new int[saveLength];
         
         Thread thread = new Thread(){
             @Override
@@ -37,6 +38,10 @@ public class AnalogInputPin extends IOPin {
         };
         thread.start();
         //init();
+    }
+    
+    public AnalogInputPin(int number, int refreshRate) {
+        this(number, refreshRate, 64);
     }
     
     private FileWriter writer = null;
@@ -70,7 +75,7 @@ public class AnalogInputPin extends IOPin {
                     /*for (int i = 1; i < 64; i++) {
                         values[i] = values[i - 1];
                     }*/
-                    for (int i = 127; i > 0; i --) {
+                    for (int i = values.length - 1; i > 0; i --) {
                         values[i] = values[i - 1];
                     }
                     /*values[4] = values[3];

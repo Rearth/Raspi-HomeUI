@@ -17,7 +17,7 @@ import rearth.HomeUI_DesignController;
 public class AnalogHandler extends Thread {
     
     private int avgLDR = 0;
-    private int avgSound = 0;
+    //private int avgSound = 0;
     private int avgSoundDif = 40;
     private int LDRhigh = 0;
     private boolean clapUsed = false;
@@ -48,7 +48,7 @@ public class AnalogHandler extends Thread {
             LDRhigh--;
         }
         
-        if (!clapUsed && clapEnabled) {
+        if (!clapUsed && clapEnabled && avgSoundDif < 150) {    //too noisy
             checkClap();
         }
         
@@ -71,19 +71,15 @@ public class AnalogHandler extends Thread {
         }
         avgLDR = total / PinHandler.getInstance().LDR.getValues().length;
         
-        total = 0;
         int totaldif = 0;
         int lastvalue = 500;
         for (int i : PinHandler.getInstance().ClapSensor.getValues()) {
-            if (i != 0)
-                total += i;
             try {
                 totaldif += dif(i, lastvalue);
             } catch (ArrayIndexOutOfBoundsException ex) { }
             lastvalue = i;
         }
         avgSoundDif = totaldif / PinHandler.getInstance().ClapSensor.getValues().length;
-        avgSound = total / PinHandler.getInstance().ClapSensor.getValues().length;
     }
     
     private void printStats() {
@@ -103,26 +99,22 @@ public class AnalogHandler extends Thread {
         int values[] = PinHandler.getInstance().ClapSensor.getValues();
         //System.out.println("values: " + Arrays.toString(values));
         
-        for (int i = 35; i < 118; i++) {
+        for (int i = 1; i < values.length - 41; i++) {
             
             int highpeaks = 0;
-            
-            int peaks = 0;
-            for (int k=0; k < 10; k++) {
-                //System.out.println("dif: " + dif(values[i + k], avgSound) + " value: " + values[i + k] + " avg=" + avgSound);
-                if (dif(values[i + k], avgSound) > (int) (avgSoundDif * 1.1) + 20) {
-                    if (dif(values[i + k], avgSound) > avgSoundDif * 3 + 40) {
-                        highpeaks++;
-                    }
-                    //System.out.println("found peak");
-                    peaks++;
+            int sameLevels = 0;
+            for (int k = 0; k < 40; k++) {
+                if (dif(values[i + k], values[i + k - 1]) < 3) {
+                    sameLevels++;
+                } else if (dif(values[i + k], values[i + k - 1]) > 250) {
+                    highpeaks++;
                 }
             }
             
             //System.out.println("peaks: " + peaks + " avg=" + avgSound);
-            if (peaks > 4 && highpeaks > 0) {
+            if (sameLevels > 4 && highpeaks > 1) {
                 claps++;
-                i += 10;
+                i += 55;
                 System.out.println("found possible clap");
                 Timer timer = new Timer();
                 timer.schedule(new TimerTask() {
@@ -134,52 +126,11 @@ public class AnalogHandler extends Thread {
             }
         }
         
-        System.out.println("found claps: " + claps + " avgSoundDif=" + avgSoundDif);
-        if (claps == 2) {
-            if (validateNotMore(values)) {
-                foundDoubleClap();
-            } else {
-                System.out.println("blocking clap sensor");
-                blocked = true;
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        blocked = false;
-                    }
-                }, 1600);
-            }
+        System.out.println("found claps: " + claps);
+        if (claps == 3) {
+            foundDoubleClap();
         }
         claps = 0;
-    }
-    
-    private boolean validateNotMore(int values[]) {
-        
-        int clapN = 0;
-        
-        for (int i = 1; i < 118; i++) {
-            
-            int highpeaks = 0;
-            int peaks = 0;
-            for (int k=0; k < 10; k++) {
-                //System.out.println("dif: " + dif(values[i + k], avgSound) + " value: " + values[i + k] + " avg=" + avgSound);
-                if (dif(values[i + k], avgSound) > (int) (avgSoundDif * 1.2) + 20) {
-                    if (dif(values[i + k], avgSound) > avgSoundDif * 3) {
-                        highpeaks++;
-                    }
-                    //System.out.println("found peak");
-                    peaks++;
-                }
-            }
-            
-            //System.out.println("peaks: " + peaks + " avg=" + avgSound);
-            if (peaks > 4 && highpeaks > 0) {
-                clapN++;
-                i += 10;
-            }
-        }
-        System.out.println("checking if too many claps: " + clapN);
-        return clapN == 2;
     }
     
     public static int dif (int a, int b) {
@@ -201,11 +152,37 @@ public class AnalogHandler extends Thread {
             public void run() {
                 clapUsed = false;
             }
-        }, 2000);
+        }, 5000);
         
     }
     
     public static void onDoubleClap() {
         HomeUI_DesignController.getInstance().switchState();
     }
+
+    /*private boolean onlyTwo(int[] values) {
+        
+        int amount = 0;
+        for (int i = 1; i < values.length - 50; i++) {
+            
+            int highpeaks = 0;
+            int sameLevels = 0;
+            for (int k = 0; k < 49; k++) {
+                if (dif(values[i + k], values[i + k - 1]) < 3) {
+                    sameLevels++;
+                } else if (dif(values[i + k], values[i + k - 1]) > 250) {
+                    highpeaks++;
+                }
+            }
+            
+            //System.out.println("peaks: " + peaks + " avg=" + avgSound);
+            if (sameLevels > 4 && highpeaks > 1) {
+                amount++;
+                i += 80;
+            }
+        }
+        System.out.println("checking clap num: " + amount);
+        
+        return amount == 2;
+    }*/
 }
