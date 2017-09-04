@@ -35,6 +35,7 @@ import rearth.Fitness.FitnessData;
 import rearth.Helpers.StyledSwitch;
 import rearth.IO.PinHandler;
 import rearth.IO.PinHandler.DisplayState;
+import rearth.IO.remoteHandler;
 import rearth.networking.ComputerStats;
 
 /**
@@ -160,6 +161,8 @@ public class HomeUI_DesignController implements Initializable {
             timers.setNightMode(true);
             ModeSelector.setNightMode(true);
             MusicChanger.setNightMode(true);
+            LightSwitch.setNightMode(true);
+            LightLabel.NightMode(true);
             claplabel.NightMode(true);
             clapChanger.setNightMode(true);
             musiclabel.NightMode(true);
@@ -184,6 +187,8 @@ public class HomeUI_DesignController implements Initializable {
             nightlabel.NightMode(false);
             claplabel.NightMode(false);
             clapChanger.setNightMode(false);
+            LightSwitch.setNightMode(false);
+            LightLabel.NightMode(false);
             Color color = Color.rgb(0, 0, 0, 0.1);
             WeatherA.setFill(color);
             WeatherB.setFill(color);
@@ -273,7 +278,12 @@ public class HomeUI_DesignController implements Initializable {
         //    MusicChanger.setState(1);
         //}
         
-        SleepMode.setLayoutX(380);
+        LightLabel = new StyledLabel("Lichter", 384, 10, 45, 140);
+        LightLabel.setTextCenter();
+        LightSwitch = new StyledSwitch(368, 58, 150, "Aus", "Ein", "Auto");
+        LightSwitch.setOnClick(remoteHandler::changeLightState);
+        
+        SleepMode.setLayoutX(545);
         SleepMode.setLayoutY(20);
         SleepMode.setPrefSize(150, 90);
         SleepMode.setFocusTraversable(false);
@@ -336,6 +346,8 @@ public class HomeUI_DesignController implements Initializable {
         
             rearth.IO.PinHandler.setDisplayPos(DisplayState.closed);
         
+            remoteHandler.initSleepMode();
+            
     }
     
     public static boolean Sleeping = false;
@@ -346,6 +358,8 @@ public class HomeUI_DesignController implements Initializable {
     private StyledSwitch ModeSelector = null;
     public StyledSwitch MusicChanger = null;
     public StyledSwitch clapChanger = null;
+    private StyledLabel LightLabel = null;
+    public StyledSwitch LightSwitch = null;
     
     private final int MusicX = 0;
     private final int MusicY = -8;

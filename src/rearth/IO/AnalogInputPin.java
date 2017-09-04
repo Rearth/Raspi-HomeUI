@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import rearth.HomeUI_DesignController;
@@ -23,6 +24,9 @@ public class AnalogInputPin extends IOPin {
     private final int[]values;
     private final int refreshRate;      //in Hz
     private boolean log = false;
+    private int logLine = 0;
+    private final ArrayList<Integer> logMarkers = new ArrayList<>();
+    private final ArrayList<Integer> logMarkersHigh = new ArrayList<>();
     
     public AnalogInputPin(int number, int refreshRate, int saveLength) {
         super(number);
@@ -69,6 +73,19 @@ public class AnalogInputPin extends IOPin {
                     }
                     
                     if (log) {
+                        logLine++;
+                        if (logMarkers.contains(logLine)) {
+                            CSVUtil.writeLine(writer, Integer.toString(0));
+                            CSVUtil.writeLine(writer, Integer.toString(0));
+                            CSVUtil.writeLine(writer, Integer.toString(0));
+                            CSVUtil.writeLine(writer, Integer.toString(0));
+                        }
+                        if (logMarkersHigh.contains(logLine)) {
+                            CSVUtil.writeLine(writer, Integer.toString(700));
+                            CSVUtil.writeLine(writer, Integer.toString(700));
+                            CSVUtil.writeLine(writer, Integer.toString(700));
+                            CSVUtil.writeLine(writer, Integer.toString(700));
+                        }
                         CSVUtil.writeLine(writer, Integer.toString(Integer.valueOf(line)));
                     }
 
@@ -118,6 +135,29 @@ public class AnalogInputPin extends IOPin {
 
     public void setLog(boolean log) {
         this.log = log;
+    }
+
+    public boolean isLog() {
+        return log;
+    }
+
+    public FileWriter getWriter() {
+        return writer;
+    }
+
+    public int getLogLine() {
+        return logLine;
+    }
+    
+    public void setLogMarker(int at, boolean high) {
+        if (!log) {
+            return;
+        }
+        if (high) {
+            logMarkersHigh.add(at);
+            return;
+        }
+        logMarkers.add(at);
     }
     
 }

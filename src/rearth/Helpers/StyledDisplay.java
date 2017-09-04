@@ -75,10 +75,14 @@ public final class StyledDisplay {
         this.level = level;
         try {
             for (int i = 0; i < (level / divide); i++) {
-                Elements[i].setVisible(true);
+                try {
+                    Elements[i].setVisible(true);
+                } catch (NullPointerException ex) {}
             }
             for (int i = (int) level / divide; i < (100 / divide); i++) {
-                Elements[i].setVisible(false);
+                try {
+                    Elements[i].setVisible(false);
+                } catch (NullPointerException ex) {}
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.err.println("error setting level: " + ex);

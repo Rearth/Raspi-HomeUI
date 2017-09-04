@@ -25,6 +25,7 @@ import rearth.Helpers.Stundenplan;
 import rearth.Helpers.TimeService;
 import rearth.Helpers.Weather;
 import rearth.IO.PinHandler;
+import rearth.IO.remoteHandler;
 /**
  *
  * @author Darkp
@@ -171,6 +172,8 @@ public class Raspi_HomeUI extends Application {
         if (!rearth.HomeUI_DesignController.Sleeping) {
             rearth.networking.ComputerStats.getInstance().updateStats();
         }
+        
+        remoteHandler.update();
     }
     
     void hourlyTasks() {

@@ -40,7 +40,7 @@ public class PinHandler {
         servoDisplay = new PWMPin(1, servoDisplayPosUp);
         LDR = new AnalogInputPin(0, 10);
         ClapSensor = new AnalogInputPin(1, 256, 256);
-        //ClapSensor.setLog(true);
+        ClapSensor.setLog(true);
         
         Pins.add(servoDisplay);
         Pins.add(LDR);

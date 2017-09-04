@@ -240,6 +240,8 @@ public class StyledSwitch {
         if (ClapControl) {
             AnalogHandler.clapEnabled = selected == 1;
         }
+        
+        onClick.call(selected, this);
     }
     
     private boolean AnimPlaying = false;
@@ -446,4 +448,20 @@ public class StyledSwitch {
     private boolean interactable() {
         return state.equals(States.normal);
     }
+    
+    private Function onClick = StyledSwitch::doNothing;
+    
+    @FunctionalInterface
+    public interface Function {
+        void call(int SelectedOption, StyledSwitch element);
+    }
+    
+    public void setOnClick(final Function function) {
+        onClick = function;
+    }
+    
+    private static void doNothing(int SelectedOption, StyledSwitch element) {
+        System.out.println("switch element used without onclick handler");
+    }
+    
 }

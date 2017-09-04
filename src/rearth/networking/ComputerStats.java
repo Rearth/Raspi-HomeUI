@@ -76,6 +76,8 @@ public final class ComputerStats {
                 } catch (java.lang.NumberFormatException ex) {
                     connected = false;
                 }
+                
+                Thread.currentThread().interrupt();
             };
 
             Thread thread = new Thread(myRunnable);
