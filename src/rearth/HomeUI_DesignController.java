@@ -37,6 +37,7 @@ import rearth.IO.PinHandler;
 import rearth.IO.PinHandler.DisplayState;
 import rearth.IO.remoteHandler;
 import rearth.networking.ComputerStats;
+import rearth.networking.PCConnection;
 
 /**
  *
@@ -264,7 +265,7 @@ public class HomeUI_DesignController implements Initializable {
         musiclabel = new StyledLabel("Music", 177, 10, 45, 85);
         MusicChanger = new StyledSwitch(164, 58, 90, "Aus", "Ein");
         MusicChanger.setMusicControl();
-        if (ComputerStats.getInstance().connected) {
+        if (PCConnection.isConnected()) {
             MusicChanger.setState(1);
         }
         

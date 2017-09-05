@@ -6,12 +6,12 @@
 package rearth.networking;
 
 import java.util.ArrayList;
-import javafx.scene.image.Image;
+import javafx.application.Platform;
+import pc_serversocket.PCInfo.PerformanceData;
 import rearth.Helpers.StyledDisplay;
 import rearth.Helpers.StyledSwitch;
 import rearth.Helpers.TimeService.Zeit;
 import rearth.StyledLabel;
-import static rearth.networking.ComputerConnection.*;
 
 /**
  *
@@ -26,25 +26,43 @@ public final class ComputerStats {
     private final int posY = 540;
     private final int vGap = 60;
     
-    public double CPUusage = 0;        //in %
-    public double RAMusage = 0;        //in %
-    public double RAMused = 0;         //in GigaByte
-    public double GPUload = 0;
+    public double CPUusage = 0;         //in %
+    public double RAMused = 0;          //in %
+    public double GPUload = 0;          //in %
     public boolean playing = false;
-    public float Volume = 0F;
-    public boolean muted = false;
-    private boolean started = false;
-    private String Title = "";
+    public float Volume = 0.35F;
     
-    public boolean connected = true;
     
     public static ComputerStats getInstance() {
         return instance;
     }
     
     public void updateStats() {
+        
+        if (!PCConnection.isConnected()) {
+            handleError();
+            return;
+        }
+        PerformanceData PCData;
+        try {
+            PCData = PCConnection.getLastData().getPCdata();
+        } catch (NullPointerException ex) {
+            System.err.println("PCData is null");
+            return;
+        }
+        
+        CPUusage = PCData.getCPUusage() * 100;
+        RAMused = PCData.getUsedRam() / PCData.getMaxRam() * 100;
+        GPUload = PCData.getGPULoad() * 100;
+        Platform.runLater(() -> {
+            showMusic();
+            drawBars();
+        });
+        
+        
+        //System.out.println(toString());
             
-            Runnable myRunnable = () -> {
+            /*Runnable myRunnable = () -> {
                 try {
                     String toSend = "Null";
                     if (started) {
@@ -89,17 +107,19 @@ public final class ComputerStats {
                showMusic();
             }
             
-            drawBars();
+            drawBars();*/
             
 
     }
     
     private void handleError() {
-            System.err.println("Cant reach host");
+            System.err.println("drawing missing connection");
             if (errorLabel != null) {
                 errorLabel.delete();
             }
-            Displays.stream().filter((label) -> (label != null)).forEach((label) -> {
+            Displays.stream().filter((StyledDisplay label) -> {
+                return label != null;
+            }).forEach((label) -> {
                 label.setVisible(false);
             });
             
@@ -115,7 +135,7 @@ public final class ComputerStats {
     private void hideMusic() {
         
         
-        if (musicHidden || rearth.HomeUI_DesignController.getInstance().MusicChanger.getSelected() == 0) {
+        if (musicHidden/* || rearth.HomeUI_DesignController.getInstance().MusicChanger.getSelected() == 0*/) {
             return;
         }
         rearth.HomeUI_DesignController.getInstance().hideMusic(0);
@@ -133,6 +153,7 @@ public final class ComputerStats {
         if (!musicHidden || rearth.HomeUI_DesignController.getInstance().MusicChanger.getSelected() == 1) {
             return;
         }
+        
         rearth.HomeUI_DesignController.getInstance().hideMusic(1);
         rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(1);
         rearth.HomeUI_DesignController.getInstance().MusicChanger.setState(StyledSwitch.States.normal);
@@ -149,13 +170,13 @@ public final class ComputerStats {
 
     @Override
     public String toString() {
-        return "ComputerStats{" + "CPUusage=" + CPUusage + ", RAMusage=" + RAMusage + ", RAMused=" + RAMused + ", GPUload=" + GPUload + " playing=" + playing + " Volume=" + Volume + " Title=" + Title + '}' + new Zeit().toString(true);
+        return "ComputerStats{" + "CPUusage=" + CPUusage + "RAMused=" + RAMused + ", GPUload=" + GPUload + " playing=" + playing + " Volume=" + Volume + '}' + " connected=" + PCConnection.isConnected() + new Zeit().toString(true);
     }
 
     public static void setNightMode(boolean state) {
         ComputerStats stats = getInstance();
         
-        for (StyledDisplay marker: stats.Displays) {
+        for (StyledDisplay marker : stats.Displays) {
             marker.setNightMode(state);
         }
     }
@@ -188,7 +209,7 @@ public final class ComputerStats {
         
     private void drawBars() {
         
-        if (!connected) {
+        if (!PCConnection.isConnected()) {
             return;
         }
         
@@ -205,8 +226,11 @@ public final class ComputerStats {
             GPUload = 5;
         }
         
+        cpuDisplay.setVisible(true);
+        ramDisplay.setVisible(true);
+        gpuDisplay.setVisible(true);
         cpuDisplay.setLevel((int) CPUusage);
-        ramDisplay.setLevel((int) RAMusage);
+        ramDisplay.setLevel((int) RAMused);
         gpuDisplay.setLevel((int) GPUload);
         
         

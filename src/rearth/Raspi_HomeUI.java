@@ -26,6 +26,7 @@ import rearth.Helpers.TimeService;
 import rearth.Helpers.Weather;
 import rearth.IO.PinHandler;
 import rearth.IO.remoteHandler;
+import rearth.networking.PCConnection;
 /**
  *
  * @author Darkp
@@ -134,6 +135,10 @@ public class Raspi_HomeUI extends Application {
             System.out.println("---------------Setting Servos-----------------------");
             rearth.IO.PinHandler.setDisplayPos(PinHandler.DisplayState.opened);
         }
+        
+        System.out.println("starting PC Connection service...");
+        PCConnection communicator = new PCConnection();
+        communicator.start();
     }
     
     void fastTasks() {
