@@ -69,6 +69,8 @@ public class PCConnection extends Thread {
         
         if (rearth.HomeUI_DesignController.Sleeping) {
             Thread.sleep(60 * 1000);
+            server = null;
+            connected = false;
             update();
             return;
         }
