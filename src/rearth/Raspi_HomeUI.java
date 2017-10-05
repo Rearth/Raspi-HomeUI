@@ -209,6 +209,10 @@ public class Raspi_HomeUI extends Application {
         Stundenplan.getInstance().updateDay();
     }
     
+    public static boolean onWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("windows");
+    }
+    
 }
 
 

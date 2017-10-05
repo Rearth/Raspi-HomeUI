@@ -42,7 +42,7 @@ public class Weather {
             System.out.println("Weather image found: " + nameState(Codes[day]));
         } else  {
             System.out.println("No Weather image for \"" + nameState(Codes[day]) + "\" found, using default");
-            FilePath = "/home/pi/Desktop/Java/Images/Weather/default.png";
+            return new Image(getClass().getResource("/rearth/Images/WeatherDefault.png").toString());
         }
         
         Image image = new Image("file:" + FilePath);

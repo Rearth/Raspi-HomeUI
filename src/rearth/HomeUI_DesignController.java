@@ -102,7 +102,10 @@ public class HomeUI_DesignController implements Initializable {
     @FXML
     private void QuitUI(Event event) {
         System.out.println("Ending");
-        PinHandler.getInstance().shutdown();
+        if (!Raspi_HomeUI.onWindows()) {
+            System.out.println("programm is not running on windows");
+            PinHandler.getInstance().shutdown();
+        }
         System.exit(0);
     }
     
