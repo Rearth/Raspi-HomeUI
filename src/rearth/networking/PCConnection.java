@@ -80,7 +80,7 @@ public class PCConnection extends Thread {
             server = connect();
         }
         
-        if (server == null) {
+        if (server == null) { 
             Thread.sleep(10 * 1000);
             update();
             return;
