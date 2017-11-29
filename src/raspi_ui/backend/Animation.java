@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package raspi_ui;
+package raspi_ui.backend;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.Node;

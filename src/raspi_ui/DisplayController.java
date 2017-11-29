@@ -5,6 +5,7 @@
  */
 package raspi_ui;
 
+import raspi_ui.backend.Animation;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;

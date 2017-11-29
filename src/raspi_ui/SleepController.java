@@ -5,6 +5,7 @@
  */
 package raspi_ui;
 
+import raspi_ui.backend.Animation;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

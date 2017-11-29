@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package raspi_ui;
+package raspi_ui.backend;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimerTask;
+import raspi_ui.DisplayController;
 
 /**
  *
  * @author Darkp
  */
-class fastTaskTimer extends TimerTask {
+public class fastTaskTimer extends TimerTask {
 
     private static int minutes = 0;
     
