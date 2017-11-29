@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raspi_ui.SleepController">
+    <children>
+      <Label prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: black;" />
+      <Label fx:id="labelTime" alignment="CENTER" contentDisplay="TOP" focusTraversable="false" graphicTextGap="3.0" layoutY="-41.0" lineSpacing="1.0" onMouseClicked="#stopSleep" prefHeight="600.0" prefWidth="1024.0" text="19:48" textAlignment="CENTER" textFill="#11110e">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="Verdana Bold" size="250.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelDate" alignment="TOP_CENTER" focusTraversable="false" layoutY="443.0" prefHeight="84.0" prefWidth="1024.0" text="Dienstag, 28. November" textAlignment="CENTER" textFill="#10100e">
+         <font>
+            <Font name="System Bold" size="64.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+    </children>
+</AnchorPane>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raspi_ui.DisplayController">
+    <children>
+      <ImageView fx:id="backgroundImage" fitHeight="600.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Bilder/Wallaper_Planet.jpg" />
+         </image>
+      </ImageView>
+      <Pane fx:id="panelTime" layoutX="-25.0" layoutY="-22.0" prefHeight="233.0" prefWidth="433.0" style="-fx-background-color: rgb(6,6,6,0.5); -fx-background-radius: 10;">
+         <children>
+            <Label fx:id="labelTime" alignment="BOTTOM_CENTER" focusTraversable="false" graphicTextGap="3.0" layoutX="25.0" lineSpacing="1.0" prefHeight="184.0" prefWidth="395.0" text="19:48" textAlignment="CENTER" textFill="#68685a">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <font>
+                  <Font name="Verdana Bold" size="115.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelDate" alignment="TOP_CENTER" focusTraversable="false" layoutX="25.0" layoutY="182.0" prefHeight="58.0" prefWidth="404.0" text="Dienstag, 28. November" textAlignment="CENTER" textFill="#68685a">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="sleepButton" layoutX="880.0" layoutY="526.0" mnemonicParsing="false" onAction="#startSleep" prefHeight="51.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: gray; -fx-border-radius: 4;" text="Schlafen" textFill="#756a6a">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>
