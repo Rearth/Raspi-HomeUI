@@ -14,6 +14,7 @@
 
 package raspi_ui.backend.calendar;
 
+import com.google.api.services.calendar.model.CalendarListEntry;
 import raspi_ui.backend.calendar.json.CalenderInfo;
 import raspi_ui.backend.calendar.json.Item;
 import com.google.api.client.auth.oauth2.Credential;
@@ -21,68 +22,42 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.batch.BatchRequest;
-import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
 import com.google.api.client.util.Lists;
-import com.google.api.client.util.store.DataStoreFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.Calendar;
 import com.google.api.services.calendar.model.CalendarList;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.List;
 
 /**
  * @author Yaniv Inbar
  */
-public class CalendarSample {
-
-    /**
-     * Be sure to specify the name of your application. If the application name is {@code null} or
-     * blank, the application will log a warning. Suggested format is "MyCompany-ProductName/1.0".
-     */
-    private static final String APPLICATION_NAME = "";
-
-    /** Directory to store user credentials. */
-    private static final java.io.File DATA_STORE_DIR =
-            new java.io.File(System.getProperty("user.home"), ".store/calendar_sample");
-
-    /**
-     * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
-     * globally shared instance across your application.
-     */
-    private static FileDataStoreFactory dataStoreFactory;
-
-    /** Global instance of the HTTP transport. */
-    private static HttpTransport httpTransport;
-
-    /** Global instance of the JSON factory. */
+public class CalendarData {
+    private static final String APPLICATION_NAME = "Test for Tests";
+    private static final java.io.File DATA_STORE_DIR = new java.io.File(System.getProperty("user.home"), ".store/calendar_sample");
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
+    private static FileDataStoreFactory dataStoreFactory;
+    private static HttpTransport httpTransport;
     private static com.google.api.services.calendar.Calendar client;
 
-    static final java.util.List<Calendar> addedCalendarsUsingBatch = Lists.newArrayList();
+    static final java.util.List<com.google.api.services.calendar.model.Calendar> addedCalendarsUsingBatch = Lists.newArrayList();
 
-    /** Authorizes the installed application to access user's protected data. */
     private static Credential authorize() throws Exception {
         // load client secrets
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                new InputStreamReader(CalendarSample.class.getResourceAsStream("/client_secrets.json")));
+                new InputStreamReader(CalendarData.class.getResourceAsStream("/client_secrets.json")));
         if (clientSecrets.getDetails().getClientId().startsWith("Enter")
                 || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
             System.out.println(
@@ -99,6 +74,51 @@ public class CalendarSample {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
 
+    public static List<CalendarEvent> getEventsInTime(String begin, String end) throws IOException {
+
+        main(null);
+
+        List<CalendarEvent> events = new ArrayList<CalendarEvent>();
+
+        CalendarList calendars = client.calendarList().list().execute();
+        for (CalendarListEntry calendar : calendars.getItems()) {
+            System.out.println("found calendar: " + calendar.getSummary() + " id: " + calendar.getId());
+
+            if (calendar.getSummary().contains("inovex") || calendar.getSummary().contains("Feiertage")) {
+                System.out.println("processing calendar: " + calendar.getSummary());
+
+                String JSON_Events = client.events().list(calendar.getId()).setTimeMin(new DateTime(begin)).setTimeMax(new DateTime(end)).execute().toPrettyString();
+                parseEvents(JSON_Events, events);
+            }
+        }
+
+        System.out.println("found events: " + events.size());
+        System.out.println("done getting calendar events");
+        return events;
+
+    }
+
+    private static void parseEvents(String jsonString, List<CalendarEvent> addTo) {
+        Gson gson = new Gson();
+
+        System.out.println("parsing json...");
+
+        CalenderInfo data = gson.fromJson(jsonString, CalenderInfo.class);
+        System.out.println(data.getSummary() + " | " + data.getItems().size());
+
+        for (Item item : data.getItems()) {
+            try {
+                CalendarEvent event = new CalendarEvent(item.getSummary(), item.getDescription(), item.getStart().getDateTime(), item.getEnd().getDateTime(), data, item);
+                addTo.add(event);
+                System.out.println(event);
+                System.out.println();
+            } catch (NullPointerException ex) {
+                System.err.println("unable to get data for item: " + item.toString());
+            }
+        }
+
+    }
+
     public static void main(String[] args) {
         try {
             // initialize the transport
@@ -110,43 +130,39 @@ public class CalendarSample {
             // authorization
             Credential credential = authorize();
 
-            // set up global Calendar instance
+            // set up global CalendarData instance
             client = new com.google.api.services.calendar.Calendar.Builder(
                     httpTransport, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
 
             // run commands
-            showCalendars();
+            //showCalendars();
 
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        System.exit(1);
+        //System.exit(1);
     }
 
     private static void showCalendars() throws IOException {
-        View.header("Show Calendars");
         CalendarList feed = client.calendarList().list().execute();
-        View.display(feed);
 
         System.out.println("main calendar list (json):");
         String JSON_Events = client.events().list("inovex.de_36373434353033313438@resource.calendar.google.com").setTimeMin(new DateTime("2017-10-14T13:15:03+00:00")).setTimeMax(DateTime.parseRfc3339("2017-12-01T00:00:00+00:00")).execute().toPrettyString();
         //System.out.println(JSON_Events);
 
-        parseJSON(JSON_Events);
+        //parseJSON(JSON_Events);
     }
 
-    private static Calendar updateCalendar(Calendar calendar) throws IOException {
-        View.header("Update Calendar");
-        Calendar entry = new Calendar();
-        entry.setSummary("Updated Calendar for Testing");
-        Calendar result = client.calendars().patch(calendar.getId(), entry).execute();
-        View.display(result);
+    private static com.google.api.services.calendar.model.Calendar updateCalendar(com.google.api.services.calendar.model.Calendar calendar) throws IOException {
+        com.google.api.services.calendar.model.Calendar entry = new com.google.api.services.calendar.model.Calendar();
+        entry.setSummary("Updated CalendarData for Testing");
+        com.google.api.services.calendar.model.Calendar result = client.calendars().patch(calendar.getId(), entry).execute();
         return result;
     }
 
-    private static void parseJSON(String jsonString) {
+    /*private static void parseJSON(String jsonString) {
         Gson gson = new Gson();
 
         System.out.println("parsing json...");
@@ -164,11 +180,9 @@ public class CalendarSample {
             }
         }
 
-    }
+    }*/
 
-    private static void showEvents(Calendar calendar) throws IOException {
-        View.header("Show Events");
+    private static void showEvents(com.google.api.services.calendar.model.Calendar calendar) throws IOException {
         Events feed = client.events().list(calendar.getId()).execute();
-        View.display(feed);
     }
 }

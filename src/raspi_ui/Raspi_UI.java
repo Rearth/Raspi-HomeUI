@@ -6,6 +6,9 @@
 package raspi_ui;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -16,7 +19,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import raspi_ui.backend.calendar.CalendarData;
+import raspi_ui.backend.calendar.CalendarEvent;
 import raspi_ui.backend.fastTaskTimer;
+import raspi_ui.backend.slowTimerTask;
 
 /**
  *
@@ -51,6 +57,21 @@ public class Raspi_UI extends Application {
         stage.show();
         
         fastTasks();
+        slowTasks();
+        //initCalendar();
+
+    }
+
+    private void initCalendar() throws IOException {
+
+        Calendar now = Calendar.getInstance();
+        Calendar next = Calendar.getInstance();
+        next.add(Calendar.DATE, 1);
+
+        SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+
+        List<CalendarEvent> Events = CalendarData.getEventsInTime(df.format(now.getTime()), df.format(next.getTime()));
+
     }
     
     public void setScene(String className) {
@@ -89,6 +110,16 @@ public class Raspi_UI extends Application {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, 0, refreshDelay * 1000);
         
+    }
+
+    static void slowTasks() {
+
+        System.out.println("scheduling slow tasks");
+
+        TimerTask timerTask = new slowTimerTask();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0, 60 * 60 * 1000);
+
     }
     
 }
