@@ -53,10 +53,36 @@ public class slowTimerTask extends TimerTask {
         System.out.println();
 
         Collections.sort(Events);
+        Collections.reverse(Events);
         for (CalendarEvent event : Events) {
             System.out.println(event);
         }
 
+        refineEvents(Events);
+    }
+
+    private void refineEvents(List<CalendarEvent> events) {
+
+        List<CalendarEvent> today = new ArrayList<>();
+        List<CalendarEvent> tomorrow = new ArrayList<>();
+
+        int curday = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        Calendar plusone = Calendar.getInstance();
+        plusone.add(Calendar.DATE, 1);
+
+        int tmrow = plusone.get(Calendar.DAY_OF_MONTH);
+
+        for (CalendarEvent event : events) {
+            if (event.dayOfMonth() == curday) {
+                today.add(event);
+            } else if (event.dayOfMonth() == tmrow) {
+                tomorrow.add(event);
+            }
+        }
+
+
+        DisplayController.loadCalendar(today, true);
+        DisplayController.loadCalendar(tomorrow, false);
     }
     
 }

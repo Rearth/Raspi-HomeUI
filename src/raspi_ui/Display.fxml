@@ -43,7 +43,7 @@
       </Button>
       <Label alignment="TOP_RIGHT" layoutX="755.0" layoutY="479.0" prefHeight="107.0" prefWidth="255.0" style="-fx-background-color: rgb(6,6,6,0.5);" text="KA Bouldern" textAlignment="RIGHT" textFill="#68685a" wrapText="true">
          <font>
-            <Font size="79.0" />
+            <Font name="System Bold" size="26.0" />
          </font>
       </Label>
     </children>

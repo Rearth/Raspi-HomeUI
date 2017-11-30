@@ -42,6 +42,7 @@ import java.util.*;
  * @author Yaniv Inbar
  */
 public class CalendarData {
+
     private static final String APPLICATION_NAME = "Test for Tests";
     private static final java.io.File DATA_STORE_DIR = new java.io.File(System.getProperty("user.home"), ".store/calendar_sample");
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();

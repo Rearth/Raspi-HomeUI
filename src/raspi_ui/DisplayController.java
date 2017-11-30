@@ -7,6 +7,7 @@ package raspi_ui;
 
 import raspi_ui.backend.Animation;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
+import raspi_ui.backend.calendar.CalendarDesign;
+import raspi_ui.backend.calendar.CalendarEvent;
 
 /**
  *
@@ -97,6 +100,20 @@ public class DisplayController implements Initializable {
         } else {
             Raspi_UI.instance.setScene("Display.fxml");
         }
+
+        CalendarDesign.clear();
+    }
+
+    public static void loadCalendar(List<CalendarEvent> events, boolean today) {
+
+        Platform.runLater(() -> {
+            CalendarDesign.setLabels(instance.mainPane, events, today);
+
+        });
+    }
+
+    public static Pane getMainPane() {
+        return instance.mainPane;
     }
     
 }

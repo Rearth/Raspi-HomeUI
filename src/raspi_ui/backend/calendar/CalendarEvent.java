@@ -4,9 +4,13 @@ import raspi_ui.backend.calendar.json.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CalendarEvent implements  Comparable<CalendarEvent> {
+
+    //TODO
+    //add possibility to click on items for more info
 
     private final String Name;
     private final String Description;
@@ -49,5 +53,40 @@ public class CalendarEvent implements  Comparable<CalendarEvent> {
 
         return null;
 
+    }
+
+    public int dayOfMonth() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(this.getDate());
+        return cal.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public String getNiceTime() {
+        SimpleDateFormat df =  new SimpleDateFormat("HH:mm");
+        return df.format(getDate());
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public String getStartAt() {
+        return StartAt;
+    }
+
+    public String getEndAt() {
+        return EndAt;
+    }
+
+    public CalenderInfo getInfo() {
+        return info;
+    }
+
+    public Item getItem() {
+        return item;
     }
 }
