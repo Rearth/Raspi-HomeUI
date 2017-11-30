@@ -36,9 +36,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Yaniv Inbar
@@ -109,7 +107,9 @@ public class CalendarData {
         for (Item item : data.getItems()) {
             try {
                 CalendarEvent event = new CalendarEvent(item.getSummary(), item.getDescription(), item.getStart().getDateTime(), item.getEnd().getDateTime(), data, item);
+
                 addTo.add(event);
+
                 System.out.println(event);
                 System.out.println();
             } catch (NullPointerException ex) {
@@ -143,46 +143,5 @@ public class CalendarData {
             t.printStackTrace();
         }
         //System.exit(1);
-    }
-
-    private static void showCalendars() throws IOException {
-        CalendarList feed = client.calendarList().list().execute();
-
-        System.out.println("main calendar list (json):");
-        String JSON_Events = client.events().list("inovex.de_36373434353033313438@resource.calendar.google.com").setTimeMin(new DateTime("2017-10-14T13:15:03+00:00")).setTimeMax(DateTime.parseRfc3339("2017-12-01T00:00:00+00:00")).execute().toPrettyString();
-        //System.out.println(JSON_Events);
-
-        //parseJSON(JSON_Events);
-    }
-
-    private static com.google.api.services.calendar.model.Calendar updateCalendar(com.google.api.services.calendar.model.Calendar calendar) throws IOException {
-        com.google.api.services.calendar.model.Calendar entry = new com.google.api.services.calendar.model.Calendar();
-        entry.setSummary("Updated CalendarData for Testing");
-        com.google.api.services.calendar.model.Calendar result = client.calendars().patch(calendar.getId(), entry).execute();
-        return result;
-    }
-
-    /*private static void parseJSON(String jsonString) {
-        Gson gson = new Gson();
-
-        System.out.println("parsing json...");
-
-        CalenderInfo data = gson.fromJson(jsonString, CalenderInfo.class);
-        System.out.println(data.getSummary() + " | " + data.getItems().size());
-
-        for (Item item : data.getItems()) {
-            try {
-                System.out.println("Item: " + item.getSummary());
-                System.out.println("Date: " + item.getStart().getDateTime());
-                System.out.println();
-            } catch (NullPointerException ex) {
-                System.err.println("unable to get data for item: " + item.toString());
-            }
-        }
-
-    }*/
-
-    private static void showEvents(com.google.api.services.calendar.model.Calendar calendar) throws IOException {
-        Events feed = client.events().list(calendar.getId()).execute();
     }
 }

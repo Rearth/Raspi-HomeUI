@@ -66,7 +66,7 @@ public class Raspi_UI extends Application {
 
         Calendar now = Calendar.getInstance();
         Calendar next = Calendar.getInstance();
-        next.add(Calendar.DATE, 1);
+        next.add(Calendar.DATE, 2);
 
         SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 

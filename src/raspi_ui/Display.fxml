@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raspi_ui.DisplayController">
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="raspi_ui.DisplayController">
     <children>
       <ImageView fx:id="backgroundImage" fitHeight="600.0" fitWidth="1024.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -36,10 +36,15 @@
             </Label>
          </children>
       </Pane>
-      <Button fx:id="sleepButton" layoutX="880.0" layoutY="526.0" mnemonicParsing="false" onAction="#startSleep" prefHeight="51.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: gray; -fx-border-radius: 4;" text="Schlafen" textFill="#756a6a">
+      <Button fx:id="sleepButton" layoutX="14.0" layoutY="535.0" mnemonicParsing="false" onAction="#startSleep" prefHeight="51.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-border-color: gray; -fx-border-radius: 4;" text="Schlafen" textFill="#756a6a">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
       </Button>
+      <Label alignment="TOP_RIGHT" layoutX="755.0" layoutY="479.0" prefHeight="107.0" prefWidth="255.0" style="-fx-background-color: rgb(6,6,6,0.5);" text="KA Bouldern" textAlignment="RIGHT" textFill="#68685a" wrapText="true">
+         <font>
+            <Font size="79.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

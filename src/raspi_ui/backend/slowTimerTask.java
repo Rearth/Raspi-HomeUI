@@ -12,10 +12,7 @@ import raspi_ui.backend.calendar.CalendarEvent;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  *
@@ -41,12 +38,24 @@ public class slowTimerTask extends TimerTask {
 
         System.out.println("initing calendar (hourly)");
         Calendar now = Calendar.getInstance();
+        now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE), 0,0);
         Calendar next = Calendar.getInstance();
-        next.add(Calendar.DATE, 1);
+        next.set(next.get(Calendar.YEAR), next.get(Calendar.MONTH), next.get(Calendar.DATE), 0,0);
+        next.add(Calendar.DATE, 2);
+
 
         SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 
         List<CalendarEvent> Events = CalendarData.getEventsInTime(df.format(now.getTime()), df.format(next.getTime()));
+
+        System.out.println();
+        System.out.println("---------------------done gathering events, sorting now---------------------");
+        System.out.println();
+
+        Collections.sort(Events);
+        for (CalendarEvent event : Events) {
+            System.out.println(event);
+        }
 
     }
     
