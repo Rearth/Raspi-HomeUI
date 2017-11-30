@@ -127,6 +127,8 @@ public class CalendarData {
 
             // initialize the data store factory
             dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+            System.out.println("DatastoreDir: -------------------------------------------");
+            System.out.println(DATA_STORE_DIR);
 
             // authorization
             Credential credential = authorize();
