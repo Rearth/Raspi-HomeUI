@@ -100,8 +100,6 @@ public class DisplayController implements Initializable {
         } else {
             Raspi_UI.instance.setScene("Display.fxml");
         }
-
-        CalendarDesign.clear();
     }
 
     public static void loadCalendar(List<CalendarEvent> events, boolean today) {
