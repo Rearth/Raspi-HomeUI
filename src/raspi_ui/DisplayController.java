@@ -80,6 +80,8 @@ public class DisplayController implements Initializable {
     
     public static void setDate(String date) {
         
+        SleepController.setDate(date);
+        
         Platform.runLater(() -> {
             if (instance.labelDate.getText().equals(date)) {
                 return;

@@ -26,6 +26,9 @@ public class SleepController implements Initializable {
     @FXML
     private Label labelTime;
     
+    @FXML
+    private Label labelDate;
+    
     private static SleepController instance;
     
     @Override
@@ -59,6 +62,17 @@ public class SleepController implements Initializable {
             } catch (NullPointerException ex) {
                 //expected
             }
+        });
+    }
+     
+    public static void setDate(String date) {
+        
+        Platform.runLater(() -> {
+            if (instance.labelDate.getText().equals(date)) {
+                return;
+            }
+            instance.labelDate.setText(date);
+            
         });
     }
 }
