@@ -37,18 +37,27 @@ public class CalendarEvent implements  Comparable<CalendarEvent> {
 
     @Override
     public int compareTo(CalendarEvent o) {
-        return getDate().compareTo(o.getDate());
+
+        try {
+            return getDate().compareTo(o.getDate());
+        } catch (NullPointerException ex) {
+
+        }
+
+        return 0;
     }
 
     public Date getDate() {
-        SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        String dateText = StartAt;
-        dateText = dateText.substring(0, dateText.length() - 10);
-
         try {
+            SimpleDateFormat df =  new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            String dateText = StartAt;
+            dateText = dateText.substring(0, dateText.length() - 10);
+
             return df.parse(dateText);
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (NullPointerException ex) {
+            System.err.println("unable to parse calendar time event");
         }
 
         return null;
@@ -56,9 +65,14 @@ public class CalendarEvent implements  Comparable<CalendarEvent> {
     }
 
     public int dayOfMonth() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(this.getDate());
-        return cal.get(Calendar.DAY_OF_MONTH);
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(this.getDate());
+            return cal.get(Calendar.DAY_OF_MONTH);
+        } catch (NullPointerException ex) {
+            System.err.println("unable to get date from event");
+        }
+        return 0;
     }
 
     public String getNiceTime() {
