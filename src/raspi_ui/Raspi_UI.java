@@ -30,7 +30,7 @@ import raspi_ui.backend.slowTimerTask;
  */
 public class Raspi_UI extends Application {
     
-    private static final int refreshDelay = 5;
+    private static final int refreshDelay = 2;
     
     private static Stage stage;
     private static Scene normal;
